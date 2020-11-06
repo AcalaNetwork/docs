@@ -300,7 +300,7 @@ function writeFile (name: string, ...chunks: any[]): void {
   writeStream.end();
 }
 
-export default function main (): void {
+function main (): void {
   const registry = new TypeRegistry();
   // @ts-ignore
   const metadata = new Metadata(registry, rpcdata);
@@ -322,3 +322,5 @@ export default function main (): void {
   // @ts-ignore
   writeFile('docs/substrate/errors.md', addErrors(latest));
 }
+
+main();
