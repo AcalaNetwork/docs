@@ -6,7 +6,7 @@
     "@acala-network/types": "^0.3.1",
     "docusaurus": "docusaurus",
     "start": "docusaurus start --port 8080",
-    "build": "./node_modules/.bin/ts-node src/scripts/index.ts && docusaurus build",
+    "build": "./node_modules/.bin/ts-node src/scripts/metadataMd.ts && docusaurus build",
     "build:release": "polkadot-ci-ghact-docs",
     "docs": "yarn build",
     "swizzle": "docusaurus swizzle",
