@@ -1,13 +1,13 @@
 const BASE_URL = process.env.NODE_ENV === 'development' ? '/' : '/docs/';
 
 module.exports = {
-  title: 'polkadot{.js}',
-  tagline: 'Polkadot does JavaScript',
-  url: 'https://polkadot.js.org',
+  title: 'acala',
+  tagline: 'Acala docs JavaScript',
+  url: 'https://acala.network/',
   baseUrl: BASE_URL,
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
-  organizationName: 'polkadot-js',
+  organizationName: 'acala-network',
   onBrokenLinks: 'warn',
   projectName: 'docs',
   stylesheets: [
@@ -15,19 +15,19 @@ module.exports = {
   ],
   themeConfig: {
     navbar: {
-      title: 'polkadot{.js}',
+      title: 'acala',
       logo: {
-        alt: 'polkadot{.js}',
+        alt: 'acala-network',
         src: 'img/logo.svg',
       },
       items: [
         {
-          href: 'https://polkadot.js.org/apps/',
-          label: 'Apps UI (Wallet)',
+          href: 'https://apps.acala.network',
+          label: 'Apps',
           position: 'right',
         },
         {
-          href: 'https://github.com/polkadot-js/docs',
+          href: 'https://github.com/AcalaNetwork/docs',
           label: 'GitHub',
           position: 'right',
         },
@@ -38,12 +38,12 @@ module.exports = {
     ['@docusaurus/preset-classic', {
       docs: {
         sidebarPath: require.resolve('./sidebars.js'),
-        editUrl: 'https://github.com/polkadot-js/docs/edit/master/',
+        editUrl: 'https://github.com/AcalaNetwork/docs/edit/master/',
         routeBasePath: '/'
       },
       blog: {
         showReadingTime: true,
-        editUrl: 'https://github.com/polkadot-js/docs/edit/master/',
+        editUrl: 'https://github.com/AcalaNetwork/docs/edit/master/',
       },
       theme: {
         customCss: require.resolve('./src/css/custom.css'),

@@ -6,59 +6,89 @@ The following sections contain Storage methods are part of the default Substrate
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
-- **[authorship](#authorship)**
+- **[accounts](#accounts)**
+
+- **[airDrop](#airdrop)**
+
+- **[auction](#auction)**
+
+- **[auctionManager](#auctionmanager)**
 
 - **[babe](#babe)**
 
 - **[balances](#balances)**
 
-- **[contracts](#contracts)**
+- **[cdpEngine](#cdpengine)**
 
-- **[council](#council)**
+- **[cdpTreasury](#cdptreasury)**
 
-- **[democracy](#democracy)**
+- **[dex](#dex)**
 
-- **[elections](#elections)**
+- **[emergencyShutdown](#emergencyshutdown)**
+
+- **[generalCouncil](#generalcouncil)**
+
+- **[generalCouncilMembership](#generalcouncilmembership)**
+
+- **[graduallyUpdate](#graduallyupdate)**
 
 - **[grandpa](#grandpa)**
 
-- **[identity](#identity)**
+- **[homaCouncil](#homacouncil)**
 
-- **[imOnline](#imonline)**
+- **[homaCouncilMembership](#homacouncilmembership)**
+
+- **[honzon](#honzon)**
+
+- **[honzonCouncil](#honzoncouncil)**
+
+- **[honzonCouncilMembership](#honzoncouncilmembership)**
 
 - **[indices](#indices)**
 
+- **[loans](#loans)**
+
 - **[multisig](#multisig)**
 
-- **[offences](#offences)**
+- **[nomineesElection](#nomineeselection)**
 
-- **[proxy](#proxy)**
+- **[operatorMembership](#operatormembership)**
+
+- **[oracle](#oracle)**
+
+- **[palletTreasury](#pallettreasury)**
+
+- **[polkadotBridge](#polkadotbridge)**
+
+- **[prices](#prices)**
 
 - **[randomnessCollectiveFlip](#randomnesscollectiveflip)**
 
 - **[recovery](#recovery)**
 
-- **[scheduler](#scheduler)**
+- **[renVmBridge](#renvmbridge)**
+
+- **[scheduleUpdate](#scheduleupdate)**
 
 - **[session](#session)**
 
-- **[society](#society)**
-
 - **[staking](#staking)**
+
+- **[stakingPool](#stakingpool)**
 
 - **[sudo](#sudo)**
 
 - **[system](#system)**
 
-- **[technicalCommittee](#technicalcommittee)**
+- **[technicalCouncil](#technicalcouncil)**
 
-- **[technicalMembership](#technicalmembership)**
+- **[technicalCouncilMembership](#technicalcouncilmembership)**
 
 - **[timestamp](#timestamp)**
 
-- **[transactionPayment](#transactionpayment)**
+- **[tokens](#tokens)**
 
-- **[treasury](#treasury)**
+- **[transactionPayment](#transactionpayment)**
 
 - **[vesting](#vesting)**
 
@@ -68,19 +98,77 @@ The following sections contain Storage methods are part of the default Substrate
 ___
 
 
-## authorship
+## accounts
  
-### author(): `Option<AccountId>`
-- **interface**: `api.query.authorship.author`
-- **summary**:   Author of current block. 
+### freeTransferEnabledAccounts(`AccountId`): `Option<bool>`
+- **interface**: `api.query.accounts.freeTransferEnabledAccounts`
+- **summary**:   Mapping from account id to flag for free transfer. 
  
-### didSetUncles(): `bool`
-- **interface**: `api.query.authorship.didSetUncles`
-- **summary**:   Whether uncles were already set in this block. 
+### lastFreeTransfers(`AccountId`): `Vec<MomentOf>`
+- **interface**: `api.query.accounts.lastFreeTransfers`
+- **summary**:   Mapping from account id to free transfer records, record moment when a transfer tx occurs. 
+
+___
+
+
+## airDrop
  
-### uncles(): `Vec<UncleEntryItem>`
-- **interface**: `api.query.authorship.uncles`
-- **summary**:   Uncles 
+### airDrops(`AccountId, AirDropCurrencyId`): `Balance`
+- **interface**: `api.query.airDrop.airDrops`
+
+___
+
+
+## auction
+ 
+### auctionEndTime(`BlockNumber, AuctionId`): `Option<()>`
+- **interface**: `api.query.auction.auctionEndTime`
+- **summary**:   Index auctions by end time. 
+ 
+### auctions(`AuctionId`): `Option<AuctionInfo>`
+- **interface**: `api.query.auction.auctions`
+- **summary**:   Stores on-going and future auctions. Closed auction are removed. 
+ 
+### auctionsIndex(): `AuctionId`
+- **interface**: `api.query.auction.auctionsIndex`
+- **summary**:   Track the next auction ID. 
+
+___
+
+
+## auctionManager
+ 
+### collateralAuctions(`AuctionIdOf`): `Option<CollateralAuctionItem>`
+- **interface**: `api.query.auctionManager.collateralAuctions`
+- **summary**:   Mapping from auction id to collateral auction info 
+ 
+### debitAuctions(`AuctionIdOf`): `Option<DebitAuctionItem>`
+- **interface**: `api.query.auctionManager.debitAuctions`
+- **summary**:   Mapping from auction id to debit auction info 
+ 
+### isShutdown(): `bool`
+- **interface**: `api.query.auctionManager.isShutdown`
+- **summary**:   System shutdown flag 
+ 
+### surplusAuctions(`AuctionIdOf`): `Option<SurplusAuctionItem>`
+- **interface**: `api.query.auctionManager.surplusAuctions`
+- **summary**:   Mapping from auction id to surplus auction info 
+ 
+### totalCollateralInAuction(`CurrencyId`): `Balance`
+- **interface**: `api.query.auctionManager.totalCollateralInAuction`
+- **summary**:   Record of the total collateral amount of all ative collateral auctions under specific collateral type CollateralType -> TotalAmount 
+ 
+### totalDebitInAuction(): `Balance`
+- **interface**: `api.query.auctionManager.totalDebitInAuction`
+- **summary**:   Record of total fix amount of all ative debit auctions 
+ 
+### totalSurplusInAuction(): `Balance`
+- **interface**: `api.query.auctionManager.totalSurplusInAuction`
+- **summary**:   Record of total surplus amount of all ative surplus auctions 
+ 
+### totalTargetInAuction(): `Balance`
+- **interface**: `api.query.auctionManager.totalTargetInAuction`
+- **summary**:   Record of total target sales of all ative collateral auctions 
 
 ___
 
@@ -169,160 +257,165 @@ ___
 ___
 
 
-## contracts
+## cdpEngine
  
-### accountCounter(): `u64`
-- **interface**: `api.query.contracts.accountCounter`
-- **summary**:   The subtrie counter. 
+### collateralParams(`CurrencyId`): `RiskManagementParams`
+- **interface**: `api.query.cdpEngine.collateralParams`
+- **summary**:   Mapping from collateral type to its risk management params 
  
-### codeStorage(`CodeHash`): `Option<PrefabWasmModule>`
-- **interface**: `api.query.contracts.codeStorage`
-- **summary**:   A mapping between an original code hash and instrumented wasm code, ready for execution. 
+### debitExchangeRate(`CurrencyId`): `Option<ExchangeRate>`
+- **interface**: `api.query.cdpEngine.debitExchangeRate`
+- **summary**:   Mapping from collateral type to its exchange rate of debit units and debit value 
  
-### contractInfoOf(`AccountId`): `Option<ContractInfo>`
-- **interface**: `api.query.contracts.contractInfoOf`
-- **summary**:   The code associated with a given account. 
-
-  TWOX-NOTE: SAFE since `AccountId` is a secure hash. 
+### globalStabilityFee(): `Rate`
+- **interface**: `api.query.cdpEngine.globalStabilityFee`
+- **summary**:   Global stability fee rate for all types of collateral 
  
-### currentSchedule(): `Schedule`
-- **interface**: `api.query.contracts.currentSchedule`
-- **summary**:   Current cost schedule for contracts. 
- 
-### pristineCode(`CodeHash`): `Option<Bytes>`
-- **interface**: `api.query.contracts.pristineCode`
-- **summary**:   A mapping from an original code hash to the original code, untouched by instrumentation. 
+### isShutdown(): `bool`
+- **interface**: `api.query.cdpEngine.isShutdown`
+- **summary**:   System shutdown flag 
 
 ___
 
 
-## council
+## cdpTreasury
+ 
+### collateralAuctionMaximumSize(`CurrencyId`): `Balance`
+- **interface**: `api.query.cdpTreasury.collateralAuctionMaximumSize`
+- **summary**:   The maximum amount of collateral amount for sale per collateral auction 
+ 
+### debitAuctionFixedSize(): `Balance`
+- **interface**: `api.query.cdpTreasury.debitAuctionFixedSize`
+- **summary**:   The fixed amount of stable coin per surplus auction wants to get 
+ 
+### debitPool(): `Balance`
+- **interface**: `api.query.cdpTreasury.debitPool`
+- **summary**:   Current total debit value of system. It's not same as debit in CDP engine, it is the bad debt of the system. 
+ 
+### initialAmountPerDebitAuction(): `Balance`
+- **interface**: `api.query.cdpTreasury.initialAmountPerDebitAuction`
+- **summary**:   Initial amount of native token for sale per debit auction 
+ 
+### isShutdown(): `bool`
+- **interface**: `api.query.cdpTreasury.isShutdown`
+- **summary**:   System shutdown flag 
+ 
+### surplusAuctionFixedSize(): `Balance`
+- **interface**: `api.query.cdpTreasury.surplusAuctionFixedSize`
+- **summary**:   The fixed amount of stable coin for sale per surplus auction 
+ 
+### surplusBufferSize(): `Balance`
+- **interface**: `api.query.cdpTreasury.surplusBufferSize`
+- **summary**:   The buffer size of surplus pool, the system will process the surplus through surplus auction when above this value 
+ 
+### surplusPool(): `Balance`
+- **interface**: `api.query.cdpTreasury.surplusPool`
+- **summary**:   Current total surplus of system. 
+ 
+### totalCollaterals(`CurrencyId`): `Balance`
+- **interface**: `api.query.cdpTreasury.totalCollaterals`
+- **summary**:   Mapping from collateral type to collateral assets amount kept in CDP treasury 
+
+___
+
+
+## dex
+ 
+### isShutdown(): `bool`
+- **interface**: `api.query.dex.isShutdown`
+- **summary**:   System shutdown flag 
+ 
+### liquidityIncentiveRate(`CurrencyId`): `Rate`
+- **interface**: `api.query.dex.liquidityIncentiveRate`
+- **summary**:   Incentive reward rate for different currency type CurrencyType -> IncentiveRate 
+ 
+### liquidityPool(`CurrencyId`): `(Balance,Balance)`
+- **interface**: `api.query.dex.liquidityPool`
+- **summary**:   Liquidity pool, which is the trading pair for specific currency type to base currency type. CurrencyType -> (OtherCurrencyAmount, BaseCurrencyAmount) 
+ 
+### shares(`CurrencyId, AccountId`): `Share`
+- **interface**: `api.query.dex.shares`
+- **summary**:   Shares records indexed by currency type and account id CurrencyType -> Owner -> ShareAmount 
+ 
+### totalInterest(`CurrencyId`): `(Balance,Balance)`
+- **interface**: `api.query.dex.totalInterest`
+- **summary**:   Total interest(include total withdrawn) and total withdrawn interest for different currency type CurrencyType -> (TotalInterest, TotalWithdrawnInterest) 
+ 
+### totalShares(`CurrencyId`): `Share`
+- **interface**: `api.query.dex.totalShares`
+- **summary**:   Total shares amount of liquidity pool specificed by currency type CurrencyType -> TotalSharesAmount 
+ 
+### withdrawnInterest(`CurrencyId, AccountId`): `Balance`
+- **interface**: `api.query.dex.withdrawnInterest`
+- **summary**:   Withdrawn interest indexed by currency type and account id CurrencyType -> Owner -> WithdrawnInterest 
+
+___
+
+
+## emergencyShutdown
+ 
+### canRefund(): `bool`
+- **interface**: `api.query.emergencyShutdown.canRefund`
+- **summary**:   Open final redemption flag 
+ 
+### isShutdown(): `bool`
+- **interface**: `api.query.emergencyShutdown.isShutdown`
+- **summary**:   Emergency shutdown flag 
+
+___
+
+
+## generalCouncil
  
 ### members(): `Vec<AccountId>`
-- **interface**: `api.query.council.members`
+- **interface**: `api.query.generalCouncil.members`
 - **summary**:   The current members of the collective. This is stored sorted (just by value). 
  
 ### prime(): `Option<AccountId>`
-- **interface**: `api.query.council.prime`
-- **summary**:   The prime member that helps determine the default vote behavior in case of absentations. 
+- **interface**: `api.query.generalCouncil.prime`
+- **summary**:   The member who provides the default vote for any other members that do not vote before the timeout. If None, then no member has that privilege. 
  
 ### proposalCount(): `u32`
-- **interface**: `api.query.council.proposalCount`
+- **interface**: `api.query.generalCouncil.proposalCount`
 - **summary**:   Proposals so far. 
  
 ### proposalOf(`Hash`): `Option<Proposal>`
-- **interface**: `api.query.council.proposalOf`
+- **interface**: `api.query.generalCouncil.proposalOf`
 - **summary**:   Actual proposal for a given hash, if it's current. 
  
 ### proposals(): `Vec<Hash>`
-- **interface**: `api.query.council.proposals`
+- **interface**: `api.query.generalCouncil.proposals`
 - **summary**:   The hashes of the active proposals. 
  
 ### voting(`Hash`): `Option<Votes>`
-- **interface**: `api.query.council.voting`
+- **interface**: `api.query.generalCouncil.voting`
 - **summary**:   Votes on a given proposal, if it is ongoing. 
 
 ___
 
 
-## democracy
+## generalCouncilMembership
  
-### blacklist(`Hash`): `Option<(BlockNumber,Vec<AccountId>)>`
-- **interface**: `api.query.democracy.blacklist`
-- **summary**:   A record of who vetoed what. Maps proposal hash to a possible existent block number (until when it may not be resubmitted) and who vetoed it. 
+### members(): `Vec<AccountId>`
+- **interface**: `api.query.generalCouncilMembership.members`
+- **summary**:   The current membership, stored as an ordered Vec. 
  
-### cancellations(`Hash`): `bool`
-- **interface**: `api.query.democracy.cancellations`
-- **summary**:   Record of all proposals that have been subject to emergency cancellation. 
- 
-### depositOf(`PropIndex`): `Option<(Vec<AccountId>,BalanceOf)>`
-- **interface**: `api.query.democracy.depositOf`
-- **summary**:   Those who have locked a deposit. 
-
-  TWOX-NOTE: Safe, as increasing integer keys are safe. 
- 
-### lastTabledWasExternal(): `bool`
-- **interface**: `api.query.democracy.lastTabledWasExternal`
-- **summary**:   True if the last referendum tabled was submitted externally. False if it was a public proposal. 
- 
-### locks(`AccountId`): `Option<BlockNumber>`
-- **interface**: `api.query.democracy.locks`
-- **summary**:   Accounts for which there are locks in action which may be removed at some point in the future. The value is the block number at which the lock expires and may be removed. 
-
-  TWOX-NOTE: OK ― `AccountId` is a secure hash. 
- 
-### lowestUnbaked(): `ReferendumIndex`
-- **interface**: `api.query.democracy.lowestUnbaked`
-- **summary**:   The lowest referendum index representing an unbaked referendum. Equal to `ReferendumCount` if there isn't a unbaked referendum. 
- 
-### nextExternal(): `Option<(Hash,VoteThreshold)>`
-- **interface**: `api.query.democracy.nextExternal`
-- **summary**:   The referendum to be tabled whenever it would be valid to table an external proposal. This happens when a referendum needs to be tabled and one of two conditions are met: 
-
-  - `LastTabledWasExternal` is `false`; or
-
-  - `PublicProps` is empty.
- 
-### preimages(`Hash`): `Option<PreimageStatus>`
-- **interface**: `api.query.democracy.preimages`
-- **summary**:   Map of hashes to the proposal preimage, along with who registered it and their deposit. The block number is the block at which it was deposited. 
- 
-### publicPropCount(): `PropIndex`
-- **interface**: `api.query.democracy.publicPropCount`
-- **summary**:   The number of (public) proposals that have been made so far. 
- 
-### publicProps(): `Vec<(PropIndex,Hash,AccountId)>`
-- **interface**: `api.query.democracy.publicProps`
-- **summary**:   The public proposals. Unsorted. The second item is the proposal's hash. 
- 
-### referendumCount(): `ReferendumIndex`
-- **interface**: `api.query.democracy.referendumCount`
-- **summary**:   The next free referendum index, aka the number of referenda started so far. 
- 
-### referendumInfoOf(`ReferendumIndex`): `Option<ReferendumInfo>`
-- **interface**: `api.query.democracy.referendumInfoOf`
-- **summary**:   Information concerning any given referendum. 
-
-  TWOX-NOTE: SAFE as indexes are not under an attacker’s control. 
- 
-### storageVersion(): `Option<Releases>`
-- **interface**: `api.query.democracy.storageVersion`
-- **summary**:   Storage version of the pallet. 
-
-  New networks start with last version. 
- 
-### votingOf(`AccountId`): `Voting`
-- **interface**: `api.query.democracy.votingOf`
-- **summary**:   All votes for a particular voter. We store the balance for the number of votes that we have recorded. The second item is the total amount of delegations, that will be added. 
-
-  TWOX-NOTE: SAFE as `AccountId`s are crypto hashes anyway. 
+### prime(): `Option<AccountId>`
+- **interface**: `api.query.generalCouncilMembership.prime`
+- **summary**:   The current prime member, if one exists. 
 
 ___
 
 
-## elections
+## graduallyUpdate
  
-### candidates(): `Vec<AccountId>`
-- **interface**: `api.query.elections.candidates`
-- **summary**:   The present candidate list. Sorted based on account-id. A current member or runner-up can never enter this vector and is always implicitly assumed to be a candidate. 
+### graduallyUpdates(): `Vec<GraduallyUpdate>`
+- **interface**: `api.query.graduallyUpdate.graduallyUpdates`
+- **summary**:   All the on-going updates 
  
-### electionRounds(): `u32`
-- **interface**: `api.query.elections.electionRounds`
-- **summary**:   The total number of vote rounds that have happened, excluding the upcoming one. 
- 
-### members(): `Vec<(AccountId,BalanceOf)>`
-- **interface**: `api.query.elections.members`
-- **summary**:   The current elected membership. Sorted based on account id. 
- 
-### runnersUp(): `Vec<(AccountId,BalanceOf)>`
-- **interface**: `api.query.elections.runnersUp`
-- **summary**:   The current runners_up. Sorted based on low to high merit (worse to best). 
- 
-### voting(`AccountId`): `(BalanceOf,Vec<AccountId>)`
-- **interface**: `api.query.elections.voting`
-- **summary**:   Votes and locked stake of a particular voter. 
-
-  TWOX-NOTE: SAFE as `AccountId` is a crypto hash 
+### lastUpdatedAt(): `BlockNumber`
+- **interface**: `api.query.graduallyUpdate.lastUpdatedAt`
+- **summary**:   The last updated block number 
 
 ___
 
@@ -358,54 +451,99 @@ ___
 ___
 
 
-## identity
+## homaCouncil
  
-### identityOf(`AccountId`): `Option<Registration>`
-- **interface**: `api.query.identity.identityOf`
-- **summary**:   Information that is pertinent to identify the entity behind an account. 
-
-  TWOX-NOTE: OK ― `AccountId` is a secure hash. 
+### members(): `Vec<AccountId>`
+- **interface**: `api.query.homaCouncil.members`
+- **summary**:   The current members of the collective. This is stored sorted (just by value). 
  
-### registrars(): `Vec<Option<RegistrarInfo>>`
-- **interface**: `api.query.identity.registrars`
-- **summary**:   The set of registrars. Not expected to get very big as can only be added through a special origin (likely a council motion). 
-
-  The index into this can be cast to `RegistrarIndex` to get a valid value. 
+### prime(): `Option<AccountId>`
+- **interface**: `api.query.homaCouncil.prime`
+- **summary**:   The member who provides the default vote for any other members that do not vote before the timeout. If None, then no member has that privilege. 
  
-### subsOf(`AccountId`): `(BalanceOf,Vec<AccountId>)`
-- **interface**: `api.query.identity.subsOf`
-- **summary**:   Alternative "sub" identities of this account. 
-
-  The first item is the deposit, the second is a vector of the accounts. 
-
-  TWOX-NOTE: OK ― `AccountId` is a secure hash. 
+### proposalCount(): `u32`
+- **interface**: `api.query.homaCouncil.proposalCount`
+- **summary**:   Proposals so far. 
  
-### superOf(`AccountId`): `Option<(AccountId,Data)>`
-- **interface**: `api.query.identity.superOf`
-- **summary**:   The super-identity of an alternative "sub" identity together with its name, within that context. If the account is not some other account's sub-identity, then just `None`. 
+### proposalOf(`Hash`): `Option<Proposal>`
+- **interface**: `api.query.homaCouncil.proposalOf`
+- **summary**:   Actual proposal for a given hash, if it's current. 
+ 
+### proposals(): `Vec<Hash>`
+- **interface**: `api.query.homaCouncil.proposals`
+- **summary**:   The hashes of the active proposals. 
+ 
+### voting(`Hash`): `Option<Votes>`
+- **interface**: `api.query.homaCouncil.voting`
+- **summary**:   Votes on a given proposal, if it is ongoing. 
 
 ___
 
 
-## imOnline
+## homaCouncilMembership
  
-### authoredBlocks(`SessionIndex, ValidatorId`): `u32`
-- **interface**: `api.query.imOnline.authoredBlocks`
-- **summary**:   For each session index, we keep a mapping of `T::ValidatorId` to the number of blocks authored by the given authority. 
+### members(): `Vec<AccountId>`
+- **interface**: `api.query.homaCouncilMembership.members`
+- **summary**:   The current membership, stored as an ordered Vec. 
  
-### heartbeatAfter(): `BlockNumber`
-- **interface**: `api.query.imOnline.heartbeatAfter`
-- **summary**:   The block number after which it's ok to send heartbeats in current session. 
+### prime(): `Option<AccountId>`
+- **interface**: `api.query.homaCouncilMembership.prime`
+- **summary**:   The current prime member, if one exists. 
 
-  At the beginning of each session we set this to a value that should fall roughly in the middle of the session duration. The idea is to first wait for the validators to produce a block in the current session, so that the heartbeat later on will not be necessary. 
+___
+
+
+## honzon
  
-### keys(): `Vec<AuthorityId>`
-- **interface**: `api.query.imOnline.keys`
-- **summary**:   The current set of keys that may issue a heartbeat. 
+### authorization(`AccountId, (CurrencyId,AccountId)`): `bool`
+- **interface**: `api.query.honzon.authorization`
+- **summary**:   The authorization relationship map from Authorizer -> (CollateralType, Authorizee) -> Authorized 
  
-### receivedHeartbeats(`SessionIndex, AuthIndex`): `Option<Bytes>`
-- **interface**: `api.query.imOnline.receivedHeartbeats`
-- **summary**:   For each session index, we keep a mapping of `AuthIndex` to `offchain::OpaqueNetworkState`. 
+### isShutdown(): `bool`
+- **interface**: `api.query.honzon.isShutdown`
+- **summary**:   System shutdown flag 
+
+___
+
+
+## honzonCouncil
+ 
+### members(): `Vec<AccountId>`
+- **interface**: `api.query.honzonCouncil.members`
+- **summary**:   The current members of the collective. This is stored sorted (just by value). 
+ 
+### prime(): `Option<AccountId>`
+- **interface**: `api.query.honzonCouncil.prime`
+- **summary**:   The member who provides the default vote for any other members that do not vote before the timeout. If None, then no member has that privilege. 
+ 
+### proposalCount(): `u32`
+- **interface**: `api.query.honzonCouncil.proposalCount`
+- **summary**:   Proposals so far. 
+ 
+### proposalOf(`Hash`): `Option<Proposal>`
+- **interface**: `api.query.honzonCouncil.proposalOf`
+- **summary**:   Actual proposal for a given hash, if it's current. 
+ 
+### proposals(): `Vec<Hash>`
+- **interface**: `api.query.honzonCouncil.proposals`
+- **summary**:   The hashes of the active proposals. 
+ 
+### voting(`Hash`): `Option<Votes>`
+- **interface**: `api.query.honzonCouncil.voting`
+- **summary**:   Votes on a given proposal, if it is ongoing. 
+
+___
+
+
+## honzonCouncilMembership
+ 
+### members(): `Vec<AccountId>`
+- **interface**: `api.query.honzonCouncilMembership.members`
+- **summary**:   The current membership, stored as an ordered Vec. 
+ 
+### prime(): `Option<AccountId>`
+- **interface**: `api.query.honzonCouncilMembership.prime`
+- **summary**:   The current prime member, if one exists. 
 
 ___
 
@@ -419,9 +557,30 @@ ___
 ___
 
 
+## loans
+ 
+### collaterals(`AccountId, CurrencyId`): `Balance`
+- **interface**: `api.query.loans.collaterals`
+- **summary**:   The collateral asset amount of CDPs, map from Owner -> CollateralType -> CollateralAmount 
+ 
+### debits(`CurrencyId, AccountId`): `DebitBalance`
+- **interface**: `api.query.loans.debits`
+- **summary**:   The debit amount records of CDPs, map from CollateralType -> Owner -> DebitAmount 
+ 
+### totalCollaterals(`CurrencyId`): `Balance`
+- **interface**: `api.query.loans.totalCollaterals`
+- **summary**:   The total collateral asset amount, map from CollateralType -> TotalCollateralAmount 
+ 
+### totalDebits(`CurrencyId`): `DebitBalance`
+- **interface**: `api.query.loans.totalDebits`
+- **summary**:   The total debit amount, map from CollateralType -> TotalDebitAmount 
+
+___
+
+
 ## multisig
  
-### calls(`[u8;32]`): `Option<(OpaqueCall,AccountId,BalanceOf)>`
+### calls(`[u8;32]`): `Option<(Bytes,AccountId,BalanceOf)>`
 - **interface**: `api.query.multisig.calls`
  
 ### multisigs(`AccountId, [u8;32]`): `Option<Multisig>`
@@ -431,40 +590,127 @@ ___
 ___
 
 
-## offences
+## nomineesElection
  
-### concurrentReportsIndex(`Kind, OpaqueTimeSlot`): `Vec<ReportIdOf>`
-- **interface**: `api.query.offences.concurrentReportsIndex`
-- **summary**:   A vector of reports of the same kind that happened at the same time slot. 
+### currentEra(): `EraIndex`
+- **interface**: `api.query.nomineesElection.currentEra`
  
-### deferredOffences(): `Vec<DeferredOffenceOf>`
-- **interface**: `api.query.offences.deferredOffences`
-- **summary**:   Deferred reports that have been rejected by the offence handler and need to be submitted at a later time. 
+### ledger(`AccountId`): `BondingLedger`
+- **interface**: `api.query.nomineesElection.ledger`
  
-### reports(`ReportIdOf`): `Option<OffenceDetails>`
-- **interface**: `api.query.offences.reports`
-- **summary**:   The primary structure that holds all offence records keyed by report identifiers. 
+### nominations(`AccountId`): `Vec<PolkadotAccountId>`
+- **interface**: `api.query.nomineesElection.nominations`
  
-### reportsByKindIndex(`Kind`): `Bytes`
-- **interface**: `api.query.offences.reportsByKindIndex`
-- **summary**:   Enumerates all reports of a kind along with the time they happened. 
-
-  All reports are sorted by the time of offence. 
-
-  Note that the actual type of this mapping is `Vec<u8>`, this is because values of different types are not supported at the moment so we are doing the manual serialization. 
+### nominees(): `Vec<PolkadotAccountId>`
+- **interface**: `api.query.nomineesElection.nominees`
+ 
+### votes(`PolkadotAccountId`): `Balance`
+- **interface**: `api.query.nomineesElection.votes`
 
 ___
 
 
-## proxy
+## operatorMembership
  
-### announcements(`AccountId`): `(Vec<ProxyAnnouncement>,BalanceOf)`
-- **interface**: `api.query.proxy.announcements`
-- **summary**:   The announcements made by the proxy (key). 
+### members(): `Vec<AccountId>`
+- **interface**: `api.query.operatorMembership.members`
+- **summary**:   The current membership, stored as an ordered Vec. 
  
-### proxies(`AccountId`): `(Vec<ProxyDefinition>,BalanceOf)`
-- **interface**: `api.query.proxy.proxies`
-- **summary**:   The set of account proxies. Maps the account which has delegated to the accounts which are being delegated to, together with the amount held on deposit. 
+### prime(): `Option<AccountId>`
+- **interface**: `api.query.operatorMembership.prime`
+- **summary**:   The current prime member, if one exists. 
+
+___
+
+
+## oracle
+ 
+### hasDispatched(): `OrderedSet`
+- **interface**: `api.query.oracle.hasDispatched`
+- **summary**:   If an oracle operator has feed a value in this block 
+ 
+### isUpdated(`OracleKey`): `bool`
+- **interface**: `api.query.oracle.isUpdated`
+- **summary**:   True if Self::values(key) is up to date, otherwise the value is stale 
+ 
+### members(): `OrderedSet`
+- **interface**: `api.query.oracle.members`
+- **summary**:   The current members of the collective. This is stored sorted (just by value). 
+ 
+### nonces(`AccountId`): `u32`
+- **interface**: `api.query.oracle.nonces`
+ 
+### rawValues(`AccountId, OracleKey`): `Option<TimestampedValueOf>`
+- **interface**: `api.query.oracle.rawValues`
+- **summary**:   Raw values for each oracle operators 
+ 
+### sessionKeys(`AccountId`): `Option<AuthorityId>`
+- **interface**: `api.query.oracle.sessionKeys`
+- **summary**:   Session key for oracle operators 
+ 
+### values(`OracleKey`): `Option<TimestampedValueOf>`
+- **interface**: `api.query.oracle.values`
+- **summary**:   Combined value, may not be up to date 
+
+___
+
+
+## palletTreasury
+ 
+### approvals(): `Vec<ProposalIndex>`
+- **interface**: `api.query.palletTreasury.approvals`
+- **summary**:   Proposal indices that have been approved but not yet awarded. 
+ 
+### proposalCount(): `ProposalIndex`
+- **interface**: `api.query.palletTreasury.proposalCount`
+- **summary**:   Number of proposals that have been made. 
+ 
+### proposals(`ProposalIndex`): `Option<Proposal>`
+- **interface**: `api.query.palletTreasury.proposals`
+- **summary**:   Proposals that have been made. 
+ 
+### reasons(`Hash`): `Option<Bytes>`
+- **interface**: `api.query.palletTreasury.reasons`
+- **summary**:   Simple preimage lookup from the reason's hash to the original data. Again, has an insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
+ 
+### tips(`Hash`): `Option<OpenTip>`
+- **interface**: `api.query.palletTreasury.tips`
+- **summary**:   Tips that are not yet completed. Keyed by the hash of `(reason, who)` from the value. This has the insecure enumerable hash function since the key itself is already guaranteed to be a secure hash. 
+
+___
+
+
+## polkadotBridge
+ 
+### available(): `Balance`
+- **interface**: `api.query.polkadotBridge.available`
+ 
+### bonded(): `Balance`
+- **interface**: `api.query.polkadotBridge.bonded`
+ 
+### currentEra(): `EraIndex`
+- **interface**: `api.query.polkadotBridge.currentEra`
+ 
+### eraStartBlockNumber(): `BlockNumber`
+- **interface**: `api.query.polkadotBridge.eraStartBlockNumber`
+ 
+### forcedEra(): `Option<BlockNumber>`
+- **interface**: `api.query.polkadotBridge.forcedEra`
+ 
+### mockRewardRate(): `Option<Rate>`
+- **interface**: `api.query.polkadotBridge.mockRewardRate`
+ 
+### unbonding(): `Vec<(Balance,EraIndex)>`
+- **interface**: `api.query.polkadotBridge.unbonding`
+
+___
+
+
+## prices
+ 
+### lockedPrice(`CurrencyId`): `Option<Price>`
+- **interface**: `api.query.prices.lockedPrice`
+- **summary**:   Mapping from currency id to it's locked price 
 
 ___
 
@@ -499,21 +745,25 @@ ___
 ___
 
 
-## scheduler
+## renVmBridge
  
-### agenda(`BlockNumber`): `Vec<Option<Scheduled>>`
-- **interface**: `api.query.scheduler.agenda`
-- **summary**:   Items to be executed, indexed by the block number that they should be executed on. 
- 
-### lookup(`Bytes`): `Option<TaskAddress>`
-- **interface**: `api.query.scheduler.lookup`
-- **summary**:   Lookup from identity to the block number and index of the task. 
- 
-### storageVersion(): `Releases`
-- **interface**: `api.query.scheduler.storageVersion`
-- **summary**:   Storage version of the pallet. 
+### signatures(`EcdsaSignature`): `Option<()>`
+- **interface**: `api.query.renVmBridge.signatures`
+- **summary**:   Signature blacklist. This is required to prevent double claim. 
 
-  New networks start with last version. 
+___
+
+
+## scheduleUpdate
+ 
+### delayedNormalDispatches(`BlockNumber, DispatchId`): `Option<(Option<AccountId>,CallOf,DispatchId)>`
+- **interface**: `api.query.scheduleUpdate.delayedNormalDispatches`
+ 
+### delayedOperationalDispatches(`BlockNumber, DispatchId`): `Option<(Option<AccountId>,CallOf,DispatchId)>`
+- **interface**: `api.query.scheduleUpdate.delayedOperationalDispatches`
+ 
+### nextId(): `DispatchId`
+- **interface**: `api.query.scheduleUpdate.nextId`
 
 ___
 
@@ -549,75 +799,6 @@ ___
 ### validators(): `Vec<ValidatorId>`
 - **interface**: `api.query.session.validators`
 - **summary**:   The current set of validators. 
-
-___
-
-
-## society
- 
-### bids(): `Vec<Bid>`
-- **interface**: `api.query.society.bids`
-- **summary**:   The current bids, stored ordered by the value of the bid. 
- 
-### candidates(): `Vec<Bid>`
-- **interface**: `api.query.society.candidates`
-- **summary**:   The current set of candidates; bidders that are attempting to become members. 
- 
-### defender(): `Option<AccountId>`
-- **interface**: `api.query.society.defender`
-- **summary**:   The defending member currently being challenged. 
- 
-### defenderVotes(`AccountId`): `Option<SocietyVote>`
-- **interface**: `api.query.society.defenderVotes`
-- **summary**:   Votes for the defender. 
- 
-### founder(): `Option<AccountId>`
-- **interface**: `api.query.society.founder`
-- **summary**:   The first member. 
- 
-### head(): `Option<AccountId>`
-- **interface**: `api.query.society.head`
-- **summary**:   The most primary from the most recently approved members. 
- 
-### maxMembers(): `u32`
-- **interface**: `api.query.society.maxMembers`
-- **summary**:   The max number of members for the society at one time. 
- 
-### members(): `Vec<AccountId>`
-- **interface**: `api.query.society.members`
-- **summary**:   The current set of members, ordered. 
- 
-### payouts(`AccountId`): `Vec<(BlockNumber,BalanceOf)>`
-- **interface**: `api.query.society.payouts`
-- **summary**:   Pending payouts; ordered by block number, with the amount that should be paid out. 
- 
-### pot(): `BalanceOf`
-- **interface**: `api.query.society.pot`
-- **summary**:   Amount of our account balance that is specifically for the next round's bid(s). 
- 
-### rules(): `Option<Hash>`
-- **interface**: `api.query.society.rules`
-- **summary**:   A hash of the rules of this society concerning membership. Can only be set once and only by the founder. 
- 
-### strikes(`AccountId`): `StrikeCount`
-- **interface**: `api.query.society.strikes`
-- **summary**:   The ongoing number of losing votes cast by the member. 
- 
-### suspendedCandidates(`AccountId`): `Option<(BalanceOf,BidKind)>`
-- **interface**: `api.query.society.suspendedCandidates`
-- **summary**:   The set of suspended candidates. 
- 
-### suspendedMembers(`AccountId`): `bool`
-- **interface**: `api.query.society.suspendedMembers`
-- **summary**:   The set of suspended members. 
- 
-### votes(`AccountId, AccountId`): `Option<SocietyVote>`
-- **interface**: `api.query.society.votes`
-- **summary**:   Double map from Candidate -> Voter -> (Maybe) Vote. 
- 
-### vouching(`AccountId`): `Option<VouchingStatus>`
-- **interface**: `api.query.society.vouching`
-- **summary**:   Members currently vouching or banned from vouching again 
 
 ___
 
@@ -797,6 +978,35 @@ ___
 ___
 
 
+## stakingPool
+ 
+### claimedUnbond(`AccountId, EraIndex`): `Balance`
+- **interface**: `api.query.stakingPool.claimedUnbond`
+ 
+### currentEra(): `EraIndex`
+- **interface**: `api.query.stakingPool.currentEra`
+ 
+### freeUnbonded(): `Balance`
+- **interface**: `api.query.stakingPool.freeUnbonded`
+ 
+### nextEraUnbond(): `(Balance,Balance)`
+- **interface**: `api.query.stakingPool.nextEraUnbond`
+ 
+### totalBonded(): `Balance`
+- **interface**: `api.query.stakingPool.totalBonded`
+ 
+### totalClaimedUnbonded(): `Balance`
+- **interface**: `api.query.stakingPool.totalClaimedUnbonded`
+ 
+### unbonding(`EraIndex`): `(Balance,Balance)`
+- **interface**: `api.query.stakingPool.unbonding`
+ 
+### unbondingToFree(): `Balance`
+- **interface**: `api.query.stakingPool.unbondingToFree`
+
+___
+
+
 ## sudo
  
 ### key(): `AccountId`
@@ -871,51 +1081,47 @@ ___
 ### parentHash(): `Hash`
 - **interface**: `api.query.system.parentHash`
 - **summary**:   Hash of the previous block. 
- 
-### upgradedToU32RefCount(): `bool`
-- **interface**: `api.query.system.upgradedToU32RefCount`
-- **summary**:   True if we have upgraded so that `type RefCount` is `u32`. False (default) if not. 
 
 ___
 
 
-## technicalCommittee
+## technicalCouncil
  
 ### members(): `Vec<AccountId>`
-- **interface**: `api.query.technicalCommittee.members`
+- **interface**: `api.query.technicalCouncil.members`
 - **summary**:   The current members of the collective. This is stored sorted (just by value). 
  
 ### prime(): `Option<AccountId>`
-- **interface**: `api.query.technicalCommittee.prime`
-- **summary**:   The prime member that helps determine the default vote behavior in case of absentations. 
+- **interface**: `api.query.technicalCouncil.prime`
+- **summary**:   The member who provides the default vote for any other members that do not vote before the timeout. If None, then no member has that privilege. 
  
 ### proposalCount(): `u32`
-- **interface**: `api.query.technicalCommittee.proposalCount`
+- **interface**: `api.query.technicalCouncil.proposalCount`
 - **summary**:   Proposals so far. 
  
 ### proposalOf(`Hash`): `Option<Proposal>`
-- **interface**: `api.query.technicalCommittee.proposalOf`
+- **interface**: `api.query.technicalCouncil.proposalOf`
 - **summary**:   Actual proposal for a given hash, if it's current. 
  
 ### proposals(): `Vec<Hash>`
-- **interface**: `api.query.technicalCommittee.proposals`
+- **interface**: `api.query.technicalCouncil.proposals`
 - **summary**:   The hashes of the active proposals. 
  
 ### voting(`Hash`): `Option<Votes>`
-- **interface**: `api.query.technicalCommittee.voting`
+- **interface**: `api.query.technicalCouncil.voting`
 - **summary**:   Votes on a given proposal, if it is ongoing. 
 
 ___
 
 
-## technicalMembership
+## technicalCouncilMembership
  
 ### members(): `Vec<AccountId>`
-- **interface**: `api.query.technicalMembership.members`
+- **interface**: `api.query.technicalCouncilMembership.members`
 - **summary**:   The current membership, stored as an ordered Vec. 
  
 ### prime(): `Option<AccountId>`
-- **interface**: `api.query.technicalMembership.prime`
+- **interface**: `api.query.technicalCouncilMembership.prime`
 - **summary**:   The current prime member, if one exists. 
 
 ___
@@ -934,6 +1140,27 @@ ___
 ___
 
 
+## tokens
+ 
+### accounts(`AccountId, CurrencyId`): `AccountData`
+- **interface**: `api.query.tokens.accounts`
+- **summary**:   The balance of a token type under an account. 
+
+  NOTE: If the total is ever zero, decrease account ref account. 
+
+  NOTE: This is only used in the case that this module is used to store balances. 
+ 
+### locks(`AccountId, CurrencyId`): `Vec<BalanceLock>`
+- **interface**: `api.query.tokens.locks`
+- **summary**:   Any liquidity locks of a token type under an account. NOTE: Should only be accessed when setting, changing and freeing a lock. 
+ 
+### totalIssuance(`CurrencyId`): `Balance`
+- **interface**: `api.query.tokens.totalIssuance`
+- **summary**:   The total issuance of a token type. 
+
+___
+
+
 ## transactionPayment
  
 ### nextFeeMultiplier(): `Multiplier`
@@ -945,52 +1172,11 @@ ___
 ___
 
 
-## treasury
- 
-### approvals(): `Vec<ProposalIndex>`
-- **interface**: `api.query.treasury.approvals`
-- **summary**:   Proposal indices that have been approved but not yet awarded. 
- 
-### bounties(`BountyIndex`): `Option<Bounty>`
-- **interface**: `api.query.treasury.bounties`
-- **summary**:   Bounties that have been made. 
- 
-### bountyApprovals(): `Vec<BountyIndex>`
-- **interface**: `api.query.treasury.bountyApprovals`
-- **summary**:   Bounty indices that have been approved but not yet funded. 
- 
-### bountyCount(): `BountyIndex`
-- **interface**: `api.query.treasury.bountyCount`
-- **summary**:   Number of bounty proposals that have been made. 
- 
-### bountyDescriptions(`BountyIndex`): `Option<Bytes>`
-- **interface**: `api.query.treasury.bountyDescriptions`
-- **summary**:   The description of each bounty. 
- 
-### proposalCount(): `ProposalIndex`
-- **interface**: `api.query.treasury.proposalCount`
-- **summary**:   Number of proposals that have been made. 
- 
-### proposals(`ProposalIndex`): `Option<TreasuryProposal>`
-- **interface**: `api.query.treasury.proposals`
-- **summary**:   Proposals that have been made. 
- 
-### reasons(`Hash`): `Option<Bytes>`
-- **interface**: `api.query.treasury.reasons`
-- **summary**:   Simple preimage lookup from the reason's hash to the original data. Again, has an insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
- 
-### tips(`Hash`): `Option<OpenTip>`
-- **interface**: `api.query.treasury.tips`
-- **summary**:   Tips that are not yet completed. Keyed by the hash of `(reason, who)` from the value. This has the insecure enumerable hash function since the key itself is already guaranteed to be a secure hash. 
-
-___
-
-
 ## vesting
  
-### vesting(`AccountId`): `Option<VestingInfo>`
-- **interface**: `api.query.vesting.vesting`
-- **summary**:   Information regarding the vesting of a given account. 
+### vestingSchedules(`AccountId`): `Vec<VestingScheduleOf>`
+- **interface**: `api.query.vesting.vestingSchedules`
+- **summary**:   Vesting schedules of an account. 
 
 ___
 
