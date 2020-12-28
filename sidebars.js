@@ -52,7 +52,7 @@ module.exports = {
     'Substrate Metadata': [
       'substrate/intro',
       'substrate/rpc',
-//      'substrate/constants',
+      'substrate/constants',
       'substrate/storage',
       'substrate/extrinsics',
       'substrate/events',

@@ -6,7 +6,9 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
-- **[accounts](#accounts)**
+- **[acalaOracle](#acalaoracle)**
+
+- **[acalaTreasury](#acalatreasury)**
 
 - **[airDrop](#airdrop)**
 
@@ -14,15 +16,33 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[auctionManager](#auctionmanager)**
 
+- **[authority](#authority)**
+
+- **[authorship](#authorship)**
+
+- **[babe](#babe)**
+
+- **[balances](#balances)**
+
+- **[bandOracle](#bandoracle)**
+
 - **[cdpEngine](#cdpengine)**
 
 - **[cdpTreasury](#cdptreasury)**
+
+- **[contracts](#contracts)**
 
 - **[currencies](#currencies)**
 
 - **[dex](#dex)**
 
+- **[electionsPhragmen](#electionsphragmen)**
+
 - **[emergencyShutdown](#emergencyshutdown)**
+
+- **[evm](#evm)**
+
+- **[evmAccounts](#evmaccounts)**
 
 - **[generalCouncil](#generalcouncil)**
 
@@ -44,39 +64,45 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[honzonCouncilMembership](#honzoncouncilmembership)**
 
+- **[incentives](#incentives)**
+
 - **[indices](#indices)**
 
 - **[multisig](#multisig)**
 
+- **[nft](#nft)**
+
 - **[nomineesElection](#nomineeselection)**
 
-- **[operatorMembership](#operatormembership)**
+- **[operatorMembershipAcala](#operatormembershipacala)**
 
-- **[oracle](#oracle)**
-
-- **[palletTreasury](#pallettreasury)**
+- **[operatorMembershipBand](#operatormembershipband)**
 
 - **[polkadotBridge](#polkadotbridge)**
 
 - **[prices](#prices)**
 
+- **[proxy](#proxy)**
+
 - **[recovery](#recovery)**
 
 - **[renVmBridge](#renvmbridge)**
 
-- **[scheduleUpdate](#scheduleupdate)**
+- **[scheduler](#scheduler)**
 
 - **[session](#session)**
 
 - **[staking](#staking)**
 
+- **[stakingPool](#stakingpool)**
+
 - **[sudo](#sudo)**
 
 - **[system](#system)**
 
-- **[technicalCouncil](#technicalcouncil)**
+- **[technicalCommittee](#technicalcommittee)**
 
-- **[technicalCouncilMembership](#technicalcouncilmembership)**
+- **[technicalCommitteeMembership](#technicalcommitteemembership)**
 
 - **[timestamp](#timestamp)**
 
@@ -88,37 +114,212 @@ The following sections contain Extrinsics methods are part of the default Substr
 ___
 
 
-## accounts
+## acalaOracle
  
-### closeAccount(recipient: `Option<AccountId>`)
-- **interface**: `api.tx.accounts.closeAccount`
-- **summary**:   Kill self account from system. 
+### feedValues(values: `Vec<(OracleKey,OracleValue)>`)
+- **interface**: `api.tx.acalaOracle.feedValues`
+- **summary**:   Feed the external value. 
 
-  The dispatch origin of this call must be Signed. 
+  Require authorized operator. 
 
-  - `recipient`: the account as recipient to receive remaining currencies of the account will be killed, 				None means no recipient is specified. 
+___
+
+
+## acalaTreasury
  
-### disableFreeTransfers()
-- **interface**: `api.tx.accounts.disableFreeTransfers`
-- **summary**:   Unlock free transfer deposit. 
+### acceptCurator(bounty_id: `Compact<ProposalIndex>`)
+- **interface**: `api.tx.acalaTreasury.acceptCurator`
+- **summary**:   Accept the curator role for a bounty. A deposit will be reserved from curator and refund upon successful payout. 
 
-  The dispatch origin of this call must be Signed. 
+  May only be called from the curator. 
+
+   
  
-### enableFreeTransfer()
-- **interface**: `api.tx.accounts.enableFreeTransfer`
-- **summary**:   Freeze some native currency to be able to free transfer. 
+### approveBounty(bounty_id: `Compact<ProposalIndex>`)
+- **interface**: `api.tx.acalaTreasury.approveBounty`
+- **summary**:   Approve a bounty proposal. At a later time, the bounty will be funded and become active and the original deposit will be returned. 
 
-  The dispatch origin of this call must be Signed. 
+  May only be called from `T::ApproveOrigin`. 
+
+   
+ 
+### approveProposal(proposal_id: `Compact<ProposalIndex>`)
+- **interface**: `api.tx.acalaTreasury.approveProposal`
+- **summary**:   Approve a proposal. At a later time, the proposal will be allocated to the beneficiary and the original deposit will be returned. 
+
+  May only be called from `T::ApproveOrigin`. 
+
+   
+ 
+### awardBounty(bounty_id: `Compact<ProposalIndex>`, beneficiary: `LookupSource`)
+- **interface**: `api.tx.acalaTreasury.awardBounty`
+- **summary**:   Award bounty to a beneficiary account. The beneficiary will be able to claim the funds after a delay. 
+
+  The dispatch origin for this call must be the curator of this bounty. 
+
+  - `bounty_id`: Bounty ID to award. 
+
+  - `beneficiary`: The beneficiary account whom will receive the payout.
+ 
+### claimBounty(bounty_id: `Compact<BountyIndex>`)
+- **interface**: `api.tx.acalaTreasury.claimBounty`
+- **summary**:   Claim the payout from an awarded bounty after payout delay. 
+
+  The dispatch origin for this call must be the beneficiary of this bounty. 
+
+  - `bounty_id`: Bounty ID to claim. 
+ 
+### closeBounty(bounty_id: `Compact<BountyIndex>`)
+- **interface**: `api.tx.acalaTreasury.closeBounty`
+- **summary**:   Cancel a proposed or active bounty. All the funds will be sent to treasury and the curator deposit will be unreserved if possible. 
+
+  Only `T::RejectOrigin` is able to cancel a bounty. 
+
+  - `bounty_id`: Bounty ID to cancel. 
+ 
+### closeTip(hash: `Hash`)
+- **interface**: `api.tx.acalaTreasury.closeTip`
+- **summary**:   Close and payout a tip. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  The tip identified by `hash` must have finished its countdown period. 
+
+  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
+
+   
+ 
+### extendBountyExpiry(bounty_id: `Compact<BountyIndex>`, _remark: `Bytes`)
+- **interface**: `api.tx.acalaTreasury.extendBountyExpiry`
+- **summary**:   Extend the expiry time of an active bounty. 
+
+  The dispatch origin for this call must be the curator of this bounty. 
+
+  - `bounty_id`: Bounty ID to extend. 
+
+  - `remark`: additional information.
+ 
+### proposeBounty(value: `Compact<BalanceOf>`, description: `Bytes`)
+- **interface**: `api.tx.acalaTreasury.proposeBounty`
+- **summary**:   Propose a new bounty. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. It will be unreserved upon approval, or slashed when rejected. 
+
+  - `curator`: The curator account whom will manage this bounty. 
+
+  - `fee`: The curator fee.
+
+  - `value`: The total payment amount of this bounty, curator fee included.
+
+  - `description`: The description of this bounty.
+ 
+### proposeCurator(bounty_id: `Compact<ProposalIndex>`, curator: `LookupSource`, fee: `Compact<BalanceOf>`)
+- **interface**: `api.tx.acalaTreasury.proposeCurator`
+- **summary**:   Assign a curator to a funded bounty. 
+
+  May only be called from `T::ApproveOrigin`. 
+
+   
+ 
+### proposeSpend(value: `Compact<BalanceOf>`, beneficiary: `LookupSource`)
+- **interface**: `api.tx.acalaTreasury.proposeSpend`
+- **summary**:   Put forward a suggestion for spending. A deposit proportional to the value is reserved and slashed if the proposal is rejected. It is returned once the proposal is awarded. 
+
+   
+ 
+### rejectProposal(proposal_id: `Compact<ProposalIndex>`)
+- **interface**: `api.tx.acalaTreasury.rejectProposal`
+- **summary**:   Reject a proposed spend. The original deposit will be slashed. 
+
+  May only be called from `T::RejectOrigin`. 
+
+   
+ 
+### reportAwesome(reason: `Bytes`, who: `AccountId`)
+- **interface**: `api.tx.acalaTreasury.reportAwesome`
+- **summary**:   Report something `reason` that deserves a tip and claim any eventual the finder's fee. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. 
+
+  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
+
+  - `who`: The account which should be credited for the tip.
+
+  Emits `NewTip` if successful. 
+
+   
+ 
+### retractTip(hash: `Hash`)
+- **interface**: `api.tx.acalaTreasury.retractTip`
+- **summary**:   Retract a prior tip-report from `report_awesome`, and cancel the process of tipping. 
+
+  If successful, the original deposit will be unreserved. 
+
+  The dispatch origin for this call must be _Signed_ and the tip identified by `hash` must have been reported by the signing account through `report_awesome` (and not through `tip_new`). 
+
+  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
+
+  Emits `TipRetracted` if successful. 
+
+   
+ 
+### tip(hash: `Hash`, tip_value: `Compact<BalanceOf>`)
+- **interface**: `api.tx.acalaTreasury.tip`
+- **summary**:   Declare a tip value for an already-open tip. 
+
+  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
+
+  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the hash of the original tip `reason` and the beneficiary   account ID. 
+
+  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
+
+  Emits `TipClosing` if the threshold of tippers has been reached and the countdown period has started. 
+
+   
+ 
+### tipNew(reason: `Bytes`, who: `AccountId`, tip_value: `Compact<BalanceOf>`)
+- **interface**: `api.tx.acalaTreasury.tipNew`
+- **summary**:   Give a tip for something new; no finder's fee will be taken. 
+
+  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
+
+  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
+
+  - `who`: The account which should be credited for the tip.
+
+  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
+
+  Emits `NewTip` if successful. 
+
+   
+ 
+### unassignCurator(bounty_id: `Compact<ProposalIndex>`)
+- **interface**: `api.tx.acalaTreasury.unassignCurator`
+- **summary**:   Unassign curator from a bounty. 
+
+  This function can only be called by the `RejectOrigin` a signed origin. 
+
+  If this function is called by the `RejectOrigin`, we assume that the curator is malicious or inactive. As a result, we will slash the curator when possible. 
+
+  If the origin is the curator, we take this as a sign they are unable to do their job and they willingly give up. We could slash them, but for now we allow them to recover their deposit and exit without issue. (We may want to change this if it is abused.) 
+
+  Finally, the origin can be anyone if and only if the curator is "inactive". This allows anyone in the community to call out that a curator is not doing their due diligence, and we should pick a new curator. In this case the curator should also be slashed. 
+
+   
 
 ___
 
 
 ## airDrop
  
-### airdrop(to: `AccountId`, currency_id: `AirDropCurrencyId`, amount: `Balance`)
+### airdrop(to: `LookupSource`, currency_id: `AirDropCurrencyId`, amount: `Balance`)
 - **interface**: `api.tx.airDrop.airdrop`
  
-### updateAirdrop(to: `AccountId`, currency_id: `AirDropCurrencyId`, amount: `Balance`)
+### updateAirdrop(to: `LookupSource`, currency_id: `AirDropCurrencyId`, amount: `Balance`)
 - **interface**: `api.tx.airDrop.updateAirdrop`
 
 ___
@@ -128,14 +329,18 @@ ___
  
 ### bid(id: `AuctionId`, value: `Compact<Balance>`)
 - **interface**: `api.tx.auction.bid`
-- **summary**:    
+- **summary**:   Bid an auction. 
+
+  The dispatch origin for this call must be `Signed` by the transactor. 
+
+   
 
 ___
 
 
 ## auctionManager
  
-### cancel(id: `AuctionIdOf`)
+### cancel(id: `AuctionId`)
 - **interface**: `api.tx.auctionManager.cancel`
 - **summary**:   Cancel active auction after system shutdown 
 
@@ -143,14 +348,109 @@ ___
 
   - `auction_id`: auction id 
 
+   Use the collateral auction worst case as default weight. 
+
+___
+
+
+## authority
+ 
+### cancelScheduledDispatch(initial_origin: `PalletsOrigin`, task_id: `ScheduleTaskIndex`)
+- **interface**: `api.tx.authority.cancelScheduledDispatch`
+- **summary**:   Cancel a scheduled dispatchable. 
+ 
+### delayScheduledDispatch(initial_origin: `PalletsOrigin`, task_id: `ScheduleTaskIndex`, additional_delay: `BlockNumber`)
+- **interface**: `api.tx.authority.delayScheduledDispatch`
+- **summary**:   Delay a scheduled dispatchable. 
+ 
+### dispatchAs(as_origin: `AsOriginId`, call: `CallOf`)
+- **interface**: `api.tx.authority.dispatchAs`
+- **summary**:   Dispatch a dispatchable on behalf of other origin 
+ 
+### fastTrackScheduledDispatch(initial_origin: `PalletsOrigin`, task_id: `ScheduleTaskIndex`, when: `DispatchTime`)
+- **interface**: `api.tx.authority.fastTrackScheduledDispatch`
+- **summary**:   Fast track a scheduled dispatchable. 
+ 
+### scheduleDispatch(when: `DispatchTime`, priority: `Priority`, with_delayed_origin: `bool`, call: `CallOf`)
+- **interface**: `api.tx.authority.scheduleDispatch`
+- **summary**:   Schedule a dispatchable to be dispatched at later block. This is the only way to dispatch a call with `DelayedOrigin`. 
+
+___
+
+
+## authorship
+ 
+### setUncles(new_uncles: `Vec<Header>`)
+- **interface**: `api.tx.authorship.setUncles`
+- **summary**:   Provide a set of uncles. 
+
+___
+
+
+## babe
+ 
+### reportEquivocation(equivocation_proof: `BabeEquivocationProof`, key_owner_proof: `KeyOwnerProof`)
+- **interface**: `api.tx.babe.reportEquivocation`
+- **summary**:   Report authority equivocation/misbehavior. This method will verify the equivocation proof and validate the given key ownership proof against the extracted offender. If both are valid, the offence will be reported. 
+ 
+### reportEquivocationUnsigned(equivocation_proof: `BabeEquivocationProof`, key_owner_proof: `KeyOwnerProof`)
+- **interface**: `api.tx.babe.reportEquivocationUnsigned`
+- **summary**:   Report authority equivocation/misbehavior. This method will verify the equivocation proof and validate the given key ownership proof against the extracted offender. If both are valid, the offence will be reported. This extrinsic must be called unsigned and it is expected that only block authors will call it (validated in `ValidateUnsigned`), as such if the block author is defined it will be defined as the equivocation reporter. 
+
+___
+
+
+## balances
+ 
+### forceTransfer(source: `LookupSource`, dest: `LookupSource`, value: `Compact<Balance>`)
+- **interface**: `api.tx.balances.forceTransfer`
+- **summary**:   Exactly as `transfer`, except the origin must be root and the source account may be specified.  
+ 
+### setBalance(who: `LookupSource`, new_free: `Compact<Balance>`, new_reserved: `Compact<Balance>`)
+- **interface**: `api.tx.balances.setBalance`
+- **summary**:   Set the balances of a given account. 
+
+  This will alter `FreeBalance` and `ReservedBalance` in storage. it will also decrease the total issuance of the system (`TotalIssuance`). If the new free or reserved balance is below the existential deposit, it will reset the account nonce (`frame_system::AccountNonce`). 
+
+  The dispatch origin for this call is `root`. 
+
    
+ 
+### transfer(dest: `LookupSource`, value: `Compact<Balance>`)
+- **interface**: `api.tx.balances.transfer`
+- **summary**:   Transfer some liquid free balance to another account. 
+
+  `transfer` will set the `FreeBalance` of the sender and receiver. It will decrease the total issuance of the system by the `TransferFee`. If the sender's account is below the existential deposit as a result of the transfer, the account will be reaped. 
+
+  The dispatch origin for this call must be `Signed` by the transactor. 
+
+   
+ 
+### transferKeepAlive(dest: `LookupSource`, value: `Compact<Balance>`)
+- **interface**: `api.tx.balances.transferKeepAlive`
+- **summary**:   Same as the [`transfer`] call, but with a check that the transfer will not kill the origin account. 
+
+  99% of the time you want [`transfer`] instead. 
+
+  [`transfer`]: struct.Module.html#method.transfer  
+
+___
+
+
+## bandOracle
+ 
+### feedValues(values: `Vec<(OracleKey,OracleValue)>`)
+- **interface**: `api.tx.bandOracle.feedValues`
+- **summary**:   Feed the external value. 
+
+  Require authorized operator. 
 
 ___
 
 
 ## cdpEngine
  
-### liquidate(currency_id: `CurrencyId`, who: `AccountId`)
+### liquidate(currency_id: `CurrencyId`, who: `LookupSource`)
 - **interface**: `api.tx.cdpEngine.liquidate`
 - **summary**:   Liquidate unsafe CDP 
 
@@ -159,8 +459,6 @@ ___
   - `currency_id`: CDP's collateral type. 
 
   - `who`: CDP's owner.
-
-   
  
 ### setCollateralParams(currency_id: `CurrencyId`, stability_fee: `ChangeOptionRate`, liquidation_ratio: `ChangeOptionRatio`, liquidation_penalty: `ChangeOptionRate`, required_collateral_ratio: `ChangeOptionRatio`, maximum_total_debit_value: `ChangeBalance`)
 - **interface**: `api.tx.cdpEngine.setCollateralParams`
@@ -192,7 +490,7 @@ ___
 
    
  
-### settle(currency_id: `CurrencyId`, who: `AccountId`)
+### settle(currency_id: `CurrencyId`, who: `LookupSource`)
 - **interface**: `api.tx.cdpEngine.settle`
 - **summary**:   Settle CDP has debit after system shutdown 
 
@@ -209,6 +507,15 @@ ___
 
 ## cdpTreasury
  
+### auctionCollateral(currency_id: `CurrencyId`, amount: `Balance`, target: `Balance`, splited: `bool`)
+- **interface**: `api.tx.cdpTreasury.auctionCollateral`
+ 
+### auctionDebit(amount: `Balance`, initial_price: `Balance`)
+- **interface**: `api.tx.cdpTreasury.auctionDebit`
+ 
+### auctionSurplus(amount: `Balance`)
+- **interface**: `api.tx.cdpTreasury.auctionSurplus`
+ 
 ### setCollateralAuctionMaximumSize(currency_id: `CurrencyId`, size: `Balance`)
 - **interface**: `api.tx.cdpTreasury.setCollateralAuctionMaximumSize`
 - **summary**:   Update parameters related to collateral auction under specific collateral type 
@@ -220,22 +527,53 @@ ___
   - `surplus_buffer_size`: collateral auction maximum size
 
    
+
+___
+
+
+## contracts
  
-### setDebitAndSurplusHandleParams(surplus_auction_fixed_size: `Option<Balance>`, surplus_buffer_size: `Option<Balance>`, initial_amount_per_debit_auction: `Option<Balance>`, debit_auction_fixed_size: `Option<Balance>`)
-- **interface**: `api.tx.cdpTreasury.setDebitAndSurplusHandleParams`
-- **summary**:   Update parameters related to surplus and debit auction 
+### call(dest: `LookupSource`, value: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, data: `Bytes`)
+- **interface**: `api.tx.contracts.call`
+- **summary**:   Makes a call to an account, optionally transferring some balance. 
 
-  The dispatch origin of this call must be `UpdateOrigin`. 
+  * If the account is a smart-contract account, the associated code will be executed and any value will be transferred. 
 
-  - `surplus_auction_fixed_size`: new fixed amount of stable coin for sale per surplus auction, `None` means do not update 
+  * If the account is a regular account, any value will be transferred.
 
-  - `surplus_buffer_size`: new buffer size of surplus pool, `None` means do not update
+  * If no account exists and the call value is not less than `existential_deposit`,a regular account will be created and any value will be transferred. 
+ 
+### claimSurcharge(dest: `AccountId`, aux_sender: `Option<AccountId>`)
+- **interface**: `api.tx.contracts.claimSurcharge`
+- **summary**:   Allows block producers to claim a small reward for evicting a contract. If a block producer fails to do so, a regular users will be allowed to claim the reward. 
 
-  - `initial_amount_per_debit_auction`: initial amount of native token for sale per debit auction, `None` means do not update
+  If contract is not evicted as a result of this call, no actions are taken and the sender is not eligible for the reward. 
+ 
+### instantiate(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, code_hash: `CodeHash`, data: `Bytes`, salt: `Bytes`)
+- **interface**: `api.tx.contracts.instantiate`
+- **summary**:   Instantiates a new contract from the `code_hash` generated by `put_code`, optionally transferring some balance. 
 
-  - `debit_auction_fixed_size`: the fixed amount of stable coin per collateral auction wants to get, `None` means do not update
+  The supplied `salt` is used for contract address deriviation. See `fn contract_address`. 
 
-   
+  Instantiation is executed as follows: 
+
+  - The destination address is computed based on the sender, code_hash and the salt. 
+
+  - The smart-contract account is created at the computed address.
+
+  - The `ctor_code` is executed in the context of the newly-created account. Buffer returned  after the execution is saved as the `code` of the account. That code will be invoked   upon any call received by this account. 
+
+  - The contract is initialized.
+ 
+### putCode(code: `Bytes`)
+- **interface**: `api.tx.contracts.putCode`
+- **summary**:   Stores the given binary Wasm code into the chain's storage and returns its `codehash`. You can instantiate contracts only with stored code. 
+ 
+### updateSchedule(schedule: `Schedule`)
+- **interface**: `api.tx.contracts.updateSchedule`
+- **summary**:   Updates the schedule for metering contracts. 
+
+  The schedule must have a greater version than the stored schedule. 
 
 ___
 
@@ -271,59 +609,139 @@ ___
 
 ## dex
  
-### addLiquidity(other_currency_id: `CurrencyId`, max_other_currency_amount: `Compact<Balance>`, max_base_currency_amount: `Compact<Balance>`)
+### addLiquidity(currency_id_a: `CurrencyId`, currency_id_b: `CurrencyId`, max_amount_a: `Compact<Balance>`, max_amount_b: `Compact<Balance>`, deposit_increment_share: `bool`)
 - **interface**: `api.tx.dex.addLiquidity`
-- **summary**:   Injecting liquidity to specific liquidity pool in the form of depositing currencies in trading pairs into liquidity pool, and issue shares in proportion to the caller. Shares are temporarily not allowed to transfer and trade, it represents the proportion of assets in liquidity pool. 
+- **summary**:   Add liquidity to Enabled trading pair, or add provision to Provisioning trading pair. 
 
-  - `other_currency_id`: currency type to determine the type of liquidity pool. 
+  - Add liquidity success will issue shares in current price which decided by the liquidity scale. Shares are temporarily notallowed to transfer and trade, it represents the proportion of assets in liquidity pool. 
 
-  - `max_other_currency_amount`: maximum currency amount allowed to inject to liquidity pool.
+  - Add provision success will record the provision, issue shares to caller in the initial price when trading pair convert to Enabled.
 
-  - `max_base_currency_amount`: maximum base currency(stable coin) amount allowed to inject to liquidity pool.
+  - `currency_id_a`: currency id A. 
+
+  - `currency_id_b`: currency id B.
+
+  - `max_amount_a`: maximum currency A amount allowed to inject to liquidity pool.
+
+  - `max_amount_b`: maximum currency A amount allowed to inject to liquidity pool.
+
+  - `deposit_increment_share`: this flag indicates whether to deposit added lp shares to obtain incentives
+ 
+### disableTradingPair(currency_id_a: `CurrencyId`, currency_id_b: `CurrencyId`)
+- **interface**: `api.tx.dex.disableTradingPair`
+ 
+### enableTradingPair(currency_id_a: `CurrencyId`, currency_id_b: `CurrencyId`)
+- **interface**: `api.tx.dex.enableTradingPair`
+- **summary**:   Enable a new trading pair(without the provision process), or re-enable a disabled trading pair. 
+ 
+### listTradingPair(currency_id_a: `CurrencyId`, currency_id_b: `CurrencyId`, min_contribution_a: `Balance`, min_contribution_b: `Balance`, target_provision_a: `Balance`, target_provision_b: `Balance`, not_before: `BlockNumber`)
+- **interface**: `api.tx.dex.listTradingPair`
+- **summary**:   List a new trading pair, trading pair will become Enabled status after provision process. 
+ 
+### removeLiquidity(currency_id_a: `CurrencyId`, currency_id_b: `CurrencyId`, remove_share: `Compact<Balance>`, by_withdraw: `bool`)
+- **interface**: `api.tx.dex.removeLiquidity`
+- **summary**:   Remove liquidity from specific liquidity pool in the form of burning shares, and withdrawing currencies in trading pairs from liquidity pool in proportion, and withdraw liquidity incentive interest. 
+
+  - `currency_id_a`: currency id A. 
+
+  - `currency_id_b`: currency id B.
+
+  - `remove_share`: liquidity amount to remove.
+
+  - `by_withdraw`: this flag indicates whether to withdraw share which is on incentives.
+ 
+### swapWithExactSupply(path: `Vec<CurrencyId>`, supply_amount: `Compact<Balance>`, min_target_amount: `Compact<Balance>`)
+- **interface**: `api.tx.dex.swapWithExactSupply`
+- **summary**:   Trading with DEX, swap with exact supply amount 
+
+  - `path`: trading path. 
+
+  - `supply_amount`: exact supply amount.
+
+  - `min_target_amount`: acceptable minimum target amount.
+ 
+### swapWithExactTarget(path: `Vec<CurrencyId>`, target_amount: `Compact<Balance>`, max_supply_amount: `Compact<Balance>`)
+- **interface**: `api.tx.dex.swapWithExactTarget`
+- **summary**:   Trading with DEX, swap with exact target amount 
+
+  - `path`: trading path. 
+
+  - `target_amount`: exact target amount.
+
+  - `max_supply_amount`: acceptable maxmum supply amount.
+
+___
+
+
+## electionsPhragmen
+ 
+### removeMember(who: `LookupSource`, has_replacement: `bool`)
+- **interface**: `api.tx.electionsPhragmen.removeMember`
+- **summary**:   Remove a particular member from the set. This is effective immediately and the bond of the outgoing member is slashed. 
+
+  If a runner-up is available, then the best runner-up will be removed and replaces the outgoing member. Otherwise, a new phragmen election is started. 
+
+  Note that this does not affect the designated block number of the next election. 
 
    
  
-### setLiquidityIncentiveRate(currency_id: `CurrencyId`, liquidity_incentive_rate: `Rate`)
-- **interface**: `api.tx.dex.setLiquidityIncentiveRate`
-- **summary**:   Update liquidity incentive rate of specific liquidity pool 
-
-  The dispatch origin of this call must be `UpdateOrigin`. 
-
-  - `currency_id`: currency type to determine the type of liquidity pool. 
-
-  - `liquidity_incentive_rate`: liquidity incentive rate.
+### removeVoter()
+- **interface**: `api.tx.electionsPhragmen.removeVoter`
+- **summary**:   Remove `origin` as a voter. This removes the lock and returns the bond. 
 
    
  
-### swapCurrency(supply_currency_id: `CurrencyId`, supply_amount: `Compact<Balance>`, target_currency_id: `CurrencyId`, acceptable_target_amount: `Compact<Balance>`)
-- **interface**: `api.tx.dex.swapCurrency`
-- **summary**:   Trading with DEX, swap supply currency to target currency 
+### renounceCandidacy(renouncing: `Renouncing`)
+- **interface**: `api.tx.electionsPhragmen.renounceCandidacy`
+- **summary**:   Renounce one's intention to be a candidate for the next election round. 3 potential outcomes exist: 
 
-  - `supply_currency_id`: supply currency type. 
+  - `origin` is a candidate and not elected in any set. In this case, the bond is  unreserved, returned and origin is removed as a candidate. 
 
-  - `supply_amount`: supply currency amount.
+  - `origin` is a current runner-up. In this case, the bond is unreserved, returned and  origin is removed as a runner-up. 
 
-  - `target_currency_id`: target currency type.
+  - `origin` is a current member. In this case, the bond is unreserved and origin is  removed as a member, consequently not being a candidate for the next round anymore.   Similar to [`remove_voter`], if replacement runners exists, they are immediately used.  
+ 
+### reportDefunctVoter(defunct: `DefunctVoter`)
+- **interface**: `api.tx.electionsPhragmen.reportDefunctVoter`
+- **summary**:   Report `target` for being an defunct voter. In case of a valid report, the reporter is rewarded by the bond amount of `target`. Otherwise, the reporter itself is removed and their bond is slashed. 
 
-  - `acceptable_target_amount`: acceptable target amount, if actual amount is under it, swap will not happen
+  A defunct voter is defined to be: 
+
+    - a voter whose current submitted votes are all invalid. i.e. all of them are no    longer a candidate nor an active member or a runner-up. 
+
+  
+
+  The origin must provide the number of current candidates and votes of the reported target for the purpose of accurate weight calculation. 
 
    
  
-### withdrawIncentiveInterest(currency_id: `CurrencyId`)
-- **interface**: `api.tx.dex.withdrawIncentiveInterest`
-- **summary**:   Just withdraw liquidity incentive interest as the additional reward for liquidity contribution 
+### submitCandidacy(candidate_count: `Compact<u32>`)
+- **interface**: `api.tx.electionsPhragmen.submitCandidacy`
+- **summary**:   Submit oneself for candidacy. 
 
-  - `currency_id`: currency type to determine the type of liquidity pool. 
+  A candidate will either: 
+
+    - Lose at the end of the term and forfeit their deposit.
+
+    - Win and become a member. Members will eventually get their stash back.
+
+    - Become a runner-up. Runners-ups are reserved members in case one gets forcefully    removed. 
 
    
  
-### withdrawLiquidity(currency_id: `CurrencyId`, share_amount: `Compact<Share>`)
-- **interface**: `api.tx.dex.withdrawLiquidity`
-- **summary**:   Withdraw liquidity from specific liquidity pool in the form of burning shares, and withdrawing currencies in trading pairs from liquidity pool in proportion, and withdraw liquidity incentive interest. 
+### vote(votes: `Vec<AccountId>`, value: `Compact<BalanceOf>`)
+- **interface**: `api.tx.electionsPhragmen.vote`
+- **summary**:   Vote for a set of candidates for the upcoming round of election. This can be called to set the initial votes, or update already existing votes. 
 
-  - `currency_id`: currency type to determine the type of liquidity pool. 
+  Upon initial voting, `value` units of `who`'s balance is locked and a bond amount is reserved. 
 
-  - `share_amount`: share amount to burn.
+  The `votes` should: 
+
+    - not be empty.
+
+    - be less than the number of possible candidates. Note that all current members and    runners-up are also automatically candidates for the next round. 
+
+  It is the responsibility of the caller to not place all of their balance into the lock and keep some for further transactions. 
 
    
 
@@ -352,9 +770,69 @@ ___
 - **interface**: `api.tx.emergencyShutdown.refundCollaterals`
 - **summary**:   Refund a basket of remaining collateral assets to caller 
 
-  - `amount`: stable coin amount used to refund. 
+  - `amount`: stable currency amount used to refund. 
 
    
+
+___
+
+
+## evm
+ 
+### addStorageQuota(contract: `EvmAddress`, bytes: `u32`)
+- **interface**: `api.tx.evm.addStorageQuota`
+ 
+### call(target: `EvmAddress`, input: `Bytes`, value: `BalanceOf`, gas_limit: `u32`)
+- **interface**: `api.tx.evm.call`
+- **summary**:   Issue an EVM call operation. This is similar to a message call transaction in Ethereum. 
+ 
+### cancelTransferMaintainer(contract: `EvmAddress`)
+- **interface**: `api.tx.evm.cancelTransferMaintainer`
+ 
+### confirmTransferMaintainer(contract: `EvmAddress`, new_maintainer: `EvmAddress`)
+- **interface**: `api.tx.evm.confirmTransferMaintainer`
+ 
+### create(init: `Bytes`, value: `BalanceOf`, gas_limit: `u32`)
+- **interface**: `api.tx.evm.create`
+- **summary**:   Issue an EVM create operation. This is similar to a contract creation transaction in Ethereum. 
+ 
+### createNetworkContract(init: `Bytes`, value: `BalanceOf`, gas_limit: `u32`)
+- **interface**: `api.tx.evm.createNetworkContract`
+- **summary**:   Issue an EVM create operation. The next available system contract address will be used as created contract address. 
+ 
+### create2(init: `Bytes`, salt: `H256`, value: `BalanceOf`, gas_limit: `u32`)
+- **interface**: `api.tx.evm.create2`
+- **summary**:   Issue an EVM create2 operation. 
+ 
+### deploy(contract: `EvmAddress`)
+- **interface**: `api.tx.evm.deploy`
+ 
+### deployFree(contract: `EvmAddress`)
+- **interface**: `api.tx.evm.deployFree`
+ 
+### disableContractDevelopment()
+- **interface**: `api.tx.evm.disableContractDevelopment`
+ 
+### enableContractDevelopment()
+- **interface**: `api.tx.evm.enableContractDevelopment`
+ 
+### rejectTransferMaintainer(contract: `EvmAddress`, invalid_maintainer: `EvmAddress`)
+- **interface**: `api.tx.evm.rejectTransferMaintainer`
+ 
+### removeStorageQuota(contract: `EvmAddress`, bytes: `u32`)
+- **interface**: `api.tx.evm.removeStorageQuota`
+ 
+### requestTransferMaintainer(contract: `EvmAddress`)
+- **interface**: `api.tx.evm.requestTransferMaintainer`
+
+___
+
+
+## evmAccounts
+ 
+### claimAccount(eth_address: `EvmAddress`, eth_signature: `EcdsaSignature`)
+- **interface**: `api.tx.evmAccounts.claimAccount`
+- **summary**:   Claim account mapping between Substrate accounts and EVM accounts. Ensure eth_address has not been mapped. 
 
 ___
 
@@ -417,7 +895,7 @@ ___
 
   Requires root origin. 
 
-  NOTE: Does not enforce the expected `MAX_MEMBERS` limit on the amount of members, but       the weight estimations rely on it to estimate dispatchable weight. 
+  NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but       the weight estimations rely on it to estimate dispatchable weight. 
 
    
  
@@ -498,11 +976,19 @@ ___
 
 ## grandpa
  
+### noteStalled(delay: `BlockNumber`, best_finalized_block_number: `BlockNumber`)
+- **interface**: `api.tx.grandpa.noteStalled`
+- **summary**:   Note that the current authority set of the GRANDPA finality gadget has stalled. This will trigger a forced authority set change at the beginning of the next session, to be enacted `delay` blocks after that. The delay should be high enough to safely assume that the block signalling the forced change will not be re-orged (e.g. 1000 blocks). The GRANDPA voters will start the new authority set using the given finalized block as base. Only callable by root. 
+ 
 ### reportEquivocation(equivocation_proof: `GrandpaEquivocationProof`, key_owner_proof: `KeyOwnerProof`)
 - **interface**: `api.tx.grandpa.reportEquivocation`
 - **summary**:   Report voter equivocation/misbehavior. This method will verify the equivocation proof and validate the given key ownership proof against the extracted offender. If both are valid, the offence will be reported. 
+ 
+### reportEquivocationUnsigned(equivocation_proof: `GrandpaEquivocationProof`, key_owner_proof: `KeyOwnerProof`)
+- **interface**: `api.tx.grandpa.reportEquivocationUnsigned`
+- **summary**:   Report voter equivocation/misbehavior. This method will verify the equivocation proof and validate the given key ownership proof against the extracted offender. If both are valid, the offence will be reported. 
 
-  Since the weight of the extrinsic is 0, in order to avoid DoS by submission of invalid equivocation reports, a mandatory pre-validation of the extrinsic is implemented in a `SignedExtension`. 
+  This extrinsic must be called unsigned and it is expected that only block authors will call it (validated in `ValidateUnsigned`), as such if the block author is defined it will be defined as the equivocation reporter. 
 
 ___
 
@@ -511,12 +997,21 @@ ___
  
 ### mint(amount: `Compact<Balance>`)
 - **interface**: `api.tx.homa.mint`
+- **summary**:   Inject DOT to staking pool and mint LDOT in a certain exchange rate decided by staking pool. 
+
+  - `amount`: the DOT amount to inject into staking pool. 
  
 ### redeem(amount: `Compact<Balance>`, strategy: `RedeemStrategy`)
 - **interface**: `api.tx.homa.redeem`
+- **summary**:   Burn LDOT and redeem DOT from staking pool. 
+
+  - `amount`: the LDOT amount to redeem. 
+
+  - `strategy`: redemption mode.
  
 ### withdrawRedemption()
 - **interface**: `api.tx.homa.withdrawRedemption`
+- **summary**:   Get back those DOT that have been unbonded. 
 
 ___
 
@@ -579,7 +1074,7 @@ ___
 
   Requires root origin. 
 
-  NOTE: Does not enforce the expected `MAX_MEMBERS` limit on the amount of members, but       the weight estimations rely on it to estimate dispatchable weight. 
+  NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but       the weight estimations rely on it to estimate dispatchable weight. 
 
    
  
@@ -647,7 +1142,7 @@ ___
 
 ## honzon
  
-### adjustLoan(currency_id: `CurrencyId`, collateral_adjustment: `Amount`, debit_adjustment: `DebitAmount`)
+### adjustLoan(currency_id: `CurrencyId`, collateral_adjustment: `Amount`, debit_adjustment: `Amount`)
 - **interface**: `api.tx.honzon.adjustLoan`
 - **summary**:   Adjust the loans of `currency_id` by specific `collateral_adjustment` and `debit_adjustment` 
 
@@ -659,7 +1154,7 @@ ___
 
    
  
-### authorize(currency_id: `CurrencyId`, to: `AccountId`)
+### authorize(currency_id: `CurrencyId`, to: `LookupSource`)
 - **interface**: `api.tx.honzon.authorize`
 - **summary**:   Authorize `to` to manipulate the loan under `currency_id` 
 
@@ -669,9 +1164,9 @@ ___
 
    
  
-### transferLoanFrom(currency_id: `CurrencyId`, from: `AccountId`)
+### transferLoanFrom(currency_id: `CurrencyId`, from: `LookupSource`)
 - **interface**: `api.tx.honzon.transferLoanFrom`
-- **summary**:   Transfer the whole CDP of `from` under `currency_id` to caller's CDP under the same `currency_id`, caller must have the authrization of `from` for the specific collateral type 
+- **summary**:   Transfer the whole CDP of `from` under `currency_id` to caller's CDP under the same `currency_id`, caller must have the authorization of `from` for the specific collateral type 
 
   - `currency_id`: collateral currency id. 
 
@@ -679,7 +1174,7 @@ ___
 
    
  
-### unauthorize(currency_id: `CurrencyId`, to: `AccountId`)
+### unauthorize(currency_id: `CurrencyId`, to: `LookupSource`)
 - **interface**: `api.tx.honzon.unauthorize`
 - **summary**:   Cancel the authorization for `to` under `currency_id` 
 
@@ -756,7 +1251,7 @@ ___
 
   Requires root origin. 
 
-  NOTE: Does not enforce the expected `MAX_MEMBERS` limit on the amount of members, but       the weight estimations rely on it to estimate dispatchable weight. 
+  NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but       the weight estimations rely on it to estimate dispatchable weight. 
 
    
  
@@ -818,6 +1313,32 @@ ___
   May only be called from `T::SwapOrigin`. 
 
   Prime membership is *not* passed from `remove` to `add`, if extant. 
+
+___
+
+
+## incentives
+ 
+### claimRewards(pool_id: `PoolId`)
+- **interface**: `api.tx.incentives.claimRewards`
+ 
+### depositDexShare(lp_currency_id: `CurrencyId`, amount: `Balance`)
+- **interface**: `api.tx.incentives.depositDexShare`
+ 
+### updateDexIncentiveRewards(updates: `Vec<(CurrencyId,Balance)>`)
+- **interface**: `api.tx.incentives.updateDexIncentiveRewards`
+ 
+### updateDexSavingRates(updates: `Vec<(CurrencyId,Rate)>`)
+- **interface**: `api.tx.incentives.updateDexSavingRates`
+ 
+### updateHomaIncentiveReward(update: `Balance`)
+- **interface**: `api.tx.incentives.updateHomaIncentiveReward`
+ 
+### updateLoansIncentiveRewards(updates: `Vec<(CurrencyId,Balance)>`)
+- **interface**: `api.tx.incentives.updateLoansIncentiveRewards`
+ 
+### withdrawDexShare(lp_currency_id: `CurrencyId`, amount: `Balance`)
+- **interface**: `api.tx.incentives.withdrawDexShare`
 
 ___
 
@@ -919,7 +1440,7 @@ ___
 
    
  
-### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId>`, maybe_timepoint: `Option<Timepoint>`, call: `Bytes`, store_call: `bool`, max_weight: `Weight`)
+### asMulti(threshold: `u16`, other_signatories: `Vec<AccountId>`, maybe_timepoint: `Option<Timepoint>`, call: `OpaqueCall`, store_call: `bool`, max_weight: `Weight`)
 - **interface**: `api.tx.multisig.asMulti`
 - **summary**:   Register approval for a dispatch to be made from a deterministic composite account if approved by a total of `threshold - 1` of `other_signatories`. 
 
@@ -976,6 +1497,63 @@ ___
 ___
 
 
+## nft
+ 
+### burn(token: `(ClassIdOf,TokenIdOf)`)
+- **interface**: `api.tx.nft.burn`
+- **summary**:   Burn NFT token 
+
+  - `token`: (class_id, token_id) 
+
+   
+ 
+### createClass(metadata: `CID`, properties: `Properties`)
+- **interface**: `api.tx.nft.createClass`
+- **summary**:   Create NFT class, tokens belong to the class. 
+
+  - `metadata`: external metadata 
+
+  - `properties`: class property, include `Transferable` `Burnable`
+
+   
+ 
+### destroyClass(class_id: `ClassIdOf`, dest: `LookupSource`)
+- **interface**: `api.tx.nft.destroyClass`
+- **summary**:   Destroy NFT class 
+
+  - `class_id`: destroy class id 
+
+  - `dest`: transfer reserve balance from sub_account to dest
+
+   
+ 
+### mint(to: `LookupSource`, class_id: `ClassIdOf`, metadata: `CID`, quantity: `u32`)
+- **interface**: `api.tx.nft.mint`
+- **summary**:   Mint NFT token 
+
+  - `to`: the token owner's account 
+
+  - `class_id`: token belong to the class id
+
+  - `metadata`: external metadata
+
+  - `quantity`: token quantity
+
+   
+ 
+### transfer(to: `LookupSource`, token: `(ClassIdOf,TokenIdOf)`)
+- **interface**: `api.tx.nft.transfer`
+- **summary**:   Transfer NFT token to another account 
+
+  - `to`: the token owner's account 
+
+  - `token`: (class_id, token_id)
+
+   
+
+___
+
+
 ## nomineesElection
  
 ### bond(amount: `Compact<Balance>`)
@@ -999,16 +1577,16 @@ ___
 ___
 
 
-## operatorMembership
+## operatorMembershipAcala
  
 ### addMember(who: `AccountId`)
-- **interface**: `api.tx.operatorMembership.addMember`
+- **interface**: `api.tx.operatorMembershipAcala.addMember`
 - **summary**:   Add a member `who` to the set. 
 
   May only be called from `T::AddOrigin`. 
  
 ### changeKey(new: `AccountId`)
-- **interface**: `api.tx.operatorMembership.changeKey`
+- **interface**: `api.tx.operatorMembershipAcala.changeKey`
 - **summary**:   Swap out the sending member for some other key `new`. 
 
   May only be called from `Signed` origin of a current member. 
@@ -1016,31 +1594,31 @@ ___
   Prime membership is passed from the origin account to `new`, if extant. 
  
 ### clearPrime()
-- **interface**: `api.tx.operatorMembership.clearPrime`
+- **interface**: `api.tx.operatorMembershipAcala.clearPrime`
 - **summary**:   Remove the prime member if it exists. 
 
   May only be called from `T::PrimeOrigin`. 
  
 ### removeMember(who: `AccountId`)
-- **interface**: `api.tx.operatorMembership.removeMember`
+- **interface**: `api.tx.operatorMembershipAcala.removeMember`
 - **summary**:   Remove a member `who` from the set. 
 
   May only be called from `T::RemoveOrigin`. 
  
 ### resetMembers(members: `Vec<AccountId>`)
-- **interface**: `api.tx.operatorMembership.resetMembers`
+- **interface**: `api.tx.operatorMembershipAcala.resetMembers`
 - **summary**:   Change the membership to a new set, disregarding the existing membership. Be nice and pass `members` pre-sorted. 
 
   May only be called from `T::ResetOrigin`. 
  
 ### setPrime(who: `AccountId`)
-- **interface**: `api.tx.operatorMembership.setPrime`
+- **interface**: `api.tx.operatorMembershipAcala.setPrime`
 - **summary**:   Set the prime member. Must be a current member. 
 
   May only be called from `T::PrimeOrigin`. 
  
 ### swapMember(remove: `AccountId`, add: `AccountId`)
-- **interface**: `api.tx.operatorMembership.swapMember`
+- **interface**: `api.tx.operatorMembershipAcala.swapMember`
 - **summary**:   Swap out one member `remove` for another `add`. 
 
   May only be called from `T::SwapOrigin`. 
@@ -1050,116 +1628,53 @@ ___
 ___
 
 
-## oracle
+## operatorMembershipBand
  
-### feedValues(values: `Vec<(OracleKey,OracleValue)>`, index: `Compact<u32>`, _block: `BlockNumber`, _signature: `Signature`)
-- **interface**: `api.tx.oracle.feedValues`
-- **summary**:   Feed the external value. 
+### addMember(who: `AccountId`)
+- **interface**: `api.tx.operatorMembershipBand.addMember`
+- **summary**:   Add a member `who` to the set. 
 
-  Require unsigned. However a valid signature signed by session key is required along with payload. 
+  May only be called from `T::AddOrigin`. 
  
-### setSessionKey(key: `AuthorityId`)
-- **interface**: `api.tx.oracle.setSessionKey`
-- **summary**:   Update the session key. 
+### changeKey(new: `AccountId`)
+- **interface**: `api.tx.operatorMembershipBand.changeKey`
+- **summary**:   Swap out the sending member for some other key `new`. 
 
-___
+  May only be called from `Signed` origin of a current member. 
 
-
-## palletTreasury
+  Prime membership is passed from the origin account to `new`, if extant. 
  
-### approveProposal(proposal_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.palletTreasury.approveProposal`
-- **summary**:   Approve a proposal. At a later time, the proposal will be allocated to the beneficiary and the original deposit will be returned. 
+### clearPrime()
+- **interface**: `api.tx.operatorMembershipBand.clearPrime`
+- **summary**:   Remove the prime member if it exists. 
 
-  May only be called from `T::ApproveOrigin`. 
-
-   
+  May only be called from `T::PrimeOrigin`. 
  
-### closeTip(hash: `Hash`)
-- **interface**: `api.tx.palletTreasury.closeTip`
-- **summary**:   Close and payout a tip. 
+### removeMember(who: `AccountId`)
+- **interface**: `api.tx.operatorMembershipBand.removeMember`
+- **summary**:   Remove a member `who` from the set. 
 
-  The dispatch origin for this call must be _Signed_. 
-
-  The tip identified by `hash` must have finished its countdown period. 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
-
-   
+  May only be called from `T::RemoveOrigin`. 
  
-### proposeSpend(value: `Compact<BalanceOf>`, beneficiary: `LookupSource`)
-- **interface**: `api.tx.palletTreasury.proposeSpend`
-- **summary**:   Put forward a suggestion for spending. A deposit proportional to the value is reserved and slashed if the proposal is rejected. It is returned once the proposal is awarded. 
+### resetMembers(members: `Vec<AccountId>`)
+- **interface**: `api.tx.operatorMembershipBand.resetMembers`
+- **summary**:   Change the membership to a new set, disregarding the existing membership. Be nice and pass `members` pre-sorted. 
 
-   
+  May only be called from `T::ResetOrigin`. 
  
-### rejectProposal(proposal_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.palletTreasury.rejectProposal`
-- **summary**:   Reject a proposed spend. The original deposit will be slashed. 
+### setPrime(who: `AccountId`)
+- **interface**: `api.tx.operatorMembershipBand.setPrime`
+- **summary**:   Set the prime member. Must be a current member. 
 
-  May only be called from `T::RejectOrigin`. 
-
-   
+  May only be called from `T::PrimeOrigin`. 
  
-### reportAwesome(reason: `Bytes`, who: `AccountId`)
-- **interface**: `api.tx.palletTreasury.reportAwesome`
-- **summary**:   Report something `reason` that deserves a tip and claim any eventual the finder's fee. 
+### swapMember(remove: `AccountId`, add: `AccountId`)
+- **interface**: `api.tx.operatorMembershipBand.swapMember`
+- **summary**:   Swap out one member `remove` for another `add`. 
 
-  The dispatch origin for this call must be _Signed_. 
+  May only be called from `T::SwapOrigin`. 
 
-  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `TipReportDepositPerByte` for each byte in `reason`. 
-
-  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
-
-  - `who`: The account which should be credited for the tip.
-
-  Emits `NewTip` if successful. 
-
-   
- 
-### retractTip(hash: `Hash`)
-- **interface**: `api.tx.palletTreasury.retractTip`
-- **summary**:   Retract a prior tip-report from `report_awesome`, and cancel the process of tipping. 
-
-  If successful, the original deposit will be unreserved. 
-
-  The dispatch origin for this call must be _Signed_ and the tip identified by `hash` must have been reported by the signing account through `report_awesome` (and not through `tip_new`). 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
-
-  Emits `TipRetracted` if successful. 
-
-   
- 
-### tip(hash: `Hash`, tip_value: `BalanceOf`)
-- **interface**: `api.tx.palletTreasury.tip`
-- **summary**:   Declare a tip value for an already-open tip. 
-
-  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the hash of the original tip `reason` and the beneficiary   account ID. 
-
-  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
-
-  Emits `TipClosing` if the threshold of tippers has been reached and the countdown period has started. 
-
-   
- 
-### tipNew(reason: `Bytes`, who: `AccountId`, tip_value: `BalanceOf`)
-- **interface**: `api.tx.palletTreasury.tipNew`
-- **summary**:   Give a tip for something new; no finder's fee will be taken. 
-
-  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
-
-  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
-
-  - `who`: The account which should be credited for the tip.
-
-  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
-
-  Emits `NewTip` if successful. 
-
-   
+  Prime membership is *not* passed from `remove` to `add`, if extant. 
 
 ___
 
@@ -1169,25 +1684,31 @@ ___
 ### forceEra(at: `BlockNumber`)
 - **interface**: `api.tx.polkadotBridge.forceEra`
  
-### setMockRewardRate(mock_reward_rate: `Option<Rate>`)
+### setMockRewardRate(account_index: `u32`, reward_rate: `Rate`)
 - **interface**: `api.tx.polkadotBridge.setMockRewardRate`
  
-### simualteReceive(to: `AccountId`, amount: `Balance`)
-- **interface**: `api.tx.polkadotBridge.simualteReceive`
+### simualteReceiveFromSubAccount(account_index: `u32`, to: `LookupSource`, amount: `Balance`)
+- **interface**: `api.tx.polkadotBridge.simualteReceiveFromSubAccount`
  
-### simulateBond(amount: `Balance`)
-- **interface**: `api.tx.polkadotBridge.simulateBond`
+### simulateBondExtra(account_index: `u32`, amount: `Balance`)
+- **interface**: `api.tx.polkadotBridge.simulateBondExtra`
  
-### simulateRedeem(_to: `PolkadotAccountId`, amount: `Balance`)
-- **interface**: `api.tx.polkadotBridge.simulateRedeem`
+### simulatePayoutNominator(account_index: `u32`)
+- **interface**: `api.tx.polkadotBridge.simulatePayoutNominator`
  
-### simulateSlash(amount: `Balance`)
-- **interface**: `api.tx.polkadotBridge.simulateSlash`
+### simulateRebond(account_index: `u32`, amount: `Balance`)
+- **interface**: `api.tx.polkadotBridge.simulateRebond`
  
-### simulateUnbond(amount: `Balance`)
+### simulateSlashSubAccount(account_index: `u32`, amount: `Balance`)
+- **interface**: `api.tx.polkadotBridge.simulateSlashSubAccount`
+ 
+### simulateTransferToSubAccount(account_index: `u32`, amount: `Balance`)
+- **interface**: `api.tx.polkadotBridge.simulateTransferToSubAccount`
+ 
+### simulateUnbond(account_index: `u32`, amount: `Balance`)
 - **interface**: `api.tx.polkadotBridge.simulateUnbond`
  
-### simulateWithdrawUnbonded()
+### simulateWithdrawUnbonded(account_index: `u32`)
 - **interface**: `api.tx.polkadotBridge.simulateWithdrawUnbonded`
 
 ___
@@ -1210,6 +1731,179 @@ ___
   The dispatch origin of this call must be `LockOrigin`. 
 
   - `currency_id`: currency type. 
+
+___
+
+
+## proxy
+ 
+### addProxy(delegate: `AccountId`, proxy_type: `ProxyType`, delay: `BlockNumber`)
+- **interface**: `api.tx.proxy.addProxy`
+- **summary**:   Register a proxy account for the sender that is able to make calls on its behalf. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Parameters: 
+
+  - `proxy`: The account that the `caller` would like to make a proxy.
+
+  - `proxy_type`: The permissions allowed for this proxy account.
+
+  - `delay`: The announcement period required of the initial proxy. Will generally bezero. 
+
+   
+ 
+### announce(real: `AccountId`, call_hash: `CallHashOf`)
+- **interface**: `api.tx.proxy.announce`
+- **summary**:   Publish the hash of a proxy-call that will be made in the future. 
+
+  This must be called some number of blocks before the corresponding `proxy` is attempted if the delay associated with the proxy relationship is greater than zero. 
+
+  No more than `MaxPending` announcements may be made at any one time. 
+
+  This will take a deposit of `AnnouncementDepositFactor` as well as `AnnouncementDepositBase` if there are no other pending announcements. 
+
+  The dispatch origin for this call must be _Signed_ and a proxy of `real`. 
+
+  Parameters: 
+
+  - `real`: The account that the proxy will make a call on behalf of.
+
+  - `call_hash`: The hash of the call to be made by the `real` account.
+
+   
+ 
+### anonymous(proxy_type: `ProxyType`, delay: `BlockNumber`, index: `u16`)
+- **interface**: `api.tx.proxy.anonymous`
+- **summary**:   Spawn a fresh new account that is guaranteed to be otherwise inaccessible, and initialize it with a proxy of `proxy_type` for `origin` sender. 
+
+  Requires a `Signed` origin. 
+
+  - `proxy_type`: The type of the proxy that the sender will be registered as over the new account. This will almost always be the most permissive `ProxyType` possible to allow for maximum flexibility. 
+
+  - `index`: A disambiguation index, in case this is called multiple times in the sametransaction (e.g. with `utility::batch`). Unless you're using `batch` you probably just want to use `0`. 
+
+  - `delay`: The announcement period required of the initial proxy. Will generally bezero. 
+
+  Fails with `Duplicate` if this has already been called in this transaction, from the same sender, with the same parameters. 
+
+  Fails if there are insufficient funds to pay for deposit. 
+
+   TODO: Might be over counting 1 read 
+ 
+### killAnonymous(spawner: `AccountId`, proxy_type: `ProxyType`, index: `u16`, height: `Compact<BlockNumber>`, ext_index: `Compact<u32>`)
+- **interface**: `api.tx.proxy.killAnonymous`
+- **summary**:   Removes a previously spawned anonymous proxy. 
+
+  WARNING: **All access to this account will be lost.** Any funds held in it will be inaccessible. 
+
+  Requires a `Signed` origin, and the sender account must have been created by a call to `anonymous` with corresponding parameters. 
+
+  - `spawner`: The account that originally called `anonymous` to create this account. 
+
+  - `index`: The disambiguation index originally passed to `anonymous`. Probably `0`.
+
+  - `proxy_type`: The proxy type originally passed to `anonymous`.
+
+  - `height`: The height of the chain when the call to `anonymous` was processed.
+
+  - `ext_index`: The extrinsic index in which the call to `anonymous` was processed.
+
+  Fails with `NoPermission` in case the caller is not a previously created anonymous account whose `anonymous` call has corresponding parameters. 
+
+   
+ 
+### proxy(real: `AccountId`, force_proxy_type: `Option<ProxyType>`, call: `Call`)
+- **interface**: `api.tx.proxy.proxy`
+- **summary**:   Dispatch the given `call` from an account that the sender is authorised for through `add_proxy`. 
+
+  Removes any corresponding announcement(s). 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Parameters: 
+
+  - `real`: The account that the proxy will make a call on behalf of.
+
+  - `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
+
+  - `call`: The call to be made by the `real` account.
+
+   
+ 
+### proxyAnnounced(delegate: `AccountId`, real: `AccountId`, force_proxy_type: `Option<ProxyType>`, call: `Call`)
+- **interface**: `api.tx.proxy.proxyAnnounced`
+- **summary**:   Dispatch the given `call` from an account that the sender is authorised for through `add_proxy`. 
+
+  Removes any corresponding announcement(s). 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Parameters: 
+
+  - `real`: The account that the proxy will make a call on behalf of.
+
+  - `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
+
+  - `call`: The call to be made by the `real` account.
+
+   
+ 
+### rejectAnnouncement(delegate: `AccountId`, call_hash: `CallHashOf`)
+- **interface**: `api.tx.proxy.rejectAnnouncement`
+- **summary**:   Remove the given announcement of a delegate. 
+
+  May be called by a target (proxied) account to remove a call that one of their delegates (`delegate`) has announced they want to execute. The deposit is returned. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Parameters: 
+
+  - `delegate`: The account that previously announced the call.
+
+  - `call_hash`: The hash of the call to be made.
+
+   
+ 
+### removeAnnouncement(real: `AccountId`, call_hash: `CallHashOf`)
+- **interface**: `api.tx.proxy.removeAnnouncement`
+- **summary**:   Remove a given announcement. 
+
+  May be called by a proxy account to remove a call they previously announced and return the deposit. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Parameters: 
+
+  - `real`: The account that the proxy will make a call on behalf of.
+
+  - `call_hash`: The hash of the call to be made by the `real` account.
+
+   
+ 
+### removeProxies()
+- **interface**: `api.tx.proxy.removeProxies`
+- **summary**:   Unregister all proxy accounts for the sender. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  WARNING: This may be called on accounts created by `anonymous`, however if done, then the unreserved fees will be inaccessible. **All access to this account will be lost.** 
+
+   
+ 
+### removeProxy(delegate: `AccountId`, proxy_type: `ProxyType`, delay: `BlockNumber`)
+- **interface**: `api.tx.proxy.removeProxy`
+- **summary**:   Unregister a proxy account for the sender. 
+
+  The dispatch origin for this call must be _Signed_. 
+
+  Parameters: 
+
+  - `proxy`: The account that the `caller` would like to remove as a proxy.
+
+  - `proxy_type`: The permissions currently enabled for the removed proxy account.
+
+   
 
 ___
 
@@ -1347,26 +2041,58 @@ ___
 
 ## renVmBridge
  
-### burn(to: `[u8;20]`, amount: `Compact<Balance>`)
+### burn(to: `DestAddress`, amount: `Compact<Balance>`)
 - **interface**: `api.tx.renVmBridge.burn`
 - **summary**:   Allow a user to burn assets. 
  
-### mint(p_hash: `[u8;32]`, amount: `Compact<Balance>`, n_hash: `[u8;32]`, sig: `EcdsaSignature`)
+### mint(who: `AccountId`, p_hash: `[u8;32]`, amount: `Compact<Balance>`, n_hash: `[u8;32]`, sig: `EcdsaSignature`)
 - **interface**: `api.tx.renVmBridge.mint`
 - **summary**:   Allow a user to mint if they have a valid signature from RenVM. 
+
+  The dispatch origin of this call must be _None_. 
+
+  Verify input by `validate_unsigned` 
 
 ___
 
 
-## scheduleUpdate
+## scheduler
  
-### cancelDelayedDispatch(at: `BlockNumber`, id: `DispatchId`)
-- **interface**: `api.tx.scheduleUpdate.cancelDelayedDispatch`
-- **summary**:   Cancel schedule_update 
+### cancel(when: `BlockNumber`, index: `u32`)
+- **interface**: `api.tx.scheduler.cancel`
+- **summary**:   Cancel an anonymously scheduled task. 
+
+   
  
-### scheduleDispatch(call: `CallOf`, when: `DelayedDispatchTime`)
-- **interface**: `api.tx.scheduleUpdate.scheduleDispatch`
-- **summary**:   Add schedule_update at block_number 
+### cancelNamed(id: `Bytes`)
+- **interface**: `api.tx.scheduler.cancelNamed`
+- **summary**:   Cancel a named scheduled task. 
+
+   
+ 
+### schedule(when: `BlockNumber`, maybe_periodic: `Option<Period>`, priority: `Priority`, call: `Call`)
+- **interface**: `api.tx.scheduler.schedule`
+- **summary**:   Anonymously schedule a task. 
+
+   
+ 
+### scheduleAfter(after: `BlockNumber`, maybe_periodic: `Option<Period>`, priority: `Priority`, call: `Call`)
+- **interface**: `api.tx.scheduler.scheduleAfter`
+- **summary**:   Anonymously schedule a task after a delay. 
+
+   
+ 
+### scheduleNamed(id: `Bytes`, when: `BlockNumber`, maybe_periodic: `Option<Period>`, priority: `Priority`, call: `Call`)
+- **interface**: `api.tx.scheduler.scheduleNamed`
+- **summary**:   Schedule a named task. 
+
+   
+ 
+### scheduleNamedAfter(id: `Bytes`, after: `BlockNumber`, maybe_periodic: `Option<Period>`, priority: `Priority`, call: `Call`)
+- **interface**: `api.tx.scheduler.scheduleNamedAfter`
+- **summary**:   Schedule a named task after a delay. 
+
+   
 
 ___
 
@@ -1552,7 +2278,7 @@ ___
 
    
  
-### setInvulnerables(validators: `Vec<AccountId>`)
+### setInvulnerables(invulnerables: `Vec<AccountId>`)
 - **interface**: `api.tx.staking.setInvulnerables`
 - **summary**:   Set the validators who cannot be slashed (if any). 
 
@@ -1659,6 +2385,17 @@ ___
 ___
 
 
+## stakingPool
+ 
+### setStakingPoolParams(target_max_free_unbonded_ratio: `ChangeRatio`, target_min_free_unbonded_ratio: `ChangeRatio`, target_unbonding_to_free_ratio: `ChangeRatio`, unbonding_to_free_adjustment: `ChangeRate`, base_fee_rate: `ChangeRate`)
+- **interface**: `api.tx.stakingPool.setStakingPoolParams`
+- **summary**:   Update params related to staking pool 
+
+  The dispatch origin of this call must be `UpdateOrigin`. 
+
+___
+
+
 ## sudo
  
 ### setKey(new: `LookupSource`)
@@ -1761,10 +2498,10 @@ ___
 ___
 
 
-## technicalCouncil
+## technicalCommittee
  
 ### close(proposal_hash: `Hash`, index: `Compact<ProposalIndex>`, proposal_weight_bound: `Compact<Weight>`, length_bound: `Compact<u32>`)
-- **interface**: `api.tx.technicalCouncil.close`
+- **interface**: `api.tx.technicalCommittee.close`
 - **summary**:   Close a vote that is either approved, disapproved or whose voting period has ended. 
 
   May be called by any signed account in order to finish voting and close the proposal. 
@@ -1778,7 +2515,7 @@ ___
    
  
 ### disapproveProposal(proposal_hash: `Hash`)
-- **interface**: `api.tx.technicalCouncil.disapproveProposal`
+- **interface**: `api.tx.technicalCommittee.disapproveProposal`
 - **summary**:   Disapprove a proposal, close, and remove it from the system, regardless of its current state. 
 
   Must be called by the Root origin. 
@@ -1790,7 +2527,7 @@ ___
    
  
 ### execute(proposal: `Proposal`, length_bound: `Compact<u32>`)
-- **interface**: `api.tx.technicalCouncil.execute`
+- **interface**: `api.tx.technicalCommittee.execute`
 - **summary**:   Dispatch a proposal from a member using the `Member` origin. 
 
   Origin must be a member of the collective. 
@@ -1798,7 +2535,7 @@ ___
    
  
 ### propose(threshold: `Compact<MemberCount>`, proposal: `Proposal`, length_bound: `Compact<u32>`)
-- **interface**: `api.tx.technicalCouncil.propose`
+- **interface**: `api.tx.technicalCommittee.propose`
 - **summary**:   Add a new proposal to either be voted on or executed directly. 
 
   Requires the sender to be member. 
@@ -1808,7 +2545,7 @@ ___
    
  
 ### setMembers(new_members: `Vec<AccountId>`, prime: `Option<AccountId>`, old_count: `MemberCount`)
-- **interface**: `api.tx.technicalCouncil.setMembers`
+- **interface**: `api.tx.technicalCommittee.setMembers`
 - **summary**:   Set the collective's membership. 
 
   - `new_members`: The new member list. Be nice to the chain and provide it sorted. 
@@ -1819,12 +2556,12 @@ ___
 
   Requires root origin. 
 
-  NOTE: Does not enforce the expected `MAX_MEMBERS` limit on the amount of members, but       the weight estimations rely on it to estimate dispatchable weight. 
+  NOTE: Does not enforce the expected `MaxMembers` limit on the amount of members, but       the weight estimations rely on it to estimate dispatchable weight. 
 
    
  
 ### vote(proposal: `Hash`, index: `Compact<ProposalIndex>`, approve: `bool`)
-- **interface**: `api.tx.technicalCouncil.vote`
+- **interface**: `api.tx.technicalCommittee.vote`
 - **summary**:   Add an aye or nay vote for the sender to the given proposal. 
 
   Requires the sender to be a member. 
@@ -1834,16 +2571,16 @@ ___
 ___
 
 
-## technicalCouncilMembership
+## technicalCommitteeMembership
  
 ### addMember(who: `AccountId`)
-- **interface**: `api.tx.technicalCouncilMembership.addMember`
+- **interface**: `api.tx.technicalCommitteeMembership.addMember`
 - **summary**:   Add a member `who` to the set. 
 
   May only be called from `T::AddOrigin`. 
  
 ### changeKey(new: `AccountId`)
-- **interface**: `api.tx.technicalCouncilMembership.changeKey`
+- **interface**: `api.tx.technicalCommitteeMembership.changeKey`
 - **summary**:   Swap out the sending member for some other key `new`. 
 
   May only be called from `Signed` origin of a current member. 
@@ -1851,31 +2588,31 @@ ___
   Prime membership is passed from the origin account to `new`, if extant. 
  
 ### clearPrime()
-- **interface**: `api.tx.technicalCouncilMembership.clearPrime`
+- **interface**: `api.tx.technicalCommitteeMembership.clearPrime`
 - **summary**:   Remove the prime member if it exists. 
 
   May only be called from `T::PrimeOrigin`. 
  
 ### removeMember(who: `AccountId`)
-- **interface**: `api.tx.technicalCouncilMembership.removeMember`
+- **interface**: `api.tx.technicalCommitteeMembership.removeMember`
 - **summary**:   Remove a member `who` from the set. 
 
   May only be called from `T::RemoveOrigin`. 
  
 ### resetMembers(members: `Vec<AccountId>`)
-- **interface**: `api.tx.technicalCouncilMembership.resetMembers`
+- **interface**: `api.tx.technicalCommitteeMembership.resetMembers`
 - **summary**:   Change the membership to a new set, disregarding the existing membership. Be nice and pass `members` pre-sorted. 
 
   May only be called from `T::ResetOrigin`. 
  
 ### setPrime(who: `AccountId`)
-- **interface**: `api.tx.technicalCouncilMembership.setPrime`
+- **interface**: `api.tx.technicalCommitteeMembership.setPrime`
 - **summary**:   Set the prime member. Must be a current member. 
 
   May only be called from `T::PrimeOrigin`. 
  
 ### swapMember(remove: `AccountId`, add: `AccountId`)
-- **interface**: `api.tx.technicalCouncilMembership.swapMember`
+- **interface**: `api.tx.technicalCommitteeMembership.swapMember`
 - **summary**:   Swap out one member `remove` for another `add`. 
 
   May only be called from `T::SwapOrigin`. 
@@ -1904,27 +2641,17 @@ ___
 
 ## utility
  
-### asLimitedSub(index: `u16`, call: `Call`)
-- **interface**: `api.tx.utility.asLimitedSub`
+### asDerivative(index: `u16`, call: `Call`)
+- **interface**: `api.tx.utility.asDerivative`
 - **summary**:   Send a call through an indexed pseudonym of the sender. 
 
   Filter from origin are passed along. The call will be dispatched with an origin which use the same filter as the origin of this call. 
 
-  NOTE: If you need to ensure that any account-based filtering is not honored (i.e. because you expect `proxy` to have been used prior in the call stack and you do not want the call restrictions to apply to any sub-accounts), then use `as_sub` instead. 
+  NOTE: If you need to ensure that any account-based filtering is not honored (i.e. because you expect `proxy` to have been used prior in the call stack and you do not want the call restrictions to apply to any sub-accounts), then use `as_multi_threshold_1` in the Multisig pallet instead. 
+
+  NOTE: Prior to version *12, this was called `as_limited_sub`. 
 
   The dispatch origin for this call must be _Signed_. 
-
-   
- 
-### asSub(index: `u16`, call: `Call`)
-- **interface**: `api.tx.utility.asSub`
-- **summary**:   Send a call through an indexed pseudonym of the sender. 
-
-  NOTE: If you need to ensure that any account-based filtering is honored (i.e. because you expect `proxy` to have been used prior in the call stack and you want it to apply to any sub-accounts), then use `as_limited_sub` instead. 
-
-  The dispatch origin for this call must be _Signed_. 
-
-   
  
 ### batch(calls: `Vec<Call>`)
 - **interface**: `api.tx.utility.batch`
@@ -1934,11 +2661,23 @@ ___
 
   - `calls`: The calls to be dispatched from the same origin. 
 
-  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Trait::BaseCallFilter`). 
+  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Config::BaseCallFilter`). 
 
    
 
   This will return `Ok` in all circumstances. To determine the success of the batch, an event is deposited. If a call failed and the batch was interrupted, then the `BatchInterrupted` event is deposited, along with the number of successful calls made and the error of the failed call. If all were successful, then the `BatchCompleted` event is deposited. 
+ 
+### batchAll(calls: `Vec<Call>`)
+- **interface**: `api.tx.utility.batchAll`
+- **summary**:   Send a batch of dispatch calls and atomically execute them. The whole transaction will rollback and fail if any of the calls failed. 
+
+  May be called from any origin. 
+
+  - `calls`: The calls to be dispatched from the same origin. 
+
+  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Config::BaseCallFilter`). 
+
+   
 
 ___
 

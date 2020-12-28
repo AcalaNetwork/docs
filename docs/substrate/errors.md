@@ -6,23 +6,41 @@ This page lists the errors that can be encountered in the different modules.
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
-- **[accounts](#accounts)**
+- **[acalaOracle](#acalaoracle)**
+
+- **[acalaTreasury](#acalatreasury)**
 
 - **[auction](#auction)**
 
 - **[auctionManager](#auctionmanager)**
 
+- **[authority](#authority)**
+
+- **[authorship](#authorship)**
+
 - **[balances](#balances)**
+
+- **[bandOracle](#bandoracle)**
 
 - **[cdpEngine](#cdpengine)**
 
 - **[cdpTreasury](#cdptreasury)**
 
+- **[contracts](#contracts)**
+
 - **[currencies](#currencies)**
 
 - **[dex](#dex)**
 
+- **[electionsPhragmen](#electionsphragmen)**
+
 - **[emergencyShutdown](#emergencyshutdown)**
+
+- **[eVm](#evm)**
+
+- **[evmAccounts](#evmaccounts)**
+
+- **[eVmBridge](#evmbridge)**
 
 - **[generalCouncil](#generalcouncil)**
 
@@ -36,23 +54,25 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[honzonCouncil](#honzoncouncil)**
 
+- **[incentives](#incentives)**
+
 - **[loans](#loans)**
 
 - **[multisig](#multisig)**
 
+- **[nFt](#nft)**
+
 - **[nomineesElection](#nomineeselection)**
 
-- **[oracle](#oracle)**
-
-- **[palletTreasury](#pallettreasury)**
-
 - **[polkadotBridge](#polkadotbridge)**
+
+- **[proxy](#proxy)**
 
 - **[recovery](#recovery)**
 
 - **[renVmBridge](#renvmbridge)**
 
-- **[scheduleUpdate](#scheduleupdate)**
+- **[scheduler](#scheduler)**
 
 - **[session](#session)**
 
@@ -64,7 +84,7 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[system](#system)**
 
-- **[technicalCouncil](#technicalcouncil)**
+- **[technicalCommittee](#technicalcommittee)**
 
 - **[tokens](#tokens)**
 
@@ -74,13 +94,57 @@ This page lists the errors that can be encountered in the different modules.
 ___
 
 
-## accounts
+## acalaOracle
  
-### NonZeroRefCount
-- **summary**:   Account ref count is not zero 
+### AlreadyFeeded
+- **summary**:   Feeder has already feeded at this block 
  
-### NotEnoughBalance
-- **summary**:   Balance is not sufficient 
+### NoPermission
+- **summary**:   Sender does not have permission 
+
+___
+
+
+## acalaTreasury
+ 
+### AlreadyKnown
+- **summary**:   The tip was already found/started. 
+ 
+### InsufficientProposersBalance
+- **summary**:   Proposer's balance is too low. 
+ 
+### InvalidFee
+- **summary**:   Invalid bounty fee. 
+ 
+### InvalidIndex
+- **summary**:   No proposal or bounty at that index. 
+ 
+### InvalidValue
+- **summary**:   Invalid bounty value. 
+ 
+### NotFinder
+- **summary**:   The account attempting to retract the tip is not the finder of the tip. 
+ 
+### PendingPayout
+- **summary**:   A bounty payout is pending. To cancel the bounty, you must unassign and slash the curator. 
+ 
+### Premature
+- **summary**:   The tip cannot be claimed/closed because it's still in the countdown period. 
+ 
+### ReasonTooBig
+- **summary**:   The reason given is just too big. 
+ 
+### RequireCurator
+- **summary**:   Require bounty curator. 
+ 
+### StillOpen
+- **summary**:   The tip cannot be claimed/closed because there are not enough tippers yet. 
+ 
+### UnexpectedStatus
+- **summary**:   The bounty status is unexpected. 
+ 
+### UnknownTip
+- **summary**:   The tip hash is unknown. 
 
 ___
 
@@ -102,11 +166,14 @@ ___
 
 ## auctionManager
  
-### AuctionNotExsits
+### AuctionNotExists
 - **summary**:   The auction dose not exist 
  
-### InReservedStage
-- **summary**:   The collateral auction is in reserved stage now 
+### InReverseStage
+- **summary**:   The collateral auction is in reverse stage now 
+ 
+### InvalidAmount
+- **summary**:   Invalid input amount 
  
 ### InvalidBidPrice
 - **summary**:   Bid price is invalid 
@@ -116,6 +183,52 @@ ___
  
 ### MustAfterShutdown
 - **summary**:   Must after system shutdown 
+
+___
+
+
+## authority
+ 
+### FailedToCancel
+- **summary**:   Failed to cancel a task. 
+ 
+### FailedToDelay
+- **summary**:   Failed to delay a task. 
+ 
+### FailedToFastTrack
+- **summary**:   Failed to fast track a task. 
+ 
+### FailedToSchedule
+- **summary**:   Failed to schedule a task. 
+ 
+### Overflow
+- **summary**:   Calculation overflow. 
+
+___
+
+
+## authorship
+ 
+### GenesisUncle
+- **summary**:   The uncle is genesis. 
+ 
+### InvalidUncleParent
+- **summary**:   The uncle parent not in the chain. 
+ 
+### OldUncle
+- **summary**:   The uncle isn't recent enough to be included. 
+ 
+### TooHighUncle
+- **summary**:   The uncle is too high in chain. 
+ 
+### TooManyUncles
+- **summary**:   Too many uncles. 
+ 
+### UncleAlreadyIncluded
+- **summary**:   The uncle is already included. 
+ 
+### UnclesAlreadySet
+- **summary**:   Uncles already set in the block. 
 
 ___
 
@@ -145,6 +258,17 @@ ___
  
 ### VestingBalance
 - **summary**:   Vesting balance too high to send value 
+
+___
+
+
+## bandOracle
+ 
+### AlreadyFeeded
+- **summary**:   Feeder has already feeded at this block 
+ 
+### NoPermission
+- **summary**:   Sender does not have permission 
 
 ___
 
@@ -189,45 +313,202 @@ ___
 ### CollateralNotEnough
 - **summary**:   The collateral amount of CDP treasury is not enough 
  
-### CollateralOverflow
-- **summary**:   Collateral Amount overflow 
+### DebitPoolNotEnough
+- **summary**:   The debit pool of CDP treasury is not enough 
  
 ### DebitPoolOverflow
 - **summary**:   debit pool overflow 
  
-### SurplusPoolOverflow
-- **summary**:   Surplus pool overflow 
+### SurplusPoolNotEnough
+- **summary**:   The surplus pool of CDP treasury is not enough 
+
+___
+
+
+## contracts
+ 
+### BelowSubsistenceThreshold
+- **summary**:   Performing the requested transfer would have brought the contract below the subsistence threshold. No transfer is allowed to do this in order to allow for a tombstone to be created. Use `seal_terminate` to remove a contract without leaving a tombstone behind. 
+ 
+### CodeNotFound
+- **summary**:   No code could be found at the supplied code hash. 
+ 
+### CodeTooLarge
+- **summary**:   The code supplied to `put_code` exceeds the limit specified in the current schedule. 
+ 
+### ContractTrapped
+- **summary**:   Contract trapped during execution. 
+ 
+### DecodingFailed
+- **summary**:   Input passed to a contract API function failed to decode as expected type. 
+ 
+### InvalidContractOrigin
+- **summary**:   An origin TrieId written in the current block. 
+ 
+### InvalidDestinationContract
+- **summary**:   Cannot restore to nonexisting or alive contract. 
+ 
+### InvalidScheduleVersion
+- **summary**:   A new schedule must have a greater version than the current one. 
+ 
+### InvalidSourceContract
+- **summary**:   Cannot restore from nonexisting or tombstone contract. 
+ 
+### InvalidSurchargeClaim
+- **summary**:   An origin must be signed or inherent and auxiliary sender only provided on inherent. 
+ 
+### InvalidTombstone
+- **summary**:   Tombstones don't match. 
+ 
+### MaxCallDepthReached
+- **summary**:   Performing a call was denied because the calling depth reached the limit of what is specified in the schedule. 
+ 
+### NewContractNotFunded
+- **summary**:   The newly created contract is below the subsistence threshold after executing its contructor. No contracts are allowed to exist below that threshold. 
+ 
+### NotCallable
+- **summary**:   The contract that was called is either no contract at all (a plain account) or is a tombstone. 
+ 
+### OutOfBounds
+- **summary**:   A buffer outside of sandbox memory was passed to a contract API function. 
+ 
+### OutOfGas
+- **summary**:   The executed contract exhausted its gas limit. 
+ 
+### OutputBufferTooSmall
+- **summary**:   The output buffer supplied to a contract API call was too small. 
+ 
+### ReentranceDenied
+- **summary**:   The action performed is not allowed while the contract performing it is already on the call stack. Those actions are contract self destruction and restoration of a tombstone. 
+ 
+### TransferFailed
+- **summary**:   Performing the requested transfer failed for a reason originating in the chosen currency implementation of the runtime. Most probably the balance is too low or locks are placed on it. 
+ 
+### ValueTooLarge
+- **summary**:   The size defined in `T::MaxValueSize` was exceeded. 
 
 ___
 
 
 ## currencies
  
+### AccountNotFound
+- **summary**:   EVM account not found 
+ 
 ### AmountIntoBalanceFailed
 - **summary**:   Unable to convert the Amount type into Balance. 
  
 ### BalanceTooLow
 - **summary**:   Balance is too low. 
+ 
+### ERC20InvalidOperation
+- **summary**:   ERC20 invalid operation 
 
 ___
 
 
 ## dex
  
-### CurrencyIdNotAllowed
-- **summary**:   Not the tradable currency type 
+### ExceedPriceImpactLimit
+- **summary**:   The swap will cause unacceptable price impact 
  
-### InacceptablePrice
-- **summary**:   The actual transaction price will be lower than the acceptable price 
+### ExcessiveSupplyAmount
+- **summary**:   Supply amount is more than max_supply_amount 
+ 
+### InsufficientLiquidity
+- **summary**:   Liquidity is not enough 
+ 
+### InsufficientTargetAmount
+- **summary**:   Target amount is less to min_target_amount 
+ 
+### InvalidContributionIncrement
+- **summary**:   The increment of provision is invalid 
+ 
+### InvalidCurrencyId
+- **summary**:   Invalid currency id 
  
 ### InvalidLiquidityIncrement
-- **summary**:   The increament of liquidity is invalid 
+- **summary**:   The increment of liquidity is invalid 
  
-### ShareNotEnough
-- **summary**:   Share amount is not enough 
+### InvalidTradingPathLength
+- **summary**:   Invalid trading path length 
  
-### SharesOverflow
-- **summary**:   Share amount overflow 
+### MustBeEnabled
+- **summary**:   Trading pair must be in Enabled status 
+ 
+### MustBeNotEnabled
+- **summary**:   Trading pair must be in NotEnabled status 
+ 
+### MustBeProvisioning
+- **summary**:   Trading pair must be in Provisioning status 
+ 
+### NotAllowedList
+- **summary**:   This trading pair is not allowed to be listed 
+ 
+### NotEnabledTradingPair
+- **summary**:   Trading pair is in NotEnabled status 
+ 
+### ZeroSupplyAmount
+- **summary**:   The supply amount is zero 
+ 
+### ZeroTargetAmount
+- **summary**:   The target amount is zero 
+
+___
+
+
+## electionsPhragmen
+ 
+### DuplicatedCandidate
+- **summary**:   Duplicated candidate submission. 
+ 
+### InsufficientCandidateFunds
+- **summary**:   Candidate does not have enough funds. 
+ 
+### InvalidCandidateCount
+- **summary**:   The provided count of number of candidates is incorrect. 
+ 
+### InvalidRenouncing
+- **summary**:   The renouncing origin presented a wrong `Renouncing` parameter. 
+ 
+### InvalidReplacement
+- **summary**:   Prediction regarding replacement after member removal is wrong. 
+ 
+### InvalidVoteCount
+- **summary**:   The provided count of number of votes is incorrect. 
+ 
+### LowBalance
+- **summary**:   Cannot vote with stake less than minimum balance. 
+ 
+### MaximumVotesExceeded
+- **summary**:   Cannot vote more than maximum allowed. 
+ 
+### MemberSubmit
+- **summary**:   Member cannot re-submit candidacy. 
+ 
+### MustBeVoter
+- **summary**:   Must be a voter. 
+ 
+### NotMember
+- **summary**:   Not a member. 
+ 
+### NoVotes
+- **summary**:   Must vote for at least one candidate. 
+ 
+### ReportSelf
+- **summary**:   Cannot report self. 
+ 
+### RunnerSubmit
+- **summary**:   Runner cannot re-submit candidacy. 
+ 
+### TooManyVotes
+- **summary**:   Cannot vote more than candidates. 
+ 
+### UnableToPayBond
+- **summary**:   Voter can not pay voting bond. 
+ 
+### UnableToVote
+- **summary**:   Cannot vote when no candidates or members exist. 
 
 ___
 
@@ -238,16 +519,90 @@ ___
 - **summary**:   System has already been shutdown 
  
 ### CanNotRefund
-- **summary**:   Final redeption is still not opened 
+- **summary**:   Final redemption is still not opened 
  
 ### ExistPotentialSurplus
-- **summary**:   Exist optential surplus, means settlement has not been completed 
+- **summary**:   Exist potential surplus, means settlement has not been completed 
  
-### ExistUnhandleDebit
+### ExistUnhandledDebit
 - **summary**:   Exist unhandled debit, means settlement has not been completed 
  
 ### MustAfterShutdown
 - **summary**:   Must after system shutdown 
+
+___
+
+
+## eVM
+ 
+### AddressNotMapped
+- **summary**:   Address not mapped 
+ 
+### ContractAlreadyDeployed
+- **summary**:   Contract already deployed 
+ 
+### ContractDevelopmentAlreadyEnabled
+- **summary**:   Contract development is already enabled 
+ 
+### ContractDevelopmentNotEnabled
+- **summary**:   Contract development is not enabled 
+ 
+### ContractNotFound
+- **summary**:   Contract not found 
+ 
+### NoPermission
+- **summary**:   No permission 
+ 
+### NumOutOfBound
+- **summary**:   Number out of bound in calculation. 
+ 
+### PendingTransferMaintainersExists
+- **summary**:   Pending transfer maintainers exists 
+ 
+### PendingTransferMaintainersNotExists
+- **summary**:   Pending transfer maintainers not exists 
+ 
+### StorageQuotaNotEnough
+- **summary**:   Storage quota not enough 
+ 
+### UnreserveFailed
+- **summary**:   Unreserve failed 
+
+___
+
+
+## evmAccounts
+ 
+### AccountIdHasMapped
+- **summary**:   AccountId has mapped 
+ 
+### BadSignature
+- **summary**:   Bad signature 
+ 
+### EthAddressHasMapped
+- **summary**:   Eth address has mapped 
+ 
+### InvalidSignature
+- **summary**:   Invalid signature 
+ 
+### NonZeroRefCount
+- **summary**:   Account ref count is not zero 
+ 
+### StillHasActiveReserved
+- **summary**:   Account still has active reserved 
+
+___
+
+
+## eVMBridge
+ 
+### ExecutionError
+ 
+### ExecutionFail
+ 
+### ExecutionFatal
+ 
+### ExecutionRevert
 
 ___
 
@@ -311,6 +666,9 @@ ___
  
 ### DuplicateOffenceReport
 - **summary**:   A given equivocation report is valid but already previously reported. 
+ 
+### InvalidEquivocationProof
+- **summary**:   An equivocation proof provided as part of an equivocation report is invalid. 
  
 ### InvalidKeyOwnershipProof
 - **summary**:   A key ownership proof provided as part of an equivocation report is invalid. 
@@ -406,6 +764,17 @@ ___
 ___
 
 
+## incentives
+ 
+### InvalidCurrencyId
+- **summary**:   Invalid currency id 
+ 
+### NotEnough
+- **summary**:   Share amount is not enough 
+
+___
+
+
 ## loans
  
 ### AmountConvertFailed
@@ -468,6 +837,32 @@ ___
 ___
 
 
+## nFT
+ 
+### CannotDestroyClass
+- **summary**:   Can not destroy class Total issuance is not 0 
+ 
+### ClassIdNotFound
+- **summary**:   ClassId not found 
+ 
+### InvalidQuantity
+- **summary**:   Quantity is invalid. need >= 1 
+ 
+### NonBurnable
+- **summary**:   Property of class don't support burn 
+ 
+### NonTransferable
+- **summary**:   Property of class don't support transfer 
+ 
+### NoPermission
+- **summary**:   The operator is not the owner of the token and has no permission 
+ 
+### TokenIdNotFound
+- **summary**:   TokenId not found 
+
+___
+
+
 ## nomineesElection
  
 ### BelowMinBondThreshold
@@ -483,48 +878,37 @@ ___
 ___
 
 
-## oracle
- 
-### NoPermission
-- **summary**:   Sender does not have permission 
-
-___
-
-
-## palletTreasury
- 
-### AlreadyKnown
-- **summary**:   The tip was already found/started. 
- 
-### InsufficientProposersBalance
-- **summary**:   Proposer's balance is too low. 
- 
-### InvalidProposalIndex
-- **summary**:   No proposal at that index. 
- 
-### NotFinder
-- **summary**:   The account attempting to retract the tip is not the finder of the tip. 
- 
-### Premature
-- **summary**:   The tip cannot be claimed/closed because it's still in the countdown period. 
- 
-### ReasonTooBig
-- **summary**:   The reason given is just too big. 
- 
-### StillOpen
-- **summary**:   The tip cannot be claimed/closed because there are not enough tippers yet. 
- 
-### UnknownTip
-- **summary**:   The tip hash is unknown. 
-
-___
-
-
 ## polkadotBridge
  
 ### NotEnough
  
 ### Overflow
+
+___
+
+
+## proxy
+ 
+### Duplicate
+- **summary**:   Account is already a proxy. 
+ 
+### NoPermission
+- **summary**:   Call may not be made by proxy because it may escalate its privileges. 
+ 
+### NotFound
+- **summary**:   Proxy registration not found. 
+ 
+### NotProxy
+- **summary**:   Sender is not a proxy of the account to be proxied. 
+ 
+### TooMany
+- **summary**:   There are too many proxies registered or too many announcements pending. 
+ 
+### Unannounced
+- **summary**:   Announcement, if made at all, was made too recently. 
+ 
+### Unproxyable
+- **summary**:   A call which is incompatible with the proxy type's filter was attempted. 
 
 ___
 
@@ -584,6 +968,9 @@ ___
 
 ## renVmBridge
  
+### BurnIdOverflow
+- **summary**:   Burn ID overflow. 
+ 
 ### InvalidMintSignature
 - **summary**:   The mint signature is invalid. 
  
@@ -593,21 +980,19 @@ ___
 ___
 
 
-## scheduleUpdate
+## scheduler
  
-### BadOrigin
+### FailedToSchedule
+- **summary**:   Failed to schedule a call 
  
-### BlockNumberOverflow
+### NotFound
+- **summary**:   Cannot find the scheduled call. 
  
-### CannotGetNextId
+### RescheduleNoChange
+- **summary**:   Reschedule failed because it does not change scheduled time. 
  
-### DispatchNotExisted
- 
-### ExceedMaxScheduleDispatchWeight
- 
-### InvalidDelayedDispatchTime
- 
-### NoPermission
+### TargetBlockNumberInPast
+- **summary**:   Given target block number is in the past. 
 
 ___
 
@@ -685,40 +1070,40 @@ ___
 ### NoUnlockChunk
 - **summary**:   Can not rebond without unlocking chunks. 
  
-### PhragmenBogusCompact
+### OffchainElectionBogusCompact
 - **summary**:   Error while building the assignment type from the compact. This can happen if an index is invalid, or if the weights _overflow_. 
  
-### PhragmenBogusEdge
+### OffchainElectionBogusEdge
 - **summary**:   The submitted result has unknown edges that are not among the presented winners. 
  
-### PhragmenBogusElectionSize
+### OffchainElectionBogusElectionSize
 - **summary**:   The election size is invalid. 
  
-### PhragmenBogusNomination
+### OffchainElectionBogusNomination
 - **summary**:   One of the submitted nominators has an edge to which they have not voted on chain. 
  
-### PhragmenBogusNominator
+### OffchainElectionBogusNominator
 - **summary**:   One of the submitted nominators is not an active nominator on chain. 
  
-### PhragmenBogusScore
+### OffchainElectionBogusScore
 - **summary**:   The claimed score does not match with the one computed from the data. 
  
-### PhragmenBogusSelfVote
+### OffchainElectionBogusSelfVote
 - **summary**:   A self vote must only be originated from a validator to ONLY themselves. 
  
-### PhragmenBogusWinner
+### OffchainElectionBogusWinner
 - **summary**:   One of the submitted winners is not an active candidate on chain (index is out of range in snapshot). 
  
-### PhragmenBogusWinnerCount
+### OffchainElectionBogusWinnerCount
 - **summary**:   Incorrect number of winners were presented. 
  
-### PhragmenEarlySubmission
+### OffchainElectionEarlySubmission
 - **summary**:   The submitted result is received out of the open window. 
  
-### PhragmenSlashedNomination
+### OffchainElectionSlashedNomination
 - **summary**:   One of the submitted nominators has an edge which is submitted before the last non-zero slash of the target. 
  
-### PhragmenWeakSubmission
+### OffchainElectionWeakSubmission
 - **summary**:   The submitted result is not as good as the one stored on chain. 
  
 ### SnapshotUnavailable
@@ -729,11 +1114,17 @@ ___
 
 ## stakingPool
  
+### GetFeeFailed
+- **summary**:   Failed to calculate redemption fee. 
+ 
+### InvalidConfig
+- **summary**:   Invalid config. 
+ 
 ### InvalidEra
+- **summary**:   The era index is invalid. 
  
-### LiquidCurrencyNotEnough
- 
-### StakingCurrencyNotEnough
+### Overflow
+- **summary**:   Overflow. 
 
 ___
 
@@ -768,7 +1159,7 @@ ___
 ___
 
 
-## technicalCouncil
+## technicalCommittee
  
 ### AlreadyInitialized
 - **summary**:   Members are already initialized! 
@@ -808,11 +1199,17 @@ ___
 ### AmountIntoBalanceFailed
 - **summary**:   Cannot convert Amount into Balance type 
  
+### BalanceOverflow
+- **summary**:   This operation will cause balance to overflow 
+ 
 ### BalanceTooLow
 - **summary**:   The balance is too low 
  
 ### LiquidityRestrictions
 - **summary**:   Failed because liquidity restrictions due to locking 
+ 
+### StillHasActiveReserved
+- **summary**:   Account still has active reserved 
  
 ### TotalIssuanceOverflow
 - **summary**:   This operation will cause total issuance to overflow 

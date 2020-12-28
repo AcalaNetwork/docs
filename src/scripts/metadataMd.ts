@@ -5,9 +5,9 @@ import { MetadataLatest } from '@polkadot/types/interfaces/metadata';
 import { Codec, DefinitionRpcParam } from '@polkadot/types/types';
 
 import * as fs from 'fs';
-import Metadata from '@polkadot/metadata';
+import { Metadata } from '@polkadot/metadata';
 import rpcdata from '@acala-network/types/metadata/static-latest';
-import Call from '@polkadot/types/generic/Call';
+import { GenericCall as Call } from '@polkadot/types/generic';
 import { unwrapStorageType } from '@polkadot/types/primitive/StorageKey';
 import { TypeRegistry } from '@polkadot/types/create';
 import { Vec } from '@polkadot/types/codec';
@@ -312,7 +312,7 @@ function main (): void {
 
   writeFile('docs/substrate/rpc.md', addRpc());
   // @ts-ignore
-  // writeFile('docs/substrate/constants.md', addConstants(latest));
+  writeFile('docs/substrate/constants.md', addConstants(latest));
   // @ts-ignore
   writeFile('docs/substrate/storage.md', addStorage(latest));
   // @ts-ignore

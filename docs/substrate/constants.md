@@ -6,31 +6,53 @@ The following sections contain the module constants, also known as parameter typ
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[acalaTreasury](#acalatreasury)**
+
+- **[auctionManager](#auctionmanager)**
+
 - **[babe](#babe)**
 
 - **[balances](#balances)**
 
+- **[cdpEngine](#cdpengine)**
+
+- **[cdpTreasury](#cdptreasury)**
+
 - **[contracts](#contracts)**
 
-- **[democracy](#democracy)**
+- **[dex](#dex)**
 
-- **[elections](#elections)**
+- **[electionsPhragmen](#electionsphragmen)**
 
-- **[finalityTracker](#finalitytracker)**
+- **[emergencyShutdown](#emergencyshutdown)**
 
-- **[identity](#identity)**
+- **[eVm](#evm)**
+
+- **[graduallyUpdate](#graduallyupdate)**
+
+- **[incentives](#incentives)**
 
 - **[indices](#indices)**
 
+- **[loans](#loans)**
+
 - **[multisig](#multisig)**
+
+- **[nFt](#nft)**
+
+- **[nomineesElection](#nomineeselection)**
+
+- **[polkadotBridge](#polkadotbridge)**
+
+- **[prices](#prices)**
 
 - **[proxy](#proxy)**
 
 - **[recovery](#recovery)**
 
-- **[society](#society)**
-
 - **[staking](#staking)**
+
+- **[stakingPool](#stakingpool)**
 
 - **[system](#system)**
 
@@ -38,10 +60,93 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[transactionPayment](#transactionpayment)**
 
-- **[treasury](#treasury)**
-
 - **[vesting](#vesting)**
 
+
+___
+
+
+## acalaTreasury
+ 
+### bountyCuratorDeposit: `Permill`
+- **interface**: `api.consts.acalaTreasury.bountyCuratorDeposit`
+- **summary**:   Percentage of the curator fee that will be reserved upfront as deposit for bounty curator. 
+ 
+### bountyDepositBase: `BalanceOf`
+- **interface**: `api.consts.acalaTreasury.bountyDepositBase`
+- **summary**:   The amount held on deposit for placing a bounty proposal. 
+ 
+### bountyDepositPayoutDelay: `BlockNumber`
+- **interface**: `api.consts.acalaTreasury.bountyDepositPayoutDelay`
+- **summary**:   The delay period for which a bounty beneficiary need to wait before claim the payout. 
+ 
+### bountyValueMinimum: `BalanceOf`
+- **interface**: `api.consts.acalaTreasury.bountyValueMinimum`
+ 
+### burn: `Permill`
+- **interface**: `api.consts.acalaTreasury.burn`
+- **summary**:   Percentage of spare funds (if any) that are burnt per spend period. 
+ 
+### dataDepositPerByte: `BalanceOf`
+- **interface**: `api.consts.acalaTreasury.dataDepositPerByte`
+- **summary**:   The amount held on deposit per byte within the tip report reason or bounty description. 
+ 
+### maximumReasonLength: `u32`
+- **interface**: `api.consts.acalaTreasury.maximumReasonLength`
+- **summary**:   Maximum acceptable reason length. 
+ 
+### moduleId: `ModuleId`
+- **interface**: `api.consts.acalaTreasury.moduleId`
+- **summary**:   The treasury's module id, used for deriving its sovereign account ID. 
+ 
+### proposalBond: `Permill`
+- **interface**: `api.consts.acalaTreasury.proposalBond`
+- **summary**:   Fraction of a proposal's value that should be bonded in order to place the proposal. An accepted proposal gets these back. A rejected proposal does not. 
+ 
+### proposalBondMinimum: `BalanceOf`
+- **interface**: `api.consts.acalaTreasury.proposalBondMinimum`
+- **summary**:   Minimum amount of funds that should be placed in a deposit for making a proposal. 
+ 
+### spendPeriod: `BlockNumber`
+- **interface**: `api.consts.acalaTreasury.spendPeriod`
+- **summary**:   Period between successive spends. 
+ 
+### tipCountdown: `BlockNumber`
+- **interface**: `api.consts.acalaTreasury.tipCountdown`
+- **summary**:   The period for which a tip remains open after is has achieved threshold tippers. 
+ 
+### tipFindersFee: `Percent`
+- **interface**: `api.consts.acalaTreasury.tipFindersFee`
+- **summary**:   The amount of the final tip which goes to the original reporter of the tip. 
+ 
+### tipReportDepositBase: `BalanceOf`
+- **interface**: `api.consts.acalaTreasury.tipReportDepositBase`
+- **summary**:   The amount held on deposit for placing a tip report. 
+
+___
+
+
+## auctionManager
+ 
+### auctionDurationSoftCap: `BlockNumber`
+- **interface**: `api.consts.auctionManager.auctionDurationSoftCap`
+- **summary**:   When the total duration of the auction exceeds this soft cap, double the effect of `MinimumIncrementSize`, halve the effect of `AuctionTimeToClose` 
+ 
+### auctionTimeToClose: `BlockNumber`
+- **interface**: `api.consts.auctionManager.auctionTimeToClose`
+- **summary**:   The extended time for the auction to end after each successful bid 
+ 
+### getNativeCurrencyId: `CurrencyId`
+- **interface**: `api.consts.auctionManager.getNativeCurrencyId`
+- **summary**:   The native currency id 
+ 
+### getStableCurrencyId: `CurrencyId`
+- **interface**: `api.consts.auctionManager.getStableCurrencyId`
+- **summary**:   The stable currency id 
+ 
+### minimumIncrementSize: `Rate`
+- **interface**: `api.consts.auctionManager.minimumIncrementSize`
+- **summary**:   The minimum increment size of each bid compared to the previous one 
 
 ___
 
@@ -64,6 +169,56 @@ ___
 ### existentialDeposit: `Balance`
 - **interface**: `api.consts.balances.existentialDeposit`
 - **summary**:   The minimum amount required to keep an account open. 
+
+___
+
+
+## cdpEngine
+ 
+### collateralCurrencyIds: `Vec<CurrencyId>`
+- **interface**: `api.consts.cdpEngine.collateralCurrencyIds`
+- **summary**:   The list of valid collateral currency types 
+ 
+### defaultDebitExchangeRate: `ExchangeRate`
+- **interface**: `api.consts.cdpEngine.defaultDebitExchangeRate`
+- **summary**:   The default debit exchange rate for all collateral types, if the debit exchange rate for specific collateral is `None`, it works. 
+ 
+### defaultLiquidationPenalty: `Rate`
+- **interface**: `api.consts.cdpEngine.defaultLiquidationPenalty`
+- **summary**:   The default liquidation penalty rate when liquidate unsafe CDP, if the liquidation penalty rate for specific collateral is `None`, it works. 
+ 
+### defaultLiquidationRatio: `Ratio`
+- **interface**: `api.consts.cdpEngine.defaultLiquidationRatio`
+- **summary**:   The default liquidation ratio for all collateral types of CDP, if the liquidation ratio for specific collateral is `None`, it works. 
+ 
+### getStableCurrencyId: `CurrencyId`
+- **interface**: `api.consts.cdpEngine.getStableCurrencyId`
+- **summary**:   The stable currency id 
+ 
+### maxSlippageSwapWithDex: `Ratio`
+- **interface**: `api.consts.cdpEngine.maxSlippageSwapWithDex`
+- **summary**:   The max slippage allowed when liquidate an unsafe CDP by swap with DEX 
+ 
+### minimumDebitValue: `Balance`
+- **interface**: `api.consts.cdpEngine.minimumDebitValue`
+- **summary**:   The minimum debit value allowed exists in CDP which has debit amount to avoid dust 
+
+___
+
+
+## cdpTreasury
+ 
+### getStableCurrencyId: `CurrencyId`
+- **interface**: `api.consts.cdpTreasury.getStableCurrencyId`
+- **summary**:   Stablecoin currency id 
+ 
+### maxAuctionsCount: `u32`
+- **interface**: `api.consts.cdpTreasury.maxAuctionsCount`
+- **summary**:   Lots cap when create auction 
+ 
+### moduleId: `ModuleId`
+- **interface**: `api.consts.cdpTreasury.moduleId`
+- **summary**:   The CDP treasury's module id, keep surplus and collateral assets from liquidation. 
 
 ___
 
@@ -111,106 +266,109 @@ ___
 ___
 
 
-## democracy
+## dex
  
-### cooloffPeriod: `BlockNumber`
-- **interface**: `api.consts.democracy.cooloffPeriod`
-- **summary**:   Period in blocks where an external proposal may not be re-submitted after being vetoed. 
+### getExchangeFee: `(u32,u32)`
+- **interface**: `api.consts.dex.getExchangeFee`
+- **summary**:   Trading fee rate 
  
-### enactmentPeriod: `BlockNumber`
-- **interface**: `api.consts.democracy.enactmentPeriod`
-- **summary**:   The minimum period of locking and the period between a proposal being approved and enacted. 
-
-  It should generally be a little more than the unstake period to ensure that voting stakers have an opportunity to remove themselves from the system in the case where they are on the losing side of a vote. 
+### moduleId: `ModuleId`
+- **interface**: `api.consts.dex.moduleId`
+- **summary**:   The DEX's module id, keep all assets in DEX. 
  
-### fastTrackVotingPeriod: `BlockNumber`
-- **interface**: `api.consts.democracy.fastTrackVotingPeriod`
-- **summary**:   Minimum voting period allowed for an emergency referendum. 
- 
-### launchPeriod: `BlockNumber`
-- **interface**: `api.consts.democracy.launchPeriod`
-- **summary**:   How often (in blocks) new public referenda are launched. 
- 
-### maxVotes: `u32`
-- **interface**: `api.consts.democracy.maxVotes`
-- **summary**:   The maximum number of votes for an account. 
- 
-### minimumDeposit: `BalanceOf`
-- **interface**: `api.consts.democracy.minimumDeposit`
-- **summary**:   The minimum amount to be used as a deposit for a public referendum proposal. 
- 
-### preimageByteDeposit: `BalanceOf`
-- **interface**: `api.consts.democracy.preimageByteDeposit`
-- **summary**:   The amount of balance that must be deposited per byte of preimage stored. 
- 
-### votingPeriod: `BlockNumber`
-- **interface**: `api.consts.democracy.votingPeriod`
-- **summary**:   How often (in blocks) to check for new votes. 
+### tradingPathLimit: `u32`
+- **interface**: `api.consts.dex.tradingPathLimit`
+- **summary**:   The limit for length of trading path 
 
 ___
 
 
-## elections
+## electionsPhragmen
  
 ### candidacyBond: `BalanceOf`
-- **interface**: `api.consts.elections.candidacyBond`
+- **interface**: `api.consts.electionsPhragmen.candidacyBond`
  
 ### desiredMembers: `u32`
-- **interface**: `api.consts.elections.desiredMembers`
+- **interface**: `api.consts.electionsPhragmen.desiredMembers`
  
 ### desiredRunnersUp: `u32`
-- **interface**: `api.consts.elections.desiredRunnersUp`
+- **interface**: `api.consts.electionsPhragmen.desiredRunnersUp`
  
 ### moduleId: `LockIdentifier`
-- **interface**: `api.consts.elections.moduleId`
+- **interface**: `api.consts.electionsPhragmen.moduleId`
  
 ### termDuration: `BlockNumber`
-- **interface**: `api.consts.elections.termDuration`
+- **interface**: `api.consts.electionsPhragmen.termDuration`
  
 ### votingBond: `BalanceOf`
-- **interface**: `api.consts.elections.votingBond`
+- **interface**: `api.consts.electionsPhragmen.votingBond`
 
 ___
 
 
-## finalityTracker
+## emergencyShutdown
  
-### reportLatency: `BlockNumber`
-- **interface**: `api.consts.finalityTracker.reportLatency`
-- **summary**:   The delay after which point things become suspicious. Default is 1000. 
- 
-### windowSize: `BlockNumber`
-- **interface**: `api.consts.finalityTracker.windowSize`
-- **summary**:   The number of recent samples to keep from this chain. Default is 101. 
+### collateralCurrencyIds: `Vec<CurrencyId>`
+- **interface**: `api.consts.emergencyShutdown.collateralCurrencyIds`
+- **summary**:   The list of valid collateral currency types 
 
 ___
 
 
-## identity
+## eVM
  
-### basicDeposit: `BalanceOf`
-- **interface**: `api.consts.identity.basicDeposit`
-- **summary**:   The amount held on deposit for a registered identity. 
+### contractExistentialDeposit: `BalanceOf`
+- **interface**: `api.consts.eVM.contractExistentialDeposit`
+- **summary**:   Deploy a contract need the existential deposit. 
  
-### fieldDeposit: `BalanceOf`
-- **interface**: `api.consts.identity.fieldDeposit`
-- **summary**:   The amount held on deposit per additional field for a registered identity. 
+### storageDefaultQuota: `u32`
+- **interface**: `api.consts.eVM.storageDefaultQuota`
+- **summary**:   Storage quota default value. 
  
-### maxAdditionalFields: `u32`
-- **interface**: `api.consts.identity.maxAdditionalFields`
-- **summary**:   Maximum number of additional fields that may be stored in an ID. Needed to bound the I/O required to access an identity, but can be pretty high. 
+### storageDepositPerByte: `BalanceOf`
+- **interface**: `api.consts.eVM.storageDepositPerByte`
+- **summary**:   Storage required for per byte. 
  
-### maxRegistrars: `u32`
-- **interface**: `api.consts.identity.maxRegistrars`
-- **summary**:   Maxmimum number of registrars allowed in the system. Needed to bound the complexity of, e.g., updating judgements. 
+### transferMaintainerDeposit: `BalanceOf`
+- **interface**: `api.consts.eVM.transferMaintainerDeposit`
+- **summary**:   Deposit for transferring the maintainer of the contract. 
+
+___
+
+
+## graduallyUpdate
  
-### maxSubAccounts: `u32`
-- **interface**: `api.consts.identity.maxSubAccounts`
-- **summary**:   The maximum number of sub-accounts allowed per identified account. 
+### updateFrequency: `BlockNumber`
+- **interface**: `api.consts.graduallyUpdate.updateFrequency`
+
+___
+
+
+## incentives
  
-### subAccountDeposit: `BalanceOf`
-- **interface**: `api.consts.identity.subAccountDeposit`
-- **summary**:   The amount held on deposit for a registered subaccount. This should account for the fact that one storage item's value will increase by the size of an account ID, and there will be another trie item whose value is the size of an account ID plus 32 bytes. 
+### accumulatePeriod: `BlockNumber`
+- **interface**: `api.consts.incentives.accumulatePeriod`
+- **summary**:   The period to accumulate rewards 
+ 
+### dexIncentivePool: `AccountId`
+- **interface**: `api.consts.incentives.dexIncentivePool`
+- **summary**:   The vault account to keep rewards for type DexIncentive and DexSaving PoolId 
+ 
+### homaIncentivePool: `AccountId`
+- **interface**: `api.consts.incentives.homaIncentivePool`
+- **summary**:   The vault account to keep rewards for type HomaIncentive PoolId 
+ 
+### incentiveCurrencyId: `CurrencyId`
+- **interface**: `api.consts.incentives.incentiveCurrencyId`
+- **summary**:   The incentive reward type (should be ACA) 
+ 
+### loansIncentivePool: `AccountId`
+- **interface**: `api.consts.incentives.loansIncentivePool`
+- **summary**:   The vault account to keep rewards for type LoansIncentive PoolId 
+ 
+### savingCurrencyId: `CurrencyId`
+- **interface**: `api.consts.incentives.savingCurrencyId`
+- **summary**:   The saving reward type (should be AUSD) 
 
 ___
 
@@ -220,6 +378,15 @@ ___
 ### deposit: `BalanceOf`
 - **interface**: `api.consts.indices.deposit`
 - **summary**:   The deposit needed for reserving an index. 
+
+___
+
+
+## loans
+ 
+### moduleId: `ModuleId`
+- **interface**: `api.consts.loans.moduleId`
+- **summary**:   The loan's module id, keep all collaterals of CDPs. 
 
 ___
 
@@ -237,6 +404,65 @@ ___
 ### maxSignatories: `u16`
 - **interface**: `api.consts.multisig.maxSignatories`
 - **summary**:   The maximum amount of signatories allowed for a given multisig. 
+
+___
+
+
+## nFT
+ 
+### createClassDeposit: `Balance`
+- **interface**: `api.consts.nFT.createClassDeposit`
+- **summary**:   The minimum balance to create class 
+ 
+### createTokenDeposit: `Balance`
+- **interface**: `api.consts.nFT.createTokenDeposit`
+- **summary**:   The minimum balance to create token 
+ 
+### moduleId: `ModuleId`
+- **interface**: `api.consts.nFT.moduleId`
+- **summary**:   The NFT's module id 
+
+___
+
+
+## nomineesElection
+ 
+### maxUnlockingChunks: `u32`
+- **interface**: `api.consts.nomineesElection.maxUnlockingChunks`
+ 
+### minBondThreshold: `Balance`
+- **interface**: `api.consts.nomineesElection.minBondThreshold`
+ 
+### nominateesCount: `u32`
+- **interface**: `api.consts.nomineesElection.nominateesCount`
+
+___
+
+
+## polkadotBridge
+ 
+### bondingDuration: `EraIndex`
+- **interface**: `api.consts.polkadotBridge.bondingDuration`
+ 
+### eraLength: `BlockNumber`
+- **interface**: `api.consts.polkadotBridge.eraLength`
+
+___
+
+
+## prices
+ 
+### getLiquidCurrencyId: `CurrencyId`
+- **interface**: `api.consts.prices.getLiquidCurrencyId`
+ 
+### getStableCurrencyId: `CurrencyId`
+- **interface**: `api.consts.prices.getStableCurrencyId`
+ 
+### getStakingCurrencyId: `CurrencyId`
+- **interface**: `api.consts.prices.getStakingCurrencyId`
+ 
+### stableCurrencyFixedPrice: `Price`
+- **interface**: `api.consts.prices.stableCurrencyFixedPrice`
 
 ___
 
@@ -291,39 +517,6 @@ ___
 ___
 
 
-## society
- 
-### candidateDeposit: `BalanceOf`
-- **interface**: `api.consts.society.candidateDeposit`
-- **summary**:   The minimum amount of a deposit required for a bid to be made. 
- 
-### challengePeriod: `BlockNumber`
-- **interface**: `api.consts.society.challengePeriod`
-- **summary**:   The number of blocks between membership challenges. 
- 
-### maxStrikes: `u32`
-- **interface**: `api.consts.society.maxStrikes`
-- **summary**:   The number of times a member may vote the wrong way (or not at all, when they are a skeptic) before they become suspended. 
- 
-### moduleId: `ModuleId`
-- **interface**: `api.consts.society.moduleId`
-- **summary**:   The societies's module id 
- 
-### periodSpend: `BalanceOf`
-- **interface**: `api.consts.society.periodSpend`
-- **summary**:   The amount of incentive paid within each period. Doesn't include VoterTip. 
- 
-### rotationPeriod: `BlockNumber`
-- **interface**: `api.consts.society.rotationPeriod`
-- **summary**:   The number of blocks between candidate/membership rotation periods. 
- 
-### wrongSideDeduction: `BalanceOf`
-- **interface**: `api.consts.society.wrongSideDeduction`
-- **summary**:   The amount of the unpaid reward that gets deducted in the case that either a skeptic doesn't vote or someone votes in the wrong way. 
-
-___
-
-
 ## staking
  
 ### bondingDuration: `EraIndex`
@@ -367,31 +560,44 @@ ___
 ___
 
 
-## system
+## stakingPool
  
-### blockExecutionWeight: `Weight`
-- **interface**: `api.consts.system.blockExecutionWeight`
-- **summary**:   The base weight of executing a block, independent of the transactions in the block. 
+### defaultExchangeRate: `ExchangeRate`
+- **interface**: `api.consts.stakingPool.defaultExchangeRate`
+- **summary**:   The default exchange rate for liquid currency to staking currency. 
+ 
+### liquidCurrencyId: `CurrencyId`
+- **interface**: `api.consts.stakingPool.liquidCurrencyId`
+- **summary**:   The liquid currency id(should be LDOT in acala) 
+ 
+### moduleId: `ModuleId`
+- **interface**: `api.consts.stakingPool.moduleId`
+- **summary**:   The staking pool's module id, keep all staking currency belong to Homa protocol. 
+ 
+### poolAccountIndexes: `Vec<u32>`
+- **interface**: `api.consts.stakingPool.poolAccountIndexes`
+- **summary**:   The sub account indexs of parachain to vault assets of Homa protocol in Polkadot. 
+ 
+### stakingCurrencyId: `CurrencyId`
+- **interface**: `api.consts.stakingPool.stakingCurrencyId`
+- **summary**:   The staking currency id(should be DOT in acala) 
+
+___
+
+
+## system
  
 ### blockHashCount: `BlockNumber`
 - **interface**: `api.consts.system.blockHashCount`
 - **summary**:   The maximum number of blocks to allow in mortal eras. 
  
+### blockWeights: `BlockWeights`
+- **interface**: `api.consts.system.blockWeights`
+- **summary**:   The weight configuration (limits & base values) for each class of extrinsics and block. 
+ 
 ### dbWeight: `RuntimeDbWeight`
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:   The weight of runtime database operations the runtime can invoke. 
- 
-### extrinsicBaseWeight: `Weight`
-- **interface**: `api.consts.system.extrinsicBaseWeight`
-- **summary**:   The base weight of an Extrinsic in the block, independent of the of extrinsic being executed. 
- 
-### maximumBlockLength: `u32`
-- **interface**: `api.consts.system.maximumBlockLength`
-- **summary**:   The maximum length of a block (in bytes). 
- 
-### maximumBlockWeight: `Weight`
-- **interface**: `api.consts.system.maximumBlockWeight`
-- **summary**:   The maximum weight of a block. 
 
 ___
 
@@ -407,73 +613,29 @@ ___
 
 ## transactionPayment
  
-### transactionByteFee: `BalanceOf`
+### allNonNativeCurrencyIds: `Vec<CurrencyId>`
+- **interface**: `api.consts.transactionPayment.allNonNativeCurrencyIds`
+- **summary**:   All non-native currency ids in Acala. 
+ 
+### maxSlippageSwapWithDex: `Ratio`
+- **interface**: `api.consts.transactionPayment.maxSlippageSwapWithDex`
+- **summary**:   The max slippage allowed when swap fee with DEX 
+ 
+### nativeCurrencyId: `CurrencyId`
+- **interface**: `api.consts.transactionPayment.nativeCurrencyId`
+- **summary**:   Native currency id, the actual received currency type as fee for treasury. 
+ 
+### stableCurrencyId: `CurrencyId`
+- **interface**: `api.consts.transactionPayment.stableCurrencyId`
+- **summary**:   Stable currency id. 
+ 
+### transactionByteFee: `PalletBalanceOf`
 - **interface**: `api.consts.transactionPayment.transactionByteFee`
 - **summary**:   The fee to be paid for making a transaction; the per-byte portion. 
  
 ### weightToFee: `Vec<WeightToFeeCoefficient>`
 - **interface**: `api.consts.transactionPayment.weightToFee`
 - **summary**:   The polynomial that is applied in order to derive fee from weight. 
-
-___
-
-
-## treasury
- 
-### bountyCuratorDeposit: `Permill`
-- **interface**: `api.consts.treasury.bountyCuratorDeposit`
-- **summary**:   Percentage of the curator fee that will be reserved upfront as deposit for bounty curator. 
- 
-### bountyDepositBase: `BalanceOf`
-- **interface**: `api.consts.treasury.bountyDepositBase`
-- **summary**:   The amount held on deposit for placing a bounty proposal. 
- 
-### bountyDepositPayoutDelay: `BlockNumber`
-- **interface**: `api.consts.treasury.bountyDepositPayoutDelay`
-- **summary**:   The delay period for which a bounty beneficiary need to wait before claim the payout. 
- 
-### bountyValueMinimum: `BalanceOf`
-- **interface**: `api.consts.treasury.bountyValueMinimum`
- 
-### burn: `Permill`
-- **interface**: `api.consts.treasury.burn`
-- **summary**:   Percentage of spare funds (if any) that are burnt per spend period. 
- 
-### dataDepositPerByte: `BalanceOf`
-- **interface**: `api.consts.treasury.dataDepositPerByte`
-- **summary**:   The amount held on deposit per byte within the tip report reason or bounty description. 
- 
-### maximumReasonLength: `u32`
-- **interface**: `api.consts.treasury.maximumReasonLength`
-- **summary**:   Maximum acceptable reason length. 
- 
-### moduleId: `ModuleId`
-- **interface**: `api.consts.treasury.moduleId`
-- **summary**:   The treasury's module id, used for deriving its sovereign account ID. 
- 
-### proposalBond: `Permill`
-- **interface**: `api.consts.treasury.proposalBond`
-- **summary**:   Fraction of a proposal's value that should be bonded in order to place the proposal. An accepted proposal gets these back. A rejected proposal does not. 
- 
-### proposalBondMinimum: `BalanceOf`
-- **interface**: `api.consts.treasury.proposalBondMinimum`
-- **summary**:   Minimum amount of funds that should be placed in a deposit for making a proposal. 
- 
-### spendPeriod: `BlockNumber`
-- **interface**: `api.consts.treasury.spendPeriod`
-- **summary**:   Period between successive spends. 
- 
-### tipCountdown: `BlockNumber`
-- **interface**: `api.consts.treasury.tipCountdown`
-- **summary**:   The period for which a tip remains open after is has achieved threshold tippers. 
- 
-### tipFindersFee: `Percent`
-- **interface**: `api.consts.treasury.tipFindersFee`
-- **summary**:   The amount of the final tip which goes to the original reporter of the tip. 
- 
-### tipReportDepositBase: `BalanceOf`
-- **interface**: `api.consts.treasury.tipReportDepositBase`
-- **summary**:   The amount held on deposit for placing a tip report. 
 
 ___
 
