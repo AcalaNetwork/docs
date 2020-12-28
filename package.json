@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "@acala-network/types": "^0.3.1",
     "docusaurus": "docusaurus",
     "start": "docusaurus start --port 8080",
     "build": "./node_modules/.bin/ts-node src/scripts/metadataMd.ts && docusaurus build",
@@ -14,13 +13,13 @@
     "serve": "docusaurus serve --port 8080"
   },
   "devDependencies": {
-    "@polkadot/metadata": "^2.5.2-1",
-    "@acala-network/types": "^0.3.1",
+    "@polkadot/metadata": "3.2.1",
+    "@acala-network/types": "^0.6.2-0",
     "@docusaurus/core": "2.0.0-alpha.66",
     "@docusaurus/preset-classic": "2.0.0-alpha.66",
     "@mdx-js/react": "^1.6.19",
     "@polkadot/dev": "^0.59.18",
-    "@polkadot/typegen": "^2.5.2-1",
+    "@polkadot/typegen": "3.2.1",
     "clsx": "^1.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
