@@ -11,9 +11,9 @@ A block hash refers to the hash over the header, the extrinsic hash refers to th
 
 ```js
 // returns Hash
-const blockHash = await this.api.rpc.chain.getBlockHash(blockNumber);
+const blockHash = await api.rpc.chain.getBlockHash(blockNumber);
 // returns SignedBlock
-const signedBlock = await this.api.rpc.chain.getBlock(blockHash);
+const signedBlock = await api.rpc.chain.getBlock(blockHash);
 
 // the hash for the block, always via header (Hash -> toHex()) - will be
 // the same as blockHash above (also available on any header retrieved,
@@ -54,7 +54,7 @@ The transactions are included in a signed block as part of the extrinsics - some
 
 ```js
 // no blockHash is specified, so we retrieve the latest
-const signedBlock = await this.api.rpc.chain.getBlock();
+const signedBlock = await api.rpc.chain.getBlock();
 
 // the information for each of the contained extrinsics
 signedBlock.block.extrinsics.forEach((ex, index) => {
@@ -79,14 +79,14 @@ In the above `.toHuman()` is used to format into a human-readable representation
 
 ## How do I map extrinsics to their events?
 
-While the blocks contain the extrinsics, the system event storage will contain the events and the details needed to allow for a mapping between. For events the `phase` is an enum that would be `isApplyExtrinsic` with the index in the cases where it refers to an extrinsic in a block. This index maps through the the order of the extrinsics as found.
+While the blocks contain the extrinsics, the system event storage will contain the events and the details needed to allow for a mapping between. For events the `phase` is an enum that would be `isApplyExtrinsic` with the index in the cases where it refers to an extrinsic in a block. This index maps through the order of the extrinsics as found.
 
 To perform a mapping between the two, we need information from both sources.
 
 ```js
 // no blockHash is specified, so we retrieve the latest
-const signedBlock = await this.api.rpc.chain.getBlock();
-const allRecords = await api.query.system.events(signedBlock.block.header.hash);
+const signedBlock = await api.rpc.chain.getBlock();
+const allRecords = await api.query.system.events.at(signedBlock.block.header.hash);
 
 // map between the extrinsics and events
 signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) => {
@@ -100,5 +100,56 @@ signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) =>
     .map(({ event }) => `${event.section}.${event.method}`);
 
   console.log(`${section}.${method}:: ${events.join(', ') || 'no events'}`);
-)};
+});
+```
+
+
+## How do I determine if an extrinsic succeeded/failed?
+
+This is an extension of the above example where extrinsics are mapped to their blocks. However in this example, we will look for specific extrinsic events, in this case the `system.ExtrinsicSuccess` and `system.ExtrinsicFailed` events. The same logic can be applied to inspect any other type of expected event.
+
+```js
+// no blockHash is specified, so we retrieve the latest
+const signedBlock = await api.rpc.chain.getBlock();
+const allRecords = await api.query.system.events.at(signedBlock.block.header.hash);
+
+// map between the extrinsics and events
+signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) => {
+  allRecords
+    // filter the specific events based on the phase and then the
+    // index of our extrinsic in the block
+    .filter(({ phase }) =>
+      phase.isApplyExtrinsic &&
+      phase.asApplyExtrinsic.eq(index)
+    )
+    // test the events against the specific types we are looking for
+    .forEach(({ event }) => {
+      if (api.events.system.ExtrinsicSuccess.is(event)) {
+        // extract the data for this event
+        // (In TS, because of the guard above, these will be typed)
+        const [dispatchInfo] = event.data;
+
+        console.log(`${section}.${method}:: ExtrinsicSuccess:: ${dispatchInfo.toHuman()}`);
+      } else if (api.events.system.ExtrinsicFailed.is(event)) {
+        // extract the data for this event
+        const [dispatchError, dispatchInfo] = event.data;
+        let errorInfo;
+
+        // decode the error
+        if (dispatchError.isModule) {
+          // for module errors, we have the section indexed, lookup
+          // (For specific known errors, we can also do a check against the
+          // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+          const decoded = api.registry.findMetaError(dispatchError.asModule);
+
+          errorInfo = `${decoded.section}.${decoded.name}`;
+        } else {
+          // Other, CannotLookup, BadOrigin, no extra info
+          errorInfo = dispatchError.toString();
+        }
+
+        console.log(`${section}.${method}:: ExtrinsicFailed:: ${errorInfo}`);
+      }
+    });
+});
 ```

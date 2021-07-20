@@ -6,25 +6,15 @@ This page lists the errors that can be encountered in the different modules.
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
-- **[acalaOracle](#acalaoracle)**
-
-- **[acalaTreasury](#acalatreasury)**
-
-- **[auction](#auction)**
-
-- **[auctionManager](#auctionmanager)**
-
-- **[authority](#authority)**
+- **[assets](#assets)**
 
 - **[authorship](#authorship)**
 
+- **[babe](#babe)**
+
 - **[balances](#balances)**
 
-- **[bandOracle](#bandoracle)**
-
-- **[cdpEngine](#cdpengine)**
-
-- **[cdpTreasury](#cdptreasury)**
+- **[bounties](#bounties)**
 
 - **[contracts](#contracts)**
 
@@ -38,13 +28,11 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[eVm](#evm)**
 
-- **[evmAccounts](#evmaccounts)**
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
-- **[eVmBridge](#evmbridge)**
+- **[elections](#elections)**
 
-- **[generalCouncil](#generalcouncil)**
-
-- **[graduallyUpdate](#graduallyupdate)**
+- **[gilt](#gilt)**
 
 - **[grandpa](#grandpa)**
 
@@ -57,6 +45,10 @@ This page lists the errors that can be encountered in the different modules.
 - **[incentives](#incentives)**
 
 - **[loans](#loans)**
+
+- **[indices](#indices)**
+
+- **[lottery](#lottery)**
 
 - **[multisig](#multisig)**
 
@@ -86,7 +78,15 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[technicalCommittee](#technicalcommittee)**
 
-- **[tokens](#tokens)**
+- **[technicalMembership](#technicalmembership)**
+
+- **[tips](#tips)**
+
+- **[transactionStorage](#transactionstorage)**
+
+- **[treasury](#treasury)**
+
+- **[uniques](#uniques)**
 
 - **[vesting](#vesting)**
 
@@ -94,115 +94,55 @@ This page lists the errors that can be encountered in the different modules.
 ___
 
 
-## acalaOracle
+## assets
  
-### AlreadyFeeded
-- **summary**:   Feeder has already feeded at this block 
+### BadMetadata
+- **interface**: `api.errors.assets.BadMetadata.is`
+- **summary**:    Invalid metadata given. 
+ 
+### BadWitness
+- **interface**: `api.errors.assets.BadWitness.is`
+- **summary**:    Invalid witness data given. 
+ 
+### BalanceLow
+- **interface**: `api.errors.assets.BalanceLow.is`
+- **summary**:    Account balance must be greater than or equal to the transfer amount. 
+ 
+### BalanceZero
+- **interface**: `api.errors.assets.BalanceZero.is`
+- **summary**:    Balance should be non-zero. 
+ 
+### Frozen
+- **interface**: `api.errors.assets.Frozen.is`
+- **summary**:    The origin account is frozen. 
+ 
+### InUse
+- **interface**: `api.errors.assets.InUse.is`
+- **summary**:    The asset ID is already taken. 
+ 
+### MinBalanceZero
+- **interface**: `api.errors.assets.MinBalanceZero.is`
+- **summary**:    Minimum balance should be non-zero. 
  
 ### NoPermission
-- **summary**:   Sender does not have permission 
-
-___
-
-
-## acalaTreasury
+- **interface**: `api.errors.assets.NoPermission.is`
+- **summary**:    The signing account has no permission to do the operation. 
  
-### AlreadyKnown
-- **summary**:   The tip was already found/started. 
+### NoProvider
+- **interface**: `api.errors.assets.NoProvider.is`
+- **summary**:    No provider reference exists to allow a non-zero balance of a non-self-sufficient asset. 
  
-### InsufficientProposersBalance
-- **summary**:   Proposer's balance is too low. 
+### Unapproved
+- **interface**: `api.errors.assets.Unapproved.is`
+- **summary**:    No approval exists that would allow the transfer. 
  
-### InvalidFee
-- **summary**:   Invalid bounty fee. 
+### Unknown
+- **interface**: `api.errors.assets.Unknown.is`
+- **summary**:    The given asset ID is unknown. 
  
-### InvalidIndex
-- **summary**:   No proposal or bounty at that index. 
- 
-### InvalidValue
-- **summary**:   Invalid bounty value. 
- 
-### NotFinder
-- **summary**:   The account attempting to retract the tip is not the finder of the tip. 
- 
-### PendingPayout
-- **summary**:   A bounty payout is pending. To cancel the bounty, you must unassign and slash the curator. 
- 
-### Premature
-- **summary**:   The tip cannot be claimed/closed because it's still in the countdown period. 
- 
-### ReasonTooBig
-- **summary**:   The reason given is just too big. 
- 
-### RequireCurator
-- **summary**:   Require bounty curator. 
- 
-### StillOpen
-- **summary**:   The tip cannot be claimed/closed because there are not enough tippers yet. 
- 
-### UnexpectedStatus
-- **summary**:   The bounty status is unexpected. 
- 
-### UnknownTip
-- **summary**:   The tip hash is unknown. 
-
-___
-
-
-## auction
- 
-### AuctionNotExist
- 
-### AuctionNotStarted
- 
-### BidNotAccepted
- 
-### InvalidBidPrice
- 
-### NoAvailableAuctionId
-
-___
-
-
-## auctionManager
- 
-### AuctionNotExists
-- **summary**:   The auction dose not exist 
- 
-### InReverseStage
-- **summary**:   The collateral auction is in reverse stage now 
- 
-### InvalidAmount
-- **summary**:   Invalid input amount 
- 
-### InvalidBidPrice
-- **summary**:   Bid price is invalid 
- 
-### InvalidFeedPrice
-- **summary**:   Feed price is invalid 
- 
-### MustAfterShutdown
-- **summary**:   Must after system shutdown 
-
-___
-
-
-## authority
- 
-### FailedToCancel
-- **summary**:   Failed to cancel a task. 
- 
-### FailedToDelay
-- **summary**:   Failed to delay a task. 
- 
-### FailedToFastTrack
-- **summary**:   Failed to fast track a task. 
- 
-### FailedToSchedule
-- **summary**:   Failed to schedule a task. 
- 
-### Overflow
-- **summary**:   Calculation overflow. 
+### WouldDie
+- **interface**: `api.errors.assets.WouldDie.is`
+- **summary**:    The source account would not survive the transfer and it needs to stay alive. 
 
 ___
 
@@ -210,25 +150,49 @@ ___
 ## authorship
  
 ### GenesisUncle
-- **summary**:   The uncle is genesis. 
+- **interface**: `api.errors.authorship.GenesisUncle.is`
+- **summary**:    The uncle is genesis. 
  
 ### InvalidUncleParent
-- **summary**:   The uncle parent not in the chain. 
+- **interface**: `api.errors.authorship.InvalidUncleParent.is`
+- **summary**:    The uncle parent not in the chain. 
  
 ### OldUncle
-- **summary**:   The uncle isn't recent enough to be included. 
+- **interface**: `api.errors.authorship.OldUncle.is`
+- **summary**:    The uncle isn't recent enough to be included. 
  
 ### TooHighUncle
-- **summary**:   The uncle is too high in chain. 
+- **interface**: `api.errors.authorship.TooHighUncle.is`
+- **summary**:    The uncle is too high in chain. 
  
 ### TooManyUncles
-- **summary**:   Too many uncles. 
+- **interface**: `api.errors.authorship.TooManyUncles.is`
+- **summary**:    Too many uncles. 
  
 ### UncleAlreadyIncluded
-- **summary**:   The uncle is already included. 
+- **interface**: `api.errors.authorship.UncleAlreadyIncluded.is`
+- **summary**:    The uncle is already included. 
  
 ### UnclesAlreadySet
-- **summary**:   Uncles already set in the block. 
+- **interface**: `api.errors.authorship.UnclesAlreadySet.is`
+- **summary**:    Uncles already set in the block. 
+
+___
+
+
+## babe
+ 
+### DuplicateOffenceReport
+- **interface**: `api.errors.babe.DuplicateOffenceReport.is`
+- **summary**:    A given equivocation report is valid but already previously reported. 
+ 
+### InvalidEquivocationProof
+- **interface**: `api.errors.babe.InvalidEquivocationProof.is`
+- **summary**:    An equivocation proof provided as part of an equivocation report is invalid. 
+ 
+### InvalidKeyOwnershipProof
+- **interface**: `api.errors.babe.InvalidKeyOwnershipProof.is`
+- **summary**:    A key ownership proof provided as part of an equivocation report is invalid. 
 
 ___
 
@@ -236,28 +200,77 @@ ___
 ## balances
  
 ### DeadAccount
-- **summary**:   Beneficiary account must pre-exist 
+- **interface**: `api.errors.balances.DeadAccount.is`
+- **summary**:    Beneficiary account must pre-exist 
  
 ### ExistentialDeposit
-- **summary**:   Value too low to create account due to existential deposit 
+- **interface**: `api.errors.balances.ExistentialDeposit.is`
+- **summary**:    Value too low to create account due to existential deposit 
  
 ### ExistingVestingSchedule
-- **summary**:   A vesting schedule already exists for this account 
+- **interface**: `api.errors.balances.ExistingVestingSchedule.is`
+- **summary**:    A vesting schedule already exists for this account 
  
 ### InsufficientBalance
-- **summary**:   Balance too low to send value 
+- **interface**: `api.errors.balances.InsufficientBalance.is`
+- **summary**:    Balance too low to send value 
  
 ### KeepAlive
-- **summary**:   Transfer/payment would kill account 
+- **interface**: `api.errors.balances.KeepAlive.is`
+- **summary**:    Transfer/payment would kill account 
  
 ### LiquidityRestrictions
-- **summary**:   Account liquidity restrictions prevent withdrawal 
+- **interface**: `api.errors.balances.LiquidityRestrictions.is`
+- **summary**:    Account liquidity restrictions prevent withdrawal 
  
-### Overflow
-- **summary**:   Got an overflow after adding 
+### TooManyReserves
+- **interface**: `api.errors.balances.TooManyReserves.is`
+- **summary**:    Number of named reserves exceed MaxReserves 
  
 ### VestingBalance
-- **summary**:   Vesting balance too high to send value 
+- **interface**: `api.errors.balances.VestingBalance.is`
+- **summary**:    Vesting balance too high to send value 
+
+___
+
+
+## bounties
+ 
+### InsufficientProposersBalance
+- **interface**: `api.errors.bounties.InsufficientProposersBalance.is`
+- **summary**:    Proposer's balance is too low. 
+ 
+### InvalidFee
+- **interface**: `api.errors.bounties.InvalidFee.is`
+- **summary**:    Invalid bounty fee. 
+ 
+### InvalidIndex
+- **interface**: `api.errors.bounties.InvalidIndex.is`
+- **summary**:    No proposal or bounty at that index. 
+ 
+### InvalidValue
+- **interface**: `api.errors.bounties.InvalidValue.is`
+- **summary**:    Invalid bounty value. 
+ 
+### PendingPayout
+- **interface**: `api.errors.bounties.PendingPayout.is`
+- **summary**:    A bounty payout is pending.  To cancel the bounty, you must unassign and slash the curator. 
+ 
+### Premature
+- **interface**: `api.errors.bounties.Premature.is`
+- **summary**:    The bounties cannot be claimed/closed because it's still in the countdown period. 
+ 
+### ReasonTooBig
+- **interface**: `api.errors.bounties.ReasonTooBig.is`
+- **summary**:    The reason given is just too big. 
+ 
+### RequireCurator
+- **interface**: `api.errors.bounties.RequireCurator.is`
+- **summary**:    Require bounty curator. 
+ 
+### UnexpectedStatus
+- **interface**: `api.errors.bounties.UnexpectedStatus.is`
+- **summary**:    The bounty status is unexpected. 
 
 ___
 
@@ -328,131 +341,362 @@ ___
 ## contracts
  
 ### BelowSubsistenceThreshold
-- **summary**:   Performing the requested transfer would have brought the contract below the subsistence threshold. No transfer is allowed to do this in order to allow for a tombstone to be created. Use `seal_terminate` to remove a contract without leaving a tombstone behind. 
+- **interface**: `api.errors.contracts.BelowSubsistenceThreshold.is`
+- **summary**:    Performing the requested transfer would have brought the contract below  the subsistence threshold. No transfer is allowed to do this in order to allow  for a tombstone to be created. Use `seal_terminate` to remove a contract without  leaving a tombstone behind. 
  
 ### CodeNotFound
-- **summary**:   No code could be found at the supplied code hash. 
+- **interface**: `api.errors.contracts.CodeNotFound.is`
+- **summary**:    No code could be found at the supplied code hash. 
  
 ### CodeTooLarge
-- **summary**:   The code supplied to `put_code` exceeds the limit specified in the current schedule. 
+- **interface**: `api.errors.contracts.CodeTooLarge.is`
+- **summary**:    The code supplied to `instantiate_with_code` exceeds the limit specified in the  current schedule. 
+ 
+### ContractIsTombstone
+- **interface**: `api.errors.contracts.ContractIsTombstone.is`
+- **summary**:    A tombstone exist at the specified address. 
+
+   Tombstone cannot be called. Anyone can use `seal_restore_to` in order to revive  the contract, though. 
+ 
+### ContractNotEvictable
+- **interface**: `api.errors.contracts.ContractNotEvictable.is`
+- **summary**:    A contract could not be evicted because it has enough balance to pay rent. 
+
+   This can be returned from [`Pallet::claim_surcharge`] because the target  contract has enough balance to pay for its rent. 
+ 
+### ContractNotFound
+- **interface**: `api.errors.contracts.ContractNotFound.is`
+- **summary**:    No contract was found at the specified address. 
  
 ### ContractTrapped
-- **summary**:   Contract trapped during execution. 
+- **interface**: `api.errors.contracts.ContractTrapped.is`
+- **summary**:    Contract trapped during execution. 
+ 
+### DebugMessageInvalidUTF8
+- **interface**: `api.errors.contracts.DebugMessageInvalidUTF8.is`
+- **summary**:    The debug message specified to `seal_debug_message` does contain invalid UTF-8. 
  
 ### DecodingFailed
-- **summary**:   Input passed to a contract API function failed to decode as expected type. 
+- **interface**: `api.errors.contracts.DecodingFailed.is`
+- **summary**:    Input passed to a contract API function failed to decode as expected type. 
+ 
+### DeletionQueueFull
+- **interface**: `api.errors.contracts.DeletionQueueFull.is`
+- **summary**:    Removal of a contract failed because the deletion queue is full. 
+
+   This can happen when either calling [`Pallet::claim_surcharge`] or `seal_terminate`.  The queue is filled by deleting contracts and emptied by a fixed amount each block.  Trying again during another block is the only way to resolve this issue. 
+ 
+### DuplicateContract
+- **interface**: `api.errors.contracts.DuplicateContract.is`
+- **summary**:    A contract with the same AccountId already exists. 
+ 
+### DuplicateTopics
+- **interface**: `api.errors.contracts.DuplicateTopics.is`
+- **summary**:    The topics passed to `seal_deposit_events` contains at least one duplicate. 
+ 
+### InputForwarded
+- **interface**: `api.errors.contracts.InputForwarded.is`
+- **summary**:    `seal_call` forwarded this contracts input. It therefore is no longer available. 
  
 ### InvalidContractOrigin
-- **summary**:   An origin TrieId written in the current block. 
+- **interface**: `api.errors.contracts.InvalidContractOrigin.is`
+- **summary**:    An origin TrieId written in the current block. 
  
 ### InvalidDestinationContract
-- **summary**:   Cannot restore to nonexisting or alive contract. 
+- **interface**: `api.errors.contracts.InvalidDestinationContract.is`
+- **summary**:    Cannot restore to nonexisting or alive contract. 
  
 ### InvalidScheduleVersion
-- **summary**:   A new schedule must have a greater version than the current one. 
+- **interface**: `api.errors.contracts.InvalidScheduleVersion.is`
+- **summary**:    A new schedule must have a greater version than the current one. 
  
 ### InvalidSourceContract
-- **summary**:   Cannot restore from nonexisting or tombstone contract. 
+- **interface**: `api.errors.contracts.InvalidSourceContract.is`
+- **summary**:    Cannot restore from nonexisting or tombstone contract. 
  
 ### InvalidSurchargeClaim
-- **summary**:   An origin must be signed or inherent and auxiliary sender only provided on inherent. 
+- **interface**: `api.errors.contracts.InvalidSurchargeClaim.is`
+- **summary**:    An origin must be signed or inherent and auxiliary sender only provided on inherent. 
  
 ### InvalidTombstone
-- **summary**:   Tombstones don't match. 
+- **interface**: `api.errors.contracts.InvalidTombstone.is`
+- **summary**:    Tombstones don't match. 
  
 ### MaxCallDepthReached
-- **summary**:   Performing a call was denied because the calling depth reached the limit of what is specified in the schedule. 
+- **interface**: `api.errors.contracts.MaxCallDepthReached.is`
+- **summary**:    Performing a call was denied because the calling depth reached the limit  of what is specified in the schedule. 
  
 ### NewContractNotFunded
-- **summary**:   The newly created contract is below the subsistence threshold after executing its contructor. No contracts are allowed to exist below that threshold. 
+- **interface**: `api.errors.contracts.NewContractNotFunded.is`
+- **summary**:    The newly created contract is below the subsistence threshold after executing  its contructor. No contracts are allowed to exist below that threshold. 
  
-### NotCallable
-- **summary**:   The contract that was called is either no contract at all (a plain account) or is a tombstone. 
+### NoChainExtension
+- **interface**: `api.errors.contracts.NoChainExtension.is`
+- **summary**:    The chain does not provide a chain extension. Calling the chain extension results  in this error. Note that this usually  shouldn't happen as deploying such contracts  is rejected. 
  
 ### OutOfBounds
-- **summary**:   A buffer outside of sandbox memory was passed to a contract API function. 
+- **interface**: `api.errors.contracts.OutOfBounds.is`
+- **summary**:    A buffer outside of sandbox memory was passed to a contract API function. 
  
 ### OutOfGas
-- **summary**:   The executed contract exhausted its gas limit. 
+- **interface**: `api.errors.contracts.OutOfGas.is`
+- **summary**:    The executed contract exhausted its gas limit. 
  
 ### OutputBufferTooSmall
-- **summary**:   The output buffer supplied to a contract API call was too small. 
+- **interface**: `api.errors.contracts.OutputBufferTooSmall.is`
+- **summary**:    The output buffer supplied to a contract API call was too small. 
+ 
+### RandomSubjectTooLong
+- **interface**: `api.errors.contracts.RandomSubjectTooLong.is`
+- **summary**:    The subject passed to `seal_random` exceeds the limit. 
+ 
+### ReentranceDenied
+- **interface**: `api.errors.contracts.ReentranceDenied.is`
+- **summary**:    A call tried to invoke a contract that is flagged as non-reentrant. 
+ 
+### RentNotPaid
+- **interface**: `api.errors.contracts.RentNotPaid.is`
+- **summary**:    The called contract does not have enough balance to pay for its storage. 
+
+   The contract ran out of balance and is therefore eligible for eviction into a  tombstone. Anyone can evict the contract by submitting a `claim_surcharge`  extrinsic. Alternatively, a plain balance transfer can be used in order to  increase the contracts funds so that it can be called again. 
+ 
+### StorageExhausted
+- **interface**: `api.errors.contracts.StorageExhausted.is`
+- **summary**:    A storage modification exhausted the 32bit type that holds the storage size. 
+
+   This can either happen when the accumulated storage in bytes is too large or  when number of storage items is too large. 
+ 
+### TerminatedInConstructor
+- **interface**: `api.errors.contracts.TerminatedInConstructor.is`
+- **summary**:    A contract self destructed in its constructor. 
+
+   This can be triggered by a call to `seal_terminate` or `seal_restore_to`. 
+ 
+### TerminatedWhileReentrant
+- **interface**: `api.errors.contracts.TerminatedWhileReentrant.is`
+- **summary**:    Termination of a contract is not allowed while the contract is already  on the call stack. Can be triggered by `seal_terminate` or `seal_restore_to. 
+ 
+### TooManyTopics
+- **interface**: `api.errors.contracts.TooManyTopics.is`
+- **summary**:    The amount of topics passed to `seal_deposit_events` exceeds the limit. 
  
 ### ReentranceDenied
 - **summary**:   The action performed is not allowed while the contract performing it is already on the call stack. Those actions are contract self destruction and restoration of a tombstone. 
  
 ### TransferFailed
-- **summary**:   Performing the requested transfer failed for a reason originating in the chosen currency implementation of the runtime. Most probably the balance is too low or locks are placed on it. 
+- **interface**: `api.errors.contracts.TransferFailed.is`
+- **summary**:    Performing the requested transfer failed for a reason originating in the  chosen currency implementation of the runtime. Most probably the balance is  too low or locks are placed on it. 
  
 ### ValueTooLarge
-- **summary**:   The size defined in `T::MaxValueSize` was exceeded. 
+- **interface**: `api.errors.contracts.ValueTooLarge.is`
+- **summary**:    The size defined in `T::MaxValueSize` was exceeded. 
 
 ___
 
 
-## currencies
+## council
  
-### AccountNotFound
-- **summary**:   EVM account not found 
+### AlreadyInitialized
+- **interface**: `api.errors.council.AlreadyInitialized.is`
+- **summary**:    Members are already initialized! 
  
-### AmountIntoBalanceFailed
-- **summary**:   Unable to convert the Amount type into Balance. 
+### DuplicateProposal
+- **interface**: `api.errors.council.DuplicateProposal.is`
+- **summary**:    Duplicate proposals not allowed 
  
-### BalanceTooLow
-- **summary**:   Balance is too low. 
+### DuplicateVote
+- **interface**: `api.errors.council.DuplicateVote.is`
+- **summary**:    Duplicate vote ignored 
  
-### ERC20InvalidOperation
-- **summary**:   ERC20 invalid operation 
+### NotMember
+- **interface**: `api.errors.council.NotMember.is`
+- **summary**:    Account is not a member 
+ 
+### ProposalMissing
+- **interface**: `api.errors.council.ProposalMissing.is`
+- **summary**:    Proposal must exist 
+ 
+### TooEarly
+- **interface**: `api.errors.council.TooEarly.is`
+- **summary**:    The close call was made too early, before the end of the voting. 
+ 
+### TooManyProposals
+- **interface**: `api.errors.council.TooManyProposals.is`
+- **summary**:    There can only be a maximum of `MaxProposals` active proposals. 
+ 
+### WrongIndex
+- **interface**: `api.errors.council.WrongIndex.is`
+- **summary**:    Mismatched index 
+ 
+### WrongProposalLength
+- **interface**: `api.errors.council.WrongProposalLength.is`
+- **summary**:    The given length bound for the proposal was too low. 
+ 
+### WrongProposalWeight
+- **interface**: `api.errors.council.WrongProposalWeight.is`
+- **summary**:    The given weight bound for the proposal was too low. 
 
 ___
 
 
 ## dex
  
-### ExceedPriceImpactLimit
-- **summary**:   The swap will cause unacceptable price impact 
+### AlreadyCanceled
+- **interface**: `api.errors.democracy.AlreadyCanceled.is`
+- **summary**:    Cannot cancel the same proposal twice 
  
-### ExcessiveSupplyAmount
-- **summary**:   Supply amount is more than max_supply_amount 
+### AlreadyDelegating
+- **interface**: `api.errors.democracy.AlreadyDelegating.is`
+- **summary**:    The account is already delegating. 
  
-### InsufficientLiquidity
-- **summary**:   Liquidity is not enough 
+### AlreadyVetoed
+- **interface**: `api.errors.democracy.AlreadyVetoed.is`
+- **summary**:    Identity may not veto a proposal twice 
  
-### InsufficientTargetAmount
-- **summary**:   Target amount is less to min_target_amount 
+### BadIndex
+- **interface**: `api.errors.democracy.BadIndex.is`
+- **summary**:    Unknown index 
  
-### InvalidContributionIncrement
-- **summary**:   The increment of provision is invalid 
+### DuplicatePreimage
+- **interface**: `api.errors.democracy.DuplicatePreimage.is`
+- **summary**:    Preimage already noted 
  
-### InvalidCurrencyId
-- **summary**:   Invalid currency id 
+### DuplicateProposal
+- **interface**: `api.errors.democracy.DuplicateProposal.is`
+- **summary**:    Proposal already made 
  
-### InvalidLiquidityIncrement
-- **summary**:   The increment of liquidity is invalid 
+### Imminent
+- **interface**: `api.errors.democracy.Imminent.is`
+- **summary**:    Imminent 
  
-### InvalidTradingPathLength
-- **summary**:   Invalid trading path length 
+### InstantNotAllowed
+- **interface**: `api.errors.democracy.InstantNotAllowed.is`
+- **summary**:    The instant referendum origin is currently disallowed. 
  
-### MustBeEnabled
-- **summary**:   Trading pair must be in Enabled status 
+### InsufficientFunds
+- **interface**: `api.errors.democracy.InsufficientFunds.is`
+- **summary**:    Too high a balance was provided that the account cannot afford. 
  
-### MustBeNotEnabled
-- **summary**:   Trading pair must be in NotEnabled status 
+### InvalidHash
+- **interface**: `api.errors.democracy.InvalidHash.is`
+- **summary**:    Invalid hash 
  
-### MustBeProvisioning
-- **summary**:   Trading pair must be in Provisioning status 
+### InvalidWitness
+- **interface**: `api.errors.democracy.InvalidWitness.is`
+- **summary**:    The provided witness data is wrong. 
  
-### NotAllowedList
-- **summary**:   This trading pair is not allowed to be listed 
+### MaxVotesReached
+- **interface**: `api.errors.democracy.MaxVotesReached.is`
+- **summary**:    Maximum number of votes reached. 
  
-### NotEnabledTradingPair
-- **summary**:   Trading pair is in NotEnabled status 
+### NoneWaiting
+- **interface**: `api.errors.democracy.NoneWaiting.is`
+- **summary**:    No proposals waiting 
  
-### ZeroSupplyAmount
-- **summary**:   The supply amount is zero 
+### Nonsense
+- **interface**: `api.errors.democracy.Nonsense.is`
+- **summary**:    Delegation to oneself makes no sense. 
  
-### ZeroTargetAmount
-- **summary**:   The target amount is zero 
+### NoPermission
+- **interface**: `api.errors.democracy.NoPermission.is`
+- **summary**:    The actor has no permission to conduct the action. 
+ 
+### NoProposal
+- **interface**: `api.errors.democracy.NoProposal.is`
+- **summary**:    No external proposal 
+ 
+### NotDelegated
+- **interface**: `api.errors.democracy.NotDelegated.is`
+- **summary**:    Not delegated 
+ 
+### NotDelegating
+- **interface**: `api.errors.democracy.NotDelegating.is`
+- **summary**:    The account is not currently delegating. 
+ 
+### NotExpired
+- **interface**: `api.errors.democracy.NotExpired.is`
+- **summary**:    The lock on the account to be unlocked has not yet expired. 
+ 
+### NotImminent
+- **interface**: `api.errors.democracy.NotImminent.is`
+- **summary**:    Not imminent 
+ 
+### NotLocked
+- **interface**: `api.errors.democracy.NotLocked.is`
+- **summary**:    The target account does not have a lock. 
+ 
+### NotSimpleMajority
+- **interface**: `api.errors.democracy.NotSimpleMajority.is`
+- **summary**:    Next external proposal not simple majority 
+ 
+### NotVoter
+- **interface**: `api.errors.democracy.NotVoter.is`
+- **summary**:    The given account did not vote on the referendum. 
+ 
+### PreimageInvalid
+- **interface**: `api.errors.democracy.PreimageInvalid.is`
+- **summary**:    Invalid preimage 
+ 
+### PreimageMissing
+- **interface**: `api.errors.democracy.PreimageMissing.is`
+- **summary**:    Preimage not found 
+ 
+### ProposalBlacklisted
+- **interface**: `api.errors.democracy.ProposalBlacklisted.is`
+- **summary**:    Proposal still blacklisted 
+ 
+### ProposalMissing
+- **interface**: `api.errors.democracy.ProposalMissing.is`
+- **summary**:    Proposal does not exist 
+ 
+### ReferendumInvalid
+- **interface**: `api.errors.democracy.ReferendumInvalid.is`
+- **summary**:    Vote given for invalid referendum 
+ 
+### TooEarly
+- **interface**: `api.errors.democracy.TooEarly.is`
+- **summary**:    Too early 
+ 
+### TooManyProposals
+- **interface**: `api.errors.democracy.TooManyProposals.is`
+- **summary**:    Maximum number of proposals reached. 
+ 
+### ValueLow
+- **interface**: `api.errors.democracy.ValueLow.is`
+- **summary**:    Value too low 
+ 
+### VotesExist
+- **interface**: `api.errors.democracy.VotesExist.is`
+- **summary**:    The account currently has votes attached to it and the operation cannot succeed until  these are removed, either through `unvote` or `reap_vote`. 
+ 
+### WrongUpperBound
+- **interface**: `api.errors.democracy.WrongUpperBound.is`
+- **summary**:    Invalid upper bound. 
+
+___
+
+
+## electionProviderMultiPhase
+ 
+### CallNotAllowed
+- **interface**: `api.errors.electionProviderMultiPhase.CallNotAllowed.is`
+- **summary**:    The call is not allowed at this point. 
+ 
+### OcwCallWrongEra
+- **interface**: `api.errors.electionProviderMultiPhase.OcwCallWrongEra.is`
+- **summary**:    OCW submitted solution for wrong round 
+ 
+### PreDispatchEarlySubmission
+- **interface**: `api.errors.electionProviderMultiPhase.PreDispatchEarlySubmission.is`
+- **summary**:    Submission was too early. 
+ 
+### PreDispatchWeakSubmission
+- **interface**: `api.errors.electionProviderMultiPhase.PreDispatchWeakSubmission.is`
+- **summary**:    Submission was too weak, score-wise. 
+ 
+### PreDispatchWrongWinnerCount
+- **interface**: `api.errors.electionProviderMultiPhase.PreDispatchWrongWinnerCount.is`
+- **summary**:    Wrong number of winners presented. 
 
 ___
 
@@ -460,201 +704,109 @@ ___
 ## electionsPhragmen
  
 ### DuplicatedCandidate
-- **summary**:   Duplicated candidate submission. 
+- **interface**: `api.errors.elections.DuplicatedCandidate.is`
+- **summary**:    Duplicated candidate submission. 
  
 ### InsufficientCandidateFunds
-- **summary**:   Candidate does not have enough funds. 
- 
-### InvalidCandidateCount
-- **summary**:   The provided count of number of candidates is incorrect. 
+- **interface**: `api.errors.elections.InsufficientCandidateFunds.is`
+- **summary**:    Candidate does not have enough funds. 
  
 ### InvalidRenouncing
-- **summary**:   The renouncing origin presented a wrong `Renouncing` parameter. 
+- **interface**: `api.errors.elections.InvalidRenouncing.is`
+- **summary**:    The renouncing origin presented a wrong `Renouncing` parameter. 
  
 ### InvalidReplacement
-- **summary**:   Prediction regarding replacement after member removal is wrong. 
+- **interface**: `api.errors.elections.InvalidReplacement.is`
+- **summary**:    Prediction regarding replacement after member removal is wrong. 
  
 ### InvalidVoteCount
-- **summary**:   The provided count of number of votes is incorrect. 
+- **interface**: `api.errors.elections.InvalidVoteCount.is`
+- **summary**:    The provided count of number of votes is incorrect. 
+ 
+### InvalidWitnessData
+- **interface**: `api.errors.elections.InvalidWitnessData.is`
+- **summary**:    The provided count of number of candidates is incorrect. 
  
 ### LowBalance
-- **summary**:   Cannot vote with stake less than minimum balance. 
+- **interface**: `api.errors.elections.LowBalance.is`
+- **summary**:    Cannot vote with stake less than minimum balance. 
  
 ### MaximumVotesExceeded
-- **summary**:   Cannot vote more than maximum allowed. 
+- **interface**: `api.errors.elections.MaximumVotesExceeded.is`
+- **summary**:    Cannot vote more than maximum allowed. 
  
 ### MemberSubmit
-- **summary**:   Member cannot re-submit candidacy. 
+- **interface**: `api.errors.elections.MemberSubmit.is`
+- **summary**:    Member cannot re-submit candidacy. 
  
 ### MustBeVoter
-- **summary**:   Must be a voter. 
+- **interface**: `api.errors.elections.MustBeVoter.is`
+- **summary**:    Must be a voter. 
  
 ### NotMember
-- **summary**:   Not a member. 
+- **interface**: `api.errors.elections.NotMember.is`
+- **summary**:    Not a member. 
  
 ### NoVotes
-- **summary**:   Must vote for at least one candidate. 
+- **interface**: `api.errors.elections.NoVotes.is`
+- **summary**:    Must vote for at least one candidate. 
  
 ### ReportSelf
-- **summary**:   Cannot report self. 
+- **interface**: `api.errors.elections.ReportSelf.is`
+- **summary**:    Cannot report self. 
  
-### RunnerSubmit
-- **summary**:   Runner cannot re-submit candidacy. 
+### RunnerUpSubmit
+- **interface**: `api.errors.elections.RunnerUpSubmit.is`
+- **summary**:    Runner cannot re-submit candidacy. 
  
 ### TooManyVotes
-- **summary**:   Cannot vote more than candidates. 
+- **interface**: `api.errors.elections.TooManyVotes.is`
+- **summary**:    Cannot vote more than candidates. 
  
 ### UnableToPayBond
-- **summary**:   Voter can not pay voting bond. 
+- **interface**: `api.errors.elections.UnableToPayBond.is`
+- **summary**:    Voter can not pay voting bond. 
  
 ### UnableToVote
-- **summary**:   Cannot vote when no candidates or members exist. 
+- **interface**: `api.errors.elections.UnableToVote.is`
+- **summary**:    Cannot vote when no candidates or members exist. 
 
 ___
 
 
-## emergencyShutdown
+## gilt
  
-### AlreadyShutdown
-- **summary**:   System has already been shutdown 
+### AmountTooSmall
+- **interface**: `api.errors.gilt.AmountTooSmall.is`
+- **summary**:    The amount of the bid is less than the minimum allowed. 
  
-### CanNotRefund
-- **summary**:   Final redemption is still not opened 
+### BidTooLow
+- **interface**: `api.errors.gilt.BidTooLow.is`
+- **summary**:    The queue for the bid's duration is full and the amount bid is too low to get in through  replacing an existing bid. 
  
-### ExistPotentialSurplus
-- **summary**:   Exist potential surplus, means settlement has not been completed 
+### DurationTooBig
+- **interface**: `api.errors.gilt.DurationTooBig.is`
+- **summary**:    The duration is the bid is greater than the number of queues. 
  
-### ExistUnhandledDebit
-- **summary**:   Exist unhandled debit, means settlement has not been completed 
+### DurationTooSmall
+- **interface**: `api.errors.gilt.DurationTooSmall.is`
+- **summary**:    The duration of the bid is less than one. 
  
-### MustAfterShutdown
-- **summary**:   Must after system shutdown 
-
-___
-
-
-## eVM
+### NotExpired
+- **interface**: `api.errors.gilt.NotExpired.is`
+- **summary**:    Gilt not yet at expiry date. 
  
-### AddressNotMapped
-- **summary**:   Address not mapped 
+### NotFound
+- **interface**: `api.errors.gilt.NotFound.is`
+- **summary**:    The given bid for retraction is not found. 
  
-### ContractAlreadyDeployed
-- **summary**:   Contract already deployed 
+### NotOwner
+- **interface**: `api.errors.gilt.NotOwner.is`
+- **summary**:    Not the owner of the gilt. 
  
-### ContractDevelopmentAlreadyEnabled
-- **summary**:   Contract development is already enabled 
- 
-### ContractDevelopmentNotEnabled
-- **summary**:   Contract development is not enabled 
- 
-### ContractNotFound
-- **summary**:   Contract not found 
- 
-### NoPermission
-- **summary**:   No permission 
- 
-### NumOutOfBound
-- **summary**:   Number out of bound in calculation. 
- 
-### PendingTransferMaintainersExists
-- **summary**:   Pending transfer maintainers exists 
- 
-### PendingTransferMaintainersNotExists
-- **summary**:   Pending transfer maintainers not exists 
- 
-### StorageQuotaNotEnough
-- **summary**:   Storage quota not enough 
- 
-### UnreserveFailed
-- **summary**:   Unreserve failed 
-
-___
-
-
-## evmAccounts
- 
-### AccountIdHasMapped
-- **summary**:   AccountId has mapped 
- 
-### BadSignature
-- **summary**:   Bad signature 
- 
-### EthAddressHasMapped
-- **summary**:   Eth address has mapped 
- 
-### InvalidSignature
-- **summary**:   Invalid signature 
- 
-### NonZeroRefCount
-- **summary**:   Account ref count is not zero 
- 
-### StillHasActiveReserved
-- **summary**:   Account still has active reserved 
-
-___
-
-
-## eVMBridge
- 
-### ExecutionError
- 
-### ExecutionFail
- 
-### ExecutionFatal
- 
-### ExecutionRevert
-
-___
-
-
-## generalCouncil
- 
-### AlreadyInitialized
-- **summary**:   Members are already initialized! 
- 
-### DuplicateProposal
-- **summary**:   Duplicate proposals not allowed 
- 
-### DuplicateVote
-- **summary**:   Duplicate vote ignored 
- 
-### NotMember
-- **summary**:   Account is not a member 
- 
-### ProposalMissing
-- **summary**:   Proposal must exist 
- 
-### TooEarly
-- **summary**:   The close call was made too early, before the end of the voting. 
- 
-### TooManyProposals
-- **summary**:   There can only be a maximum of `MaxProposals` active proposals. 
- 
-### WrongIndex
-- **summary**:   Mismatched index 
- 
-### WrongProposalLength
-- **summary**:   The given length bound for the proposal was too low. 
- 
-### WrongProposalWeight
-- **summary**:   The given weight bound for the proposal was too low. 
-
-___
-
-
-## graduallyUpdate
- 
-### GraduallyUpdateHasExisted
-- **summary**:   Another update is already been scheduled for this key. 
- 
-### GraduallyUpdateNotFound
-- **summary**:   No update exists to cancel. 
- 
-### InvalidPerBlockOrTargetValue
-- **summary**:   The `per_block` or `target_value` is invalid. 
- 
-### InvalidTargetValue
-- **summary**:   The `target_value` is invalid. 
+### Unknown
+- **interface**: `api.errors.gilt.Unknown.is`
+- **summary**:    Gilt index is unknown. 
 
 ___
 
@@ -662,130 +814,172 @@ ___
 ## grandpa
  
 ### ChangePending
-- **summary**:   Attempt to signal GRANDPA change with one already pending. 
+- **interface**: `api.errors.grandpa.ChangePending.is`
+- **summary**:    Attempt to signal GRANDPA change with one already pending. 
  
 ### DuplicateOffenceReport
-- **summary**:   A given equivocation report is valid but already previously reported. 
+- **interface**: `api.errors.grandpa.DuplicateOffenceReport.is`
+- **summary**:    A given equivocation report is valid but already previously reported. 
  
 ### InvalidEquivocationProof
-- **summary**:   An equivocation proof provided as part of an equivocation report is invalid. 
+- **interface**: `api.errors.grandpa.InvalidEquivocationProof.is`
+- **summary**:    An equivocation proof provided as part of an equivocation report is invalid. 
  
 ### InvalidKeyOwnershipProof
-- **summary**:   A key ownership proof provided as part of an equivocation report is invalid. 
+- **interface**: `api.errors.grandpa.InvalidKeyOwnershipProof.is`
+- **summary**:    A key ownership proof provided as part of an equivocation report is invalid. 
  
 ### PauseFailed
-- **summary**:   Attempt to signal GRANDPA pause when the authority set isn't live (either paused or already pending pause). 
+- **interface**: `api.errors.grandpa.PauseFailed.is`
+- **summary**:    Attempt to signal GRANDPA pause when the authority set isn't live  (either paused or already pending pause). 
  
 ### ResumeFailed
-- **summary**:   Attempt to signal GRANDPA resume when the authority set isn't paused (either live or already pending resume). 
+- **interface**: `api.errors.grandpa.ResumeFailed.is`
+- **summary**:    Attempt to signal GRANDPA resume when the authority set isn't paused  (either live or already pending resume). 
  
 ### TooSoon
-- **summary**:   Cannot signal forced change so soon after last. 
+- **interface**: `api.errors.grandpa.TooSoon.is`
+- **summary**:    Cannot signal forced change so soon after last. 
 
 ___
 
 
 ## homaCouncil
  
-### AlreadyInitialized
-- **summary**:   Members are already initialized! 
+### AlreadyClaimed
+- **interface**: `api.errors.identity.AlreadyClaimed.is`
+- **summary**:    Account ID is already named. 
  
-### DuplicateProposal
-- **summary**:   Duplicate proposals not allowed 
+### EmptyIndex
+- **interface**: `api.errors.identity.EmptyIndex.is`
+- **summary**:    Empty index. 
  
-### DuplicateVote
-- **summary**:   Duplicate vote ignored 
+### FeeChanged
+- **interface**: `api.errors.identity.FeeChanged.is`
+- **summary**:    Fee is changed. 
  
-### NotMember
-- **summary**:   Account is not a member 
+### InvalidIndex
+- **interface**: `api.errors.identity.InvalidIndex.is`
+- **summary**:    The index is invalid. 
  
-### ProposalMissing
-- **summary**:   Proposal must exist 
+### InvalidJudgement
+- **interface**: `api.errors.identity.InvalidJudgement.is`
+- **summary**:    Invalid judgement. 
  
-### TooEarly
-- **summary**:   The close call was made too early, before the end of the voting. 
+### InvalidTarget
+- **interface**: `api.errors.identity.InvalidTarget.is`
+- **summary**:    The target is invalid. 
  
-### TooManyProposals
-- **summary**:   There can only be a maximum of `MaxProposals` active proposals. 
+### JudgementGiven
+- **interface**: `api.errors.identity.JudgementGiven.is`
+- **summary**:    Judgement given. 
  
-### WrongIndex
-- **summary**:   Mismatched index 
+### NoIdentity
+- **interface**: `api.errors.identity.NoIdentity.is`
+- **summary**:    No identity found. 
  
-### WrongProposalLength
-- **summary**:   The given length bound for the proposal was too low. 
+### NotFound
+- **interface**: `api.errors.identity.NotFound.is`
+- **summary**:    Account isn't found. 
  
-### WrongProposalWeight
-- **summary**:   The given weight bound for the proposal was too low. 
-
-___
-
-
-## honzon
+### NotNamed
+- **interface**: `api.errors.identity.NotNamed.is`
+- **summary**:    Account isn't named. 
  
-### AlreadyShutdown
+### NotOwned
+- **interface**: `api.errors.identity.NotOwned.is`
+- **summary**:    Sub-account isn't owned by sender. 
  
-### NoAuthorization
-
-___
-
-
-## honzonCouncil
+### NotSub
+- **interface**: `api.errors.identity.NotSub.is`
+- **summary**:    Sender is not a sub-account. 
  
-### AlreadyInitialized
-- **summary**:   Members are already initialized! 
+### StickyJudgement
+- **interface**: `api.errors.identity.StickyJudgement.is`
+- **summary**:    Sticky judgement. 
  
-### DuplicateProposal
-- **summary**:   Duplicate proposals not allowed 
+### TooManyFields
+- **interface**: `api.errors.identity.TooManyFields.is`
+- **summary**:    Too many additional fields. 
  
-### DuplicateVote
-- **summary**:   Duplicate vote ignored 
+### TooManyRegistrars
+- **interface**: `api.errors.identity.TooManyRegistrars.is`
+- **summary**:    Maximum amount of registrars reached. Cannot add any more. 
  
-### NotMember
-- **summary**:   Account is not a member 
- 
-### ProposalMissing
-- **summary**:   Proposal must exist 
- 
-### TooEarly
-- **summary**:   The close call was made too early, before the end of the voting. 
- 
-### TooManyProposals
-- **summary**:   There can only be a maximum of `MaxProposals` active proposals. 
- 
-### WrongIndex
-- **summary**:   Mismatched index 
- 
-### WrongProposalLength
-- **summary**:   The given length bound for the proposal was too low. 
- 
-### WrongProposalWeight
-- **summary**:   The given weight bound for the proposal was too low. 
+### TooManySubAccounts
+- **interface**: `api.errors.identity.TooManySubAccounts.is`
+- **summary**:    Too many subs-accounts. 
 
 ___
 
 
 ## incentives
  
-### InvalidCurrencyId
-- **summary**:   Invalid currency id 
+### DuplicatedHeartbeat
+- **interface**: `api.errors.imOnline.DuplicatedHeartbeat.is`
+- **summary**:    Duplicated heartbeat. 
  
-### NotEnough
-- **summary**:   Share amount is not enough 
+### InvalidKey
+- **interface**: `api.errors.imOnline.InvalidKey.is`
+- **summary**:    Non existent public key. 
 
 ___
 
 
-## loans
+## indices
  
-### AmountConvertFailed
+### InUse
+- **interface**: `api.errors.indices.InUse.is`
+- **summary**:    The index was not available. 
  
-### CollateralOverflow
+### NotAssigned
+- **interface**: `api.errors.indices.NotAssigned.is`
+- **summary**:    The index was not already assigned. 
  
-### CollateralTooLow
+### NotOwner
+- **interface**: `api.errors.indices.NotOwner.is`
+- **summary**:    The index is assigned to another account. 
  
-### DebitOverflow
+### NotTransfer
+- **interface**: `api.errors.indices.NotTransfer.is`
+- **summary**:    The source and destination accounts are identical. 
  
-### DebitTooLow
+### Permanent
+- **interface**: `api.errors.indices.Permanent.is`
+- **summary**:    The index is permanent and may not be freed/changed. 
+
+___
+
+
+## lottery
+ 
+### AlreadyEnded
+- **interface**: `api.errors.lottery.AlreadyEnded.is`
+- **summary**:    A lottery has already ended. 
+ 
+### AlreadyParticipating
+- **interface**: `api.errors.lottery.AlreadyParticipating.is`
+- **summary**:    You are already participating in the lottery with this call. 
+ 
+### EncodingFailed
+- **interface**: `api.errors.lottery.EncodingFailed.is`
+- **summary**:    Failed to encode calls 
+ 
+### InProgress
+- **interface**: `api.errors.lottery.InProgress.is`
+- **summary**:    A lottery is already in progress. 
+ 
+### InvalidCall
+- **interface**: `api.errors.lottery.InvalidCall.is`
+- **summary**:    The call is not valid for an open lottery. 
+ 
+### NotConfigured
+- **interface**: `api.errors.lottery.NotConfigured.is`
+- **summary**:    A lottery has not been configured. 
+ 
+### TooManyCalls
+- **interface**: `api.errors.lottery.TooManyCalls.is`
+- **summary**:    Too many calls for a single lottery. 
 
 ___
 
@@ -793,46 +987,60 @@ ___
 ## multisig
  
 ### AlreadyApproved
-- **summary**:   Call is already approved by this signatory. 
+- **interface**: `api.errors.multisig.AlreadyApproved.is`
+- **summary**:    Call is already approved by this signatory. 
  
 ### AlreadyStored
-- **summary**:   The data to be stored is already stored. 
+- **interface**: `api.errors.multisig.AlreadyStored.is`
+- **summary**:    The data to be stored is already stored. 
+ 
+### MaxWeightTooLow
+- **interface**: `api.errors.multisig.MaxWeightTooLow.is`
+- **summary**:    The maximum weight information provided was too low. 
  
 ### MinimumThreshold
-- **summary**:   Threshold must be 2 or greater. 
+- **interface**: `api.errors.multisig.MinimumThreshold.is`
+- **summary**:    Threshold must be 2 or greater. 
  
 ### NoApprovalsNeeded
-- **summary**:   Call doesn't need any (more) approvals. 
+- **interface**: `api.errors.multisig.NoApprovalsNeeded.is`
+- **summary**:    Call doesn't need any (more) approvals. 
  
 ### NotFound
-- **summary**:   Multisig operation not found when attempting to cancel. 
+- **interface**: `api.errors.multisig.NotFound.is`
+- **summary**:    Multisig operation not found when attempting to cancel. 
  
 ### NoTimepoint
-- **summary**:   No timepoint was given, yet the multisig operation is already underway. 
+- **interface**: `api.errors.multisig.NoTimepoint.is`
+- **summary**:    No timepoint was given, yet the multisig operation is already underway. 
  
 ### NotOwner
-- **summary**:   Only the account that originally created the multisig is able to cancel it. 
+- **interface**: `api.errors.multisig.NotOwner.is`
+- **summary**:    Only the account that originally created the multisig is able to cancel it. 
  
 ### SenderInSignatories
-- **summary**:   The sender was contained in the other signatories; it shouldn't be. 
+- **interface**: `api.errors.multisig.SenderInSignatories.is`
+- **summary**:    The sender was contained in the other signatories; it shouldn't be. 
  
 ### SignatoriesOutOfOrder
-- **summary**:   The signatories were provided out of order; they should be ordered. 
+- **interface**: `api.errors.multisig.SignatoriesOutOfOrder.is`
+- **summary**:    The signatories were provided out of order; they should be ordered. 
  
 ### TooFewSignatories
-- **summary**:   There are too few signatories in the list. 
+- **interface**: `api.errors.multisig.TooFewSignatories.is`
+- **summary**:    There are too few signatories in the list. 
  
 ### TooManySignatories
-- **summary**:   There are too many signatories in the list. 
+- **interface**: `api.errors.multisig.TooManySignatories.is`
+- **summary**:    There are too many signatories in the list. 
  
 ### UnexpectedTimepoint
-- **summary**:   A timepoint was given, yet no multisig operation is underway. 
- 
-### WeightTooLow
-- **summary**:   The maximum weight information provided was too low. 
+- **interface**: `api.errors.multisig.UnexpectedTimepoint.is`
+- **summary**:    A timepoint was given, yet no multisig operation is underway. 
  
 ### WrongTimepoint
-- **summary**:   A different timepoint was given to the multisig operation that is underway. 
+- **interface**: `api.errors.multisig.WrongTimepoint.is`
+- **summary**:    A different timepoint was given to the multisig operation that is underway. 
 
 ___
 
@@ -890,25 +1098,36 @@ ___
 ## proxy
  
 ### Duplicate
-- **summary**:   Account is already a proxy. 
+- **interface**: `api.errors.proxy.Duplicate.is`
+- **summary**:    Account is already a proxy. 
  
 ### NoPermission
-- **summary**:   Call may not be made by proxy because it may escalate its privileges. 
+- **interface**: `api.errors.proxy.NoPermission.is`
+- **summary**:    Call may not be made by proxy because it may escalate its privileges. 
+ 
+### NoSelfProxy
+- **interface**: `api.errors.proxy.NoSelfProxy.is`
+- **summary**:    Cannot add self as proxy. 
  
 ### NotFound
-- **summary**:   Proxy registration not found. 
+- **interface**: `api.errors.proxy.NotFound.is`
+- **summary**:    Proxy registration not found. 
  
 ### NotProxy
-- **summary**:   Sender is not a proxy of the account to be proxied. 
+- **interface**: `api.errors.proxy.NotProxy.is`
+- **summary**:    Sender is not a proxy of the account to be proxied. 
  
 ### TooMany
-- **summary**:   There are too many proxies registered or too many announcements pending. 
+- **interface**: `api.errors.proxy.TooMany.is`
+- **summary**:    There are too many proxies registered or too many announcements pending. 
  
 ### Unannounced
-- **summary**:   Announcement, if made at all, was made too recently. 
+- **interface**: `api.errors.proxy.Unannounced.is`
+- **summary**:    Announcement, if made at all, was made too recently. 
  
 ### Unproxyable
-- **summary**:   A call which is incompatible with the proxy type's filter was attempted. 
+- **interface**: `api.errors.proxy.Unproxyable.is`
+- **summary**:    A call which is incompatible with the proxy type's filter was attempted. 
 
 ___
 
@@ -916,74 +1135,85 @@ ___
 ## recovery
  
 ### AlreadyProxy
-- **summary**:   This account is already set up for recovery 
+- **interface**: `api.errors.recovery.AlreadyProxy.is`
+- **summary**:    This account is already set up for recovery 
  
 ### AlreadyRecoverable
-- **summary**:   This account is already set up for recovery 
+- **interface**: `api.errors.recovery.AlreadyRecoverable.is`
+- **summary**:    This account is already set up for recovery 
  
 ### AlreadyStarted
-- **summary**:   A recovery process has already started for this account 
+- **interface**: `api.errors.recovery.AlreadyStarted.is`
+- **summary**:    A recovery process has already started for this account 
  
 ### AlreadyVouched
-- **summary**:   This user has already vouched for this recovery 
+- **interface**: `api.errors.recovery.AlreadyVouched.is`
+- **summary**:    This user has already vouched for this recovery 
+ 
+### BadState
+- **interface**: `api.errors.recovery.BadState.is`
+- **summary**:    Some internal state is broken. 
  
 ### DelayPeriod
-- **summary**:   The friend must wait until the delay period to vouch for this recovery 
+- **interface**: `api.errors.recovery.DelayPeriod.is`
+- **summary**:    The friend must wait until the delay period to vouch for this recovery 
  
 ### MaxFriends
-- **summary**:   Friends list must be less than max friends 
+- **interface**: `api.errors.recovery.MaxFriends.is`
+- **summary**:    Friends list must be less than max friends 
  
 ### NotAllowed
-- **summary**:   User is not allowed to make a call on behalf of this account 
+- **interface**: `api.errors.recovery.NotAllowed.is`
+- **summary**:    User is not allowed to make a call on behalf of this account 
  
 ### NotEnoughFriends
-- **summary**:   Friends list must be greater than zero and threshold 
+- **interface**: `api.errors.recovery.NotEnoughFriends.is`
+- **summary**:    Friends list must be greater than zero and threshold 
  
 ### NotFriend
-- **summary**:   This account is not a friend who can vouch 
+- **interface**: `api.errors.recovery.NotFriend.is`
+- **summary**:    This account is not a friend who can vouch 
  
 ### NotRecoverable
-- **summary**:   This account is not set up for recovery 
+- **interface**: `api.errors.recovery.NotRecoverable.is`
+- **summary**:    This account is not set up for recovery 
  
 ### NotSorted
-- **summary**:   Friends list must be sorted and free of duplicates 
+- **interface**: `api.errors.recovery.NotSorted.is`
+- **summary**:    Friends list must be sorted and free of duplicates 
  
 ### NotStarted
-- **summary**:   A recovery process has not started for this rescuer 
- 
-### Overflow
-- **summary**:   There was an overflow in a calculation 
+- **interface**: `api.errors.recovery.NotStarted.is`
+- **summary**:    A recovery process has not started for this rescuer 
  
 ### StillActive
-- **summary**:   There are still active recovery attempts that need to be closed 
+- **interface**: `api.errors.recovery.StillActive.is`
+- **summary**:    There are still active recovery attempts that need to be closed 
  
 ### Threshold
-- **summary**:   The threshold for recovering this account has not been met 
+- **interface**: `api.errors.recovery.Threshold.is`
+- **summary**:    The threshold for recovering this account has not been met 
  
 ### ZeroThreshold
-- **summary**:   Threshold must be greater than zero 
+- **interface**: `api.errors.recovery.ZeroThreshold.is`
+- **summary**:    Threshold must be greater than zero 
 
 ___
 
 
 ## renVmBridge
  
-### BurnIdOverflow
-- **summary**:   Burn ID overflow. 
- 
-### InvalidMintSignature
-- **summary**:   The mint signature is invalid. 
- 
-### SignatureAlreadyUsed
-- **summary**:   The mint signature has already been used. 
-
-___
-
-
-## scheduler
- 
 ### FailedToSchedule
-- **summary**:   Failed to schedule a call 
+- **interface**: `api.errors.scheduler.FailedToSchedule.is`
+- **summary**:    Failed to schedule a call 
+ 
+### NotFound
+- **interface**: `api.errors.scheduler.NotFound.is`
+- **summary**:    Cannot find the scheduled call. 
+ 
+### RescheduleNoChange
+- **interface**: `api.errors.scheduler.RescheduleNoChange.is`
+- **summary**:    Reschedule failed because it does not change scheduled time. 
  
 ### NotFound
 - **summary**:   Cannot find the scheduled call. 
@@ -992,7 +1222,8 @@ ___
 - **summary**:   Reschedule failed because it does not change scheduled time. 
  
 ### TargetBlockNumberInPast
-- **summary**:   Given target block number is in the past. 
+- **interface**: `api.errors.scheduler.TargetBlockNumberInPast.is`
+- **summary**:    Given target block number is in the past. 
 
 ___
 
@@ -1000,16 +1231,101 @@ ___
 ## session
  
 ### DuplicatedKey
-- **summary**:   Registered duplicate key. 
+- **interface**: `api.errors.session.DuplicatedKey.is`
+- **summary**:    Registered duplicate key. 
  
 ### InvalidProof
-- **summary**:   Invalid ownership proof. 
+- **interface**: `api.errors.session.InvalidProof.is`
+- **summary**:    Invalid ownership proof. 
+ 
+### NoAccount
+- **interface**: `api.errors.session.NoAccount.is`
+- **summary**:    Key setting account is not live, so it's impossible to associate keys. 
  
 ### NoAssociatedValidatorId
-- **summary**:   No associated validator ID for account. 
+- **interface**: `api.errors.session.NoAssociatedValidatorId.is`
+- **summary**:    No associated validator ID for account. 
  
 ### NoKeys
-- **summary**:   No keys are associated with this account. 
+- **interface**: `api.errors.session.NoKeys.is`
+- **summary**:    No keys are associated with this account. 
+
+___
+
+
+## society
+ 
+### AlreadyBid
+- **interface**: `api.errors.society.AlreadyBid.is`
+- **summary**:    User has already made a bid. 
+ 
+### AlreadyCandidate
+- **interface**: `api.errors.society.AlreadyCandidate.is`
+- **summary**:    User is already a candidate. 
+ 
+### AlreadyFounded
+- **interface**: `api.errors.society.AlreadyFounded.is`
+- **summary**:    Society already founded. 
+ 
+### AlreadyMember
+- **interface**: `api.errors.society.AlreadyMember.is`
+- **summary**:    User is already a member. 
+ 
+### AlreadyVouching
+- **interface**: `api.errors.society.AlreadyVouching.is`
+- **summary**:    Member is already vouching or banned from vouching again. 
+ 
+### BadPosition
+- **interface**: `api.errors.society.BadPosition.is`
+- **summary**:    An incorrect position was provided. 
+ 
+### Founder
+- **interface**: `api.errors.society.Founder.is`
+- **summary**:    Cannot remove the founder. 
+ 
+### Head
+- **interface**: `api.errors.society.Head.is`
+- **summary**:    Cannot remove the head of the chain. 
+ 
+### InsufficientPot
+- **interface**: `api.errors.society.InsufficientPot.is`
+- **summary**:    Not enough in pot to accept candidate. 
+ 
+### MaxMembers
+- **interface**: `api.errors.society.MaxMembers.is`
+- **summary**:    Too many members in the society. 
+ 
+### NoPayout
+- **interface**: `api.errors.society.NoPayout.is`
+- **summary**:    Nothing to payout. 
+ 
+### NotCandidate
+- **interface**: `api.errors.society.NotCandidate.is`
+- **summary**:    User is not a candidate. 
+ 
+### NotFounder
+- **interface**: `api.errors.society.NotFounder.is`
+- **summary**:    The caller is not the founder. 
+ 
+### NotHead
+- **interface**: `api.errors.society.NotHead.is`
+- **summary**:    The caller is not the head. 
+ 
+### NotMember
+- **interface**: `api.errors.society.NotMember.is`
+- **summary**:    User is not a member. 
+ 
+### NotSuspended
+- **interface**: `api.errors.society.NotSuspended.is`
+- **summary**:    User is not suspended. 
+ 
+### NotVouching
+- **interface**: `api.errors.society.NotVouching.is`
+- **summary**:    Member is not vouching. 
+ 
+### Suspended
+- **interface**: `api.errors.society.Suspended.is`
+- **summary**:    User is suspended. 
 
 ___
 
@@ -1017,97 +1333,96 @@ ___
 ## staking
  
 ### AlreadyBonded
-- **summary**:   Stash is already bonded. 
+- **interface**: `api.errors.staking.AlreadyBonded.is`
+- **summary**:    Stash is already bonded. 
  
 ### AlreadyClaimed
-- **summary**:   Rewards for this era have already been claimed for this validator. 
+- **interface**: `api.errors.staking.AlreadyClaimed.is`
+- **summary**:    Rewards for this era have already been claimed for this validator. 
  
 ### AlreadyPaired
-- **summary**:   Controller is already paired. 
+- **interface**: `api.errors.staking.AlreadyPaired.is`
+- **summary**:    Controller is already paired. 
  
-### CallNotAllowed
-- **summary**:   The call is not allowed at the given time due to restrictions of election period. 
+### BadState
+- **interface**: `api.errors.staking.BadState.is`
+- **summary**:    Internal state has become somehow corrupted and the operation cannot continue. 
+ 
+### BadTarget
+- **interface**: `api.errors.staking.BadTarget.is`
+- **summary**:    A nomination target was supplied that was blocked or otherwise not a validator. 
+ 
+### CannotChillOther
+- **interface**: `api.errors.staking.CannotChillOther.is`
+- **summary**:    The user has enough bond and thus cannot be chilled forcefully by an external person. 
  
 ### DuplicateIndex
-- **summary**:   Duplicate index. 
+- **interface**: `api.errors.staking.DuplicateIndex.is`
+- **summary**:    Duplicate index. 
  
 ### EmptyTargets
-- **summary**:   Targets cannot be empty. 
+- **interface**: `api.errors.staking.EmptyTargets.is`
+- **summary**:    Targets cannot be empty. 
  
 ### FundedTarget
-- **summary**:   Attempting to target a stash that still has funds. 
+- **interface**: `api.errors.staking.FundedTarget.is`
+- **summary**:    Attempting to target a stash that still has funds. 
  
 ### IncorrectHistoryDepth
-- **summary**:   Incorrect previous history depth input provided. 
+- **interface**: `api.errors.staking.IncorrectHistoryDepth.is`
+- **summary**:    Incorrect previous history depth input provided. 
  
 ### IncorrectSlashingSpans
-- **summary**:   Incorrect number of slashing spans provided. 
+- **interface**: `api.errors.staking.IncorrectSlashingSpans.is`
+- **summary**:    Incorrect number of slashing spans provided. 
  
-### InsufficientValue
-- **summary**:   Can not bond with value less than minimum balance. 
+### InsufficientBond
+- **interface**: `api.errors.staking.InsufficientBond.is`
+- **summary**:    Can not bond with value less than minimum required. 
  
 ### InvalidEraToReward
-- **summary**:   Invalid era to reward. 
+- **interface**: `api.errors.staking.InvalidEraToReward.is`
+- **summary**:    Invalid era to reward. 
  
 ### InvalidNumberOfNominations
-- **summary**:   Invalid number of nominations. 
+- **interface**: `api.errors.staking.InvalidNumberOfNominations.is`
+- **summary**:    Invalid number of nominations. 
  
 ### InvalidSlashIndex
-- **summary**:   Slash record index out of bounds. 
+- **interface**: `api.errors.staking.InvalidSlashIndex.is`
+- **summary**:    Slash record index out of bounds. 
  
 ### NoMoreChunks
-- **summary**:   Can not schedule more unlock chunks. 
+- **interface**: `api.errors.staking.NoMoreChunks.is`
+- **summary**:    Can not schedule more unlock chunks. 
  
 ### NotController
-- **summary**:   Not a controller account. 
+- **interface**: `api.errors.staking.NotController.is`
+- **summary**:    Not a controller account. 
  
 ### NotSortedAndUnique
-- **summary**:   Items are not sorted and unique. 
+- **interface**: `api.errors.staking.NotSortedAndUnique.is`
+- **summary**:    Items are not sorted and unique. 
  
 ### NotStash
-- **summary**:   Not a stash account. 
+- **interface**: `api.errors.staking.NotStash.is`
+- **summary**:    Not a stash account. 
  
 ### NoUnlockChunk
-- **summary**:   Can not rebond without unlocking chunks. 
+- **interface**: `api.errors.staking.NoUnlockChunk.is`
+- **summary**:    Can not rebond without unlocking chunks. 
  
-### OffchainElectionBogusCompact
-- **summary**:   Error while building the assignment type from the compact. This can happen if an index is invalid, or if the weights _overflow_. 
+### TooManyNominators
+- **interface**: `api.errors.staking.TooManyNominators.is`
+- **summary**:    There are too many nominators in the system. Governance needs to adjust the staking settings  to keep things safe for the runtime. 
  
-### OffchainElectionBogusEdge
-- **summary**:   The submitted result has unknown edges that are not among the presented winners. 
+### TooManyTargets
+- **interface**: `api.errors.staking.TooManyTargets.is`
+- **summary**:    Too many nomination targets supplied. 
  
-### OffchainElectionBogusElectionSize
-- **summary**:   The election size is invalid. 
- 
-### OffchainElectionBogusNomination
-- **summary**:   One of the submitted nominators has an edge to which they have not voted on chain. 
- 
-### OffchainElectionBogusNominator
-- **summary**:   One of the submitted nominators is not an active nominator on chain. 
- 
-### OffchainElectionBogusScore
-- **summary**:   The claimed score does not match with the one computed from the data. 
- 
-### OffchainElectionBogusSelfVote
-- **summary**:   A self vote must only be originated from a validator to ONLY themselves. 
- 
-### OffchainElectionBogusWinner
-- **summary**:   One of the submitted winners is not an active candidate on chain (index is out of range in snapshot). 
- 
-### OffchainElectionBogusWinnerCount
-- **summary**:   Incorrect number of winners were presented. 
- 
-### OffchainElectionEarlySubmission
-- **summary**:   The submitted result is received out of the open window. 
- 
-### OffchainElectionSlashedNomination
-- **summary**:   One of the submitted nominators has an edge which is submitted before the last non-zero slash of the target. 
- 
-### OffchainElectionWeakSubmission
-- **summary**:   The submitted result is not as good as the one stored on chain. 
- 
-### SnapshotUnavailable
-- **summary**:   The snapshot data of the current window is missing. 
+### TooManyValidators
+- **interface**: `api.errors.staking.TooManyValidators.is`
+- **summary**:    There are too many validators in the system. Governance needs to adjust the staking settings  to keep things safe for the runtime. 
 
 ___
 
@@ -1132,7 +1447,8 @@ ___
 ## sudo
  
 ### RequireSudo
-- **summary**:   Sender must be the Sudo account 
+- **interface**: `api.errors.sudo.RequireSudo.is`
+- **summary**:    Sender must be the Sudo account 
 
 ___
 
@@ -1140,21 +1456,26 @@ ___
 ## system
  
 ### FailedToExtractRuntimeVersion
-- **summary**:   Failed to extract the runtime version from the new runtime. 
+- **interface**: `api.errors.system.FailedToExtractRuntimeVersion.is`
+- **summary**:    Failed to extract the runtime version from the new runtime. 
 
-  Either calling `Core_version` or decoding `RuntimeVersion` failed. 
+   Either calling `Core_version` or decoding `RuntimeVersion` failed. 
  
 ### InvalidSpecName
-- **summary**:   The name of specification does not match between the current runtime and the new runtime. 
+- **interface**: `api.errors.system.InvalidSpecName.is`
+- **summary**:    The name of specification does not match between the current runtime  and the new runtime. 
  
 ### NonDefaultComposite
-- **summary**:   Suicide called when the account has non-default composite data. 
+- **interface**: `api.errors.system.NonDefaultComposite.is`
+- **summary**:    Suicide called when the account has non-default composite data. 
  
 ### NonZeroRefCount
-- **summary**:   There is a non-zero reference count preventing the account from being purged. 
+- **interface**: `api.errors.system.NonZeroRefCount.is`
+- **summary**:    There is a non-zero reference count preventing the account from being purged. 
  
 ### SpecVersionNeedsToIncrease
-- **summary**:   The specification version is not allowed to decrease between the current runtime and the new runtime. 
+- **interface**: `api.errors.system.SpecVersionNeedsToIncrease.is`
+- **summary**:    The specification version is not allowed to decrease between the current runtime  and the new runtime. 
 
 ___
 
@@ -1162,57 +1483,205 @@ ___
 ## technicalCommittee
  
 ### AlreadyInitialized
-- **summary**:   Members are already initialized! 
+- **interface**: `api.errors.technicalCommittee.AlreadyInitialized.is`
+- **summary**:    Members are already initialized! 
  
 ### DuplicateProposal
-- **summary**:   Duplicate proposals not allowed 
+- **interface**: `api.errors.technicalCommittee.DuplicateProposal.is`
+- **summary**:    Duplicate proposals not allowed 
  
 ### DuplicateVote
-- **summary**:   Duplicate vote ignored 
+- **interface**: `api.errors.technicalCommittee.DuplicateVote.is`
+- **summary**:    Duplicate vote ignored 
  
 ### NotMember
-- **summary**:   Account is not a member 
+- **interface**: `api.errors.technicalCommittee.NotMember.is`
+- **summary**:    Account is not a member 
  
 ### ProposalMissing
-- **summary**:   Proposal must exist 
+- **interface**: `api.errors.technicalCommittee.ProposalMissing.is`
+- **summary**:    Proposal must exist 
  
 ### TooEarly
-- **summary**:   The close call was made too early, before the end of the voting. 
+- **interface**: `api.errors.technicalCommittee.TooEarly.is`
+- **summary**:    The close call was made too early, before the end of the voting. 
  
 ### TooManyProposals
-- **summary**:   There can only be a maximum of `MaxProposals` active proposals. 
+- **interface**: `api.errors.technicalCommittee.TooManyProposals.is`
+- **summary**:    There can only be a maximum of `MaxProposals` active proposals. 
  
 ### WrongIndex
-- **summary**:   Mismatched index 
+- **interface**: `api.errors.technicalCommittee.WrongIndex.is`
+- **summary**:    Mismatched index 
  
 ### WrongProposalLength
-- **summary**:   The given length bound for the proposal was too low. 
+- **interface**: `api.errors.technicalCommittee.WrongProposalLength.is`
+- **summary**:    The given length bound for the proposal was too low. 
  
 ### WrongProposalWeight
-- **summary**:   The given weight bound for the proposal was too low. 
+- **interface**: `api.errors.technicalCommittee.WrongProposalWeight.is`
+- **summary**:    The given weight bound for the proposal was too low. 
 
 ___
 
 
-## tokens
+## technicalMembership
  
-### AmountIntoBalanceFailed
-- **summary**:   Cannot convert Amount into Balance type 
+### AlreadyMember
+- **interface**: `api.errors.technicalMembership.AlreadyMember.is`
+- **summary**:    Already a member. 
  
-### BalanceOverflow
-- **summary**:   This operation will cause balance to overflow 
+### NotMember
+- **interface**: `api.errors.technicalMembership.NotMember.is`
+- **summary**:    Not a member. 
+
+___
+
+
+## tips
  
-### BalanceTooLow
-- **summary**:   The balance is too low 
+### AlreadyKnown
+- **interface**: `api.errors.tips.AlreadyKnown.is`
+- **summary**:    The tip was already found/started. 
  
-### LiquidityRestrictions
-- **summary**:   Failed because liquidity restrictions due to locking 
+### NotFinder
+- **interface**: `api.errors.tips.NotFinder.is`
+- **summary**:    The account attempting to retract the tip is not the finder of the tip. 
  
-### StillHasActiveReserved
-- **summary**:   Account still has active reserved 
+### Premature
+- **interface**: `api.errors.tips.Premature.is`
+- **summary**:    The tip cannot be claimed/closed because it's still in the countdown period. 
  
-### TotalIssuanceOverflow
-- **summary**:   This operation will cause total issuance to overflow 
+### ReasonTooBig
+- **interface**: `api.errors.tips.ReasonTooBig.is`
+- **summary**:    The reason given is just too big. 
+ 
+### StillOpen
+- **interface**: `api.errors.tips.StillOpen.is`
+- **summary**:    The tip cannot be claimed/closed because there are not enough tippers yet. 
+ 
+### UnknownTip
+- **interface**: `api.errors.tips.UnknownTip.is`
+- **summary**:    The tip hash is unknown. 
+
+___
+
+
+## transactionStorage
+ 
+### BadContext
+- **interface**: `api.errors.transactionStorage.BadContext.is`
+- **summary**:    Attempted to call `store` outside of block execution. 
+ 
+### DoubleCheck
+- **interface**: `api.errors.transactionStorage.DoubleCheck.is`
+- **summary**:    Double proof check in the block. 
+ 
+### EmptyTransaction
+- **interface**: `api.errors.transactionStorage.EmptyTransaction.is`
+- **summary**:    Attempting to store empty transaction 
+ 
+### InsufficientFunds
+- **interface**: `api.errors.transactionStorage.InsufficientFunds.is`
+- **summary**:    Insufficient account balance. 
+ 
+### InvalidProof
+- **interface**: `api.errors.transactionStorage.InvalidProof.is`
+- **summary**:    Proof failed verification. 
+ 
+### MissingProof
+- **interface**: `api.errors.transactionStorage.MissingProof.is`
+- **summary**:    Missing storage proof. 
+ 
+### MissingStateData
+- **interface**: `api.errors.transactionStorage.MissingStateData.is`
+- **summary**:    Unable to verify proof becasue state data is missing. 
+ 
+### NotConfigured
+- **interface**: `api.errors.transactionStorage.NotConfigured.is`
+- **summary**:    Invalid configuration. 
+ 
+### ProofNotChecked
+- **interface**: `api.errors.transactionStorage.ProofNotChecked.is`
+- **summary**:    Storage proof was not checked in the block. 
+ 
+### RenewedNotFound
+- **interface**: `api.errors.transactionStorage.RenewedNotFound.is`
+- **summary**:    Renewed extrinsic is not found. 
+ 
+### TooManyTransactions
+- **interface**: `api.errors.transactionStorage.TooManyTransactions.is`
+- **summary**:    Too many transactions in the block. 
+ 
+### TransactionTooLarge
+- **interface**: `api.errors.transactionStorage.TransactionTooLarge.is`
+- **summary**:    Transaction is too large. 
+ 
+### UnexpectedProof
+- **interface**: `api.errors.transactionStorage.UnexpectedProof.is`
+- **summary**:    Proof was not expected in this block. 
+
+___
+
+
+## treasury
+ 
+### InsufficientProposersBalance
+- **interface**: `api.errors.treasury.InsufficientProposersBalance.is`
+- **summary**:    Proposer's balance is too low. 
+ 
+### InvalidIndex
+- **interface**: `api.errors.treasury.InvalidIndex.is`
+- **summary**:    No proposal or bounty at that index. 
+ 
+### TooManyApprovals
+- **interface**: `api.errors.treasury.TooManyApprovals.is`
+- **summary**:    Too many approvals in the queue. 
+
+___
+
+
+## uniques
+ 
+### AlreadyExists
+- **interface**: `api.errors.uniques.AlreadyExists.is`
+- **summary**:    The asset instance ID has already been used for an asset. 
+ 
+### BadWitness
+- **interface**: `api.errors.uniques.BadWitness.is`
+- **summary**:    Invalid witness data given. 
+ 
+### Frozen
+- **interface**: `api.errors.uniques.Frozen.is`
+- **summary**:    The asset instance or class is frozen. 
+ 
+### InUse
+- **interface**: `api.errors.uniques.InUse.is`
+- **summary**:    The asset ID is already taken. 
+ 
+### NoDelegate
+- **interface**: `api.errors.uniques.NoDelegate.is`
+- **summary**:    There is no delegate approved. 
+ 
+### NoPermission
+- **interface**: `api.errors.uniques.NoPermission.is`
+- **summary**:    The signing account has no permission to do the operation. 
+ 
+### Unapproved
+- **interface**: `api.errors.uniques.Unapproved.is`
+- **summary**:    No approval exists that would allow the transfer. 
+ 
+### Unknown
+- **interface**: `api.errors.uniques.Unknown.is`
+- **summary**:    The given asset ID is unknown. 
+ 
+### WrongDelegate
+- **interface**: `api.errors.uniques.WrongDelegate.is`
+- **summary**:    The delegate turned out to be different to what was expected. 
+ 
+### WrongOwner
+- **interface**: `api.errors.uniques.WrongOwner.is`
+- **summary**:    The owner turned out to be different to what was expected. 
 
 ___
 
@@ -1220,19 +1689,13 @@ ___
 ## vesting
  
 ### AmountLow
-- **summary**:   The vested transfer amount is too low 
+- **interface**: `api.errors.vesting.AmountLow.is`
+- **summary**:    Amount being transferred is too low to create a vesting schedule. 
  
-### InsufficientBalanceToLock
-- **summary**:   Insufficient amount of balance to lock 
+### ExistingVestingSchedule
+- **interface**: `api.errors.vesting.ExistingVestingSchedule.is`
+- **summary**:    An existing vesting schedule already exists for this account that cannot be clobbered. 
  
-### NumOverflow
-- **summary**:   Arithmetic calculation overflow 
- 
-### TooManyVestingSchedules
-- **summary**:   This account have too many vesting schedules 
- 
-### ZeroVestingPeriod
-- **summary**:   Vesting period is zero 
- 
-### ZeroVestingPeriodCount
-- **summary**:   Number of vests is zero 
+### NotVesting
+- **interface**: `api.errors.vesting.NotVesting.is`
+- **summary**:    The account given is not vesting. 

@@ -8,6 +8,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[babe](#babe)**
 
+- **[beefy](#beefy)**
+
 - **[chain](#chain)**
 
 - **[childstate](#childstate)**
@@ -18,7 +20,13 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[eth](#eth)**
 
+- **[eth/net](#eth/net)**
+
+- **[eth/web3](#eth/web3)**
+
 - **[grandpa](#grandpa)**
+
+- **[mmr](#mmr)**
 
 - **[offchain](#offchain)**
 
@@ -91,6 +99,16 @@ ___
 ___
 
 
+## beefy
+ 
+### subscribeJustifications(): `BeefySignedCommitment`
+- **interface**: `api.rpc.beefy.subscribeJustifications`
+- **jsonrpc**: `beefy_subscribeJustifications`
+- **summary**: Returns the block most recently finalized by BEEFY, alongside side its justification.
+
+___
+
+
 ## chain
  
 ### getBlock(hash?: `BlockHash`): `SignedBlock`
@@ -138,6 +156,11 @@ ___
 - **jsonrpc**: `childstate_getKeys`
 - **summary**: Returns the keys with prefix from a child storage, leave empty to get all the keys
  
+### getKeysPaged(childKey: `PrefixedStorageKey`, prefix: `StorageKey`, count: `u32`, startKey?: `StorageKey`, at?: `Hash`): `Vec<StorageKey>`
+- **interface**: `api.rpc.childstate.getKeysPaged`
+- **jsonrpc**: `childstate_getKeysPaged`
+- **summary**: Returns the keys with prefix from a child storage with pagination support
+ 
 ### getStorage(childKey: `PrefixedStorageKey`, key: `StorageKey`, at?: `Hash`): `Option<StorageData>`
 - **interface**: `api.rpc.childstate.getStorage`
 - **jsonrpc**: `childstate_getStorage`
@@ -167,6 +190,11 @@ ___
 - **interface**: `api.rpc.contracts.getStorage`
 - **jsonrpc**: `contracts_getStorage`
 - **summary**: Returns the value under a specified storage key in a contract
+ 
+### instantiate(request: `InstantiateRequest`, at?: `BlockHash`): `ContractInstantiateResult`
+- **interface**: `api.rpc.contracts.instantiate`
+- **jsonrpc**: `contracts_instantiate`
+- **summary**: Instantiate a new contract
  
 ### rentProjection(address: `AccountId`, at?: `BlockHash`): `Option<BlockNumber>`
 - **interface**: `api.rpc.contracts.rentProjection`
@@ -201,7 +229,7 @@ ___
 ### blockNumber(): `U256`
 - **interface**: `api.rpc.eth.blockNumber`
 - **jsonrpc**: `eth_blockNumber`
-- **summary**: Returns balance of the given account.
+- **summary**: Returns the blockNumber
  
 ### call(request: `EthCallRequest`, number?: `BlockNumber`): `Bytes`
 - **interface**: `api.rpc.eth.call`
@@ -257,6 +285,16 @@ ___
 - **interface**: `api.rpc.eth.getCode`
 - **jsonrpc**: `eth_getCode`
 - **summary**: Returns the code at given address at given time (block number).
+ 
+### getFilterChanges(index: `U256`): `EthFilterChanges`
+- **interface**: `api.rpc.eth.getFilterChanges`
+- **jsonrpc**: `eth_getFilterChanges`
+- **summary**: Returns filter changes since last poll.
+ 
+### getFilterLogs(index: `U256`): `Vec<EthLog>`
+- **interface**: `api.rpc.eth.getFilterLogs`
+- **jsonrpc**: `eth_getFilterLogs`
+- **summary**: Returns all logs matching given filter (in a range 'from' - 'to').
  
 ### getLogs(filter: `EthFilter`): `Vec<EthLog>`
 - **interface**: `api.rpc.eth.getLogs`
@@ -328,20 +366,25 @@ ___
 - **jsonrpc**: `eth_hashrate`
 - **summary**: Returns the number of hashes per second that the node is mining with.
  
-### listening(): `bool`
-- **interface**: `api.rpc.eth.listening`
-- **jsonrpc**: `eth_listening`
-- **summary**: Returns true if client is actively listening for network connections. Otherwise false.
- 
 ### mining(): `bool`
 - **interface**: `api.rpc.eth.mining`
 - **jsonrpc**: `eth_mining`
 - **summary**: Returns true if client is actively mining new blocks.
  
-### peerCount(): `String`
-- **interface**: `api.rpc.eth.peerCount`
-- **jsonrpc**: `eth_peerCount`
-- **summary**: Returns number of peers connected to node.
+### newBlockFilter(): `U256`
+- **interface**: `api.rpc.eth.newBlockFilter`
+- **jsonrpc**: `eth_newBlockFilter`
+- **summary**: Returns id of new block filter.
+ 
+### newFilter(filter: `EthFilter`): `U256`
+- **interface**: `api.rpc.eth.newFilter`
+- **jsonrpc**: `eth_newFilter`
+- **summary**: Returns id of new filter.
+ 
+### newPendingTransactionFilter(): `U256`
+- **interface**: `api.rpc.eth.newPendingTransactionFilter`
+- **jsonrpc**: `eth_newPendingTransactionFilter`
+- **summary**: Returns id of new block filter.
  
 ### protocolVersion(): `u64`
 - **interface**: `api.rpc.eth.protocolVersion`
@@ -378,10 +421,45 @@ ___
 - **jsonrpc**: `eth_syncing`
 - **summary**: Returns an object with data about the sync status or false.
  
+### uninstallFilter(index: `U256`): `bool`
+- **interface**: `api.rpc.eth.uninstallFilter`
+- **jsonrpc**: `eth_uninstallFilter`
+- **summary**: Uninstalls filter.
+
+___
+
+
+## eth/net
+ 
+### listening(): `bool`
+- **interface**: `api.rpc.net.listening`
+- **jsonrpc**: `net_listening`
+- **summary**: Returns true if client is actively listening for network connections. Otherwise false.
+ 
+### peerCount(): `String`
+- **interface**: `api.rpc.net.peerCount`
+- **jsonrpc**: `net_peerCount`
+- **summary**: Returns number of peers connected to node.
+ 
 ### version(): `String`
-- **interface**: `api.rpc.eth.version`
-- **jsonrpc**: `eth_version`
+- **interface**: `api.rpc.net.version`
+- **jsonrpc**: `net_version`
 - **summary**: Returns protocol version.
+
+___
+
+
+## eth/web3
+ 
+### clientVersion(): `String`
+- **interface**: `api.rpc.web3.clientVersion`
+- **jsonrpc**: `web3_clientVersion`
+- **summary**: Returns current client version.
+ 
+### sha3(data: `Bytes`): `H256`
+- **interface**: `api.rpc.web3.sha3`
+- **jsonrpc**: `web3_sha3`
+- **summary**: Returns sha3 of the given data
 
 ___
 
@@ -406,6 +484,16 @@ ___
 ___
 
 
+## mmr
+ 
+### generateProof(leafIndex: `u64`, at?: `BlockHash`): `MmrLeafProof`
+- **interface**: `api.rpc.mmr.generateProof`
+- **jsonrpc**: `mmr_generateProof`
+- **summary**: Generate MMR proof for given leaf index.
+
+___
+
+
 ## offchain
  
 ### localStorageGet(kind: `StorageKind`, key: `Bytes`): `Option<Bytes>`
@@ -422,6 +510,11 @@ ___
 
 
 ## payment
+ 
+### queryFeeDetails(extrinsic: `Bytes`, at?: `BlockHash`): `FeeDetails`
+- **interface**: `api.rpc.payment.queryFeeDetails`
+- **jsonrpc**: `payment_queryFeeDetails`
+- **summary**: Query the detailed fee of a given encoded extrinsic
  
 ### queryInfo(extrinsic: `Bytes`, at?: `BlockHash`): `RuntimeDispatchInfo`
 - **interface**: `api.rpc.payment.queryInfo`
@@ -452,6 +545,11 @@ ___
 - **interface**: `api.rpc.state.getChildKeys`
 - **jsonrpc**: `state_getChildKeys`
 - **summary**: Retrieves the keys with prefix of a specific child storage
+ 
+### getChildReadProof(childStorageKey: `PrefixedStorageKey`, keys: `Vec<StorageKey>`, at?: `BlockHash`): `ReadProof`
+- **interface**: `api.rpc.state.getChildReadProof`
+- **jsonrpc**: `state_getChildReadProof`
+- **summary**: Returns proof of storage for child key entries at a specific block state.
  
 ### getChildStorage(childStorageKey: `StorageKey`, childDefinition: `StorageKey`, childType: `u32`, key: `StorageKey`, at?: `BlockHash`): `StorageData`
 - **interface**: `api.rpc.state.getChildStorage`
@@ -532,6 +630,21 @@ ___
 - **interface**: `api.rpc.state.subscribeStorage`
 - **jsonrpc**: `state_subscribeStorage`
 - **summary**: Subscribes to storage changes for the provided keys
+ 
+### traceBlock(block: `Hash`, targets: `Option<Text>`, storageKeys: `Option<Text>`): `TraceBlockResponse`
+- **interface**: `api.rpc.state.traceBlock`
+- **jsonrpc**: `state_traceBlock`
+- **summary**: Provides a way to trace the re-execution of a single block
+
+___
+
+
+## syncstate
+ 
+### genSyncSpec(raw: `bool`): `Json`
+- **interface**: `api.rpc.syncstate.genSyncSpec`
+- **jsonrpc**: `sync_state_genSyncSpec`
+- **summary**: Returns the json-serialized chainspec running the node, with a sync state.
 
 ___
 
@@ -622,6 +735,11 @@ ___
 - **interface**: `api.rpc.system.removeReservedPeer`
 - **jsonrpc**: `system_removeReservedPeer`
 - **summary**: Remove a reserved peer
+ 
+### reservedPeers(): `Vec<Text>`
+- **interface**: `api.rpc.system.reservedPeers`
+- **jsonrpc**: `system_reservedPeers`
+- **summary**: Returns the list of reserved peers
  
 ### resetLogFilter(): `Null`
 - **interface**: `api.rpc.system.resetLogFilter`

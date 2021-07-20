@@ -1,28 +1,28 @@
 {
   "name": "polkadot-js",
-  "version": "0.0.0",
+  "version": "0.0.71",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start --port 8080",
-    "build": "./node_modules/.bin/ts-node src/scripts/metadataMd.ts && docusaurus build",
-    "build:release": "polkadot-ci-ghact-docs",
-    "docs": "yarn build",
+    "build": "yarn polkadot-types-internal-metadata",
+    "build:release": "polkadot-ci-ghact-build --skip-beta && polkadot-ci-ghact-docs",
+    "docs": "docusaurus build",
+    "lint": "echo \"Skipping lint\"",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
-    "serve": "docusaurus serve --port 8080"
+    "serve": "docusaurus serve --port 8080",
+    "test": "echo \"Skipping test\""
   },
   "devDependencies": {
-    "@polkadot/metadata": "3.2.1",
-    "@acala-network/types": "^0.6.2-0",
-    "@docusaurus/core": "2.0.0-alpha.66",
-    "@docusaurus/preset-classic": "2.0.0-alpha.66",
-    "@mdx-js/react": "^1.6.19",
-    "@polkadot/dev": "^0.59.18",
-    "@polkadot/typegen": "3.2.1",
+    "@docusaurus/core": "2.0.0-beta.0",
+    "@docusaurus/preset-classic": "2.0.0-beta.0",
+    "@mdx-js/react": "^1.6.22",
+    "@polkadot/dev": "^0.62.43",
+    "@polkadot/typegen": "^4.15.2-2",
     "clsx": "^1.1.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "browserslist": {
     "production": [

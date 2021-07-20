@@ -5,14 +5,11 @@ module.exports = {
   tagline: 'Acala docs JavaScript',
   url: 'https://acala.network/',
   baseUrl: BASE_URL,
-  onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'acala-network',
   onBrokenLinks: 'warn',
   projectName: 'docs',
-  stylesheets: [
-    'fonts/fonts.css'
-  ],
+  stylesheets: [],
   themeConfig: {
     navbar: {
       title: 'acala',
@@ -33,6 +30,7 @@ module.exports = {
         },
       ],
     },
+    footer: {}
   },
   presets: [
     ['@docusaurus/preset-classic', {
@@ -47,7 +45,7 @@ module.exports = {
       },
       theme: {
         customCss: require.resolve('./src/css/custom.css'),
-      },
-    }],
-  ],
+      }
+    }]
+  ]
 };

@@ -12,7 +12,7 @@ import { Keyring } from '@polkadot/keyring';
 const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
 ```
 
-In the above we do an import and then subsequently create a keyring with a standard crypto type. As detailed earlier, in standard Polkadot/Substrate chains `ed25519`/`sr2551`/`ecdsa` types are supported. The `ss58Format` will be used to format addresses, more on this in a later section.
+In the above we do an import and then subsequently create a keyring with a standard crypto type. As detailed earlier, in standard Polkadot/Substrate chains `ed25519`/`sr25519`/`ecdsa` types are supported. The `ss58Format` will be used to format addresses, more on this in a later section.
 
 
 ## Crypto types
@@ -44,7 +44,7 @@ console.log(keyring.pairs.length, 'pairs available');
 console.log(pair.meta.name, 'has address', pair.address);
 ```
 
-Since we detailed overrides of types, here we added a `ed25519` keypair to our default `sr25519` keyring. Additionally here we also addedd metadata to the pair, which is just an object holding any values such as `name`, `genesisHash` or whatever the developer applies.
+Since we detailed overrides of types, here we added a `ed25519` keypair to our default `sr25519` keyring. Additionally here we also added metadata to the pair, which is just an object holding any values such as `name`, `genesisHash` or whatever the developer applies.
 
 
 ## Revisiting crypto
@@ -63,7 +63,7 @@ await cryptoWaitReady();
 const ep = keyring.createFromUri(mnemonic, { name: 'ed25519' }, 'ed25519');
 
 // create an sr25519 pair from the mnemonic (keyring defaults)
-const ep = keyring.createFromUri(mnemonic, { name: 'sr25519' });
+const sp = keyring.createFromUri(mnemonic, { name: 'sr25519' });
 
 // log the addresses, different cryptos, different results
 console.log(ep.meta.name, ep.address);

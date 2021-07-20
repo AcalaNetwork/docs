@@ -8,8 +8,8 @@ Circling back to metadata. There are two important things to remember when using
 
 2. When you supply a value to the API, internally it will convert that value to the correct type as expected by the chain, i.e. as determined by the metadata. This means that a function such as `balances.transfer(address: Address, value: Balance)` can take at least the following inputs, which are all converted to the correct types -
 
-- `address` can be an `Address`, an `AccountId`, an `Uint8Array` publicKey, a hex publicKey or an ss58 formatted address;
-- `value` can be a `Balance`, a value encoded in hex, a `BN` object, a base-10 string, a JS `number`, a JS `BigInt` or even a SCALE-encoded `Uint8Array`
+   - `address` can be an `Address`, an `AccountId`, an `Uint8Array` publicKey, a hex publicKey or an ss58 formatted address;
+   - `value` can be a `Balance`, a value encoded in hex, a `BN` object, a base-10 string, a JS `number`, a JS `BigInt` or even a SCALE-encoded `Uint8Array`
 
 In cases where a value is returned such as storage queries, the response from the chain is always encoded into the correct `Codec` type. This means that while the node may return an encoded block (with encoded extrinsics) via `api.rpc.chain.getBlock()`, this is decoded into a proper `SignedBlock` by the API. Outputting this value via `.toJSON()` will yield an encoding for RPC, so if you are not using TypeScript (which adds code helpers on decoded objects), a representation via `.toHuman()` will be more representative of the actual object fields, re-formatted for human consumption.
 
@@ -37,7 +37,7 @@ In most cases, you would always want to use the `api.createType` helper. What th
 
 The registry contains a listing of all internal types and their classes that have been registered. So upon creation of an API instance, a `registry` object  is attached to the API and this is passed through to all created types. This allows the type definitions to not pollute the global namespace, but rather be contained and able to reference one another.
 
-As mentioned, the `createType` functions all do exactly the same, and it 99.99% of the cases you would be recommended to just forget about everything and use `api.createType` if and when required. In some cases, you may just have a type object and from that want to create another type instance. For that you can access the `registry` on the type object and call `createType` on it. (If this type object was created from an API instance, the registry on the type and on the API will point to the same instance.)
+As mentioned, the `createType` functions all do exactly the same, and in 99.99% of the cases you would be recommended to just forget about everything and use `api.createType` if and when required. In some cases, you may just have a type object and from that want to create another type instance. For that you can access the `registry` on the type object and call `createType` on it. (If this type object was created from an API instance, the registry on the type and on the API will point to the same instance.)
 
 Basically, this means that we have equivalency in creation for all the items below, all creating on the same registry (containing all injected types), and all wrapping the same value -
 
